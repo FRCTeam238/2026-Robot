@@ -68,6 +68,8 @@ public class Constants {
         public static int leftMotorID = 14;
         public static int rightMotorID = 17;
         public static double currentLimit = 40.0;
+
+        public static double launchSpeed = 10; //voltage
     }
     public class LauncherConstants {
         public static int leftUpID = 7;
@@ -82,10 +84,30 @@ public class Constants {
         public static final double kV = 0;
         public static final double kS = 0;
 
+        public static final double tolerance = 2.0; //Value is a percentage of requested speed
+
+        public static final double launchSpeed = 3000; //Value in RPM
     }
 
     public class IntakeConstants {
+        public static double rollerCurrentLimit = 30.0;
+        public static double tiltCurrentLimit = 60.0;
 
+        public static final double tiltKP = 10;
+        public static final double tiltKI = 0;
+        public static final double tiltKD = 0.01;
+        public static final double tiltKV = 0;
+        public static final double tiltKS = 0;
+        public static final double tiltKA = 0;
+        public static final double tiltKG = 0;
+        public static final double tiltCruise = 0;
+        public static final double tiltExpoKV = 0;
+        public static final double tiltExpoKA = 0;
+
+        public static final double intakeUp = 0;
+        public static final double intakeDown = .333*38.0/12.0*15.0; //~ .333 rotations of output * 38/12 chain ratio * 15:1 planetary ratio
+
+        public static final double intakeVoltage = 10;
     }
     
     public class OperatorConstants {

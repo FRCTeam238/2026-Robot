@@ -12,14 +12,19 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.LauncherConstants.*;
 
+@Logged
 public class Launcher extends SubsystemBase {
 
   TalonFX leftUp, leftLow, rightUp, rightLow;
   double requestedSpeed=0;
+
+  @NotLogged private static Launcher singleton;
 
   /** Creates a new Launcher. */
   public Launcher() {
@@ -85,6 +90,11 @@ public class Launcher extends SubsystemBase {
     return true;
   }
 
+  public static Launcher getInstance() {
+    if (singleton == null)
+      singleton = new Launcher();
+    return singleton;
+  }
 
   @Override
   public void periodic() {

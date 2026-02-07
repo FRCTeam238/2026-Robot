@@ -9,6 +9,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.FeederConstants.*;
@@ -17,6 +18,8 @@ import static frc.robot.Constants.FeederConstants.*;
 public class Feeder extends SubsystemBase {
 
 TalonFX leftMotor, rightMotor;
+
+@NotLogged private static Feeder singleton;
 
 
   /** Creates a new Feeder. */
@@ -55,6 +58,12 @@ TalonFX leftMotor, rightMotor;
     public void stop () {
         setSpeed(0);
     }
+
+  public static Feeder getInstance() {
+    if (singleton == null)
+      singleton = new Feeder();
+    return singleton;
+  }
     
     //Unjam method?
 
