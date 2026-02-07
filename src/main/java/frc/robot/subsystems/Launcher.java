@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
@@ -18,6 +19,7 @@ import static frc.robot.Constants.LauncherConstants.*;
 public class Launcher extends SubsystemBase {
 
   TalonFX leftUp, leftLow, rightUp, rightLow;
+  double requestedSpeed=0;
 
   /** Creates a new Launcher. */
   public Launcher() {
@@ -58,6 +60,31 @@ public class Launcher extends SubsystemBase {
     leftLow.setControl(new Follower(leftUp.getDeviceID(), MotorAlignmentValue.Aligned));
     rightLow.setControl(new Follower(rightUp.getDeviceID(), MotorAlignmentValue.Aligned));
   }
+
+  public void setSpeed(double speed) {
+    requestedSpeed = speed;
+    leftUp.setControl(new VelocityVoltage(speed));
+    rightUp.setControl(new VelocityVoltage(speed));
+  }
+
+  public void stop() {
+        setSpeed(0);
+  }
+
+  public boolean atSpeed() {
+    double leftError = leftUp.getClosedLoopError().getValueAsDouble();
+    if(Math.abs(leftError / requestedSpeed * 100) > tolerance)
+    {
+      return false;
+    }
+    double rightError = rightUp.getClosedLoopError().getValueAsDouble();
+    if(Math.abs(rightError / requestedSpeed * 100) > tolerance)
+    {   
+      return false;
+    }
+    return true;
+  }
+
 
   @Override
   public void periodic() {
