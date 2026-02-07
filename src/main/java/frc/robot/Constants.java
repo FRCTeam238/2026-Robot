@@ -64,7 +64,30 @@ public class Constants {
         public static double visionPoseDiffTolerance = 99; // for the diff between estimated vision pose and odometry in
                                                           // meters
     }
+    public class FeederConstants {
+        public static int leftMotorID = 14;
+        public static int rightMotorID = 17;
+        public static double currentLimit = 40.0;
+    }
+    public class LauncherConstants {
+        public static int leftUpID = 7;
+        public static int leftLowID = 6;
+        public static int rightUpID = 2;
+        public static int rightLowID = 3;
+        public static double currentLimit = 60.0;
 
+        public static final double kP = 10;
+        public static final double kI = 0;
+        public static final double kD = 0.01;
+        public static final double kV = 0;
+        public static final double kS = 0;
+
+    }
+
+    public class IntakeConstants {
+
+    }
+    
     public class OperatorConstants {
 
         public static double driverJoystickDeadzone = .1;
