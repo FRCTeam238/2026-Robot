@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import static frc.robot.Constants.IntakeConstants.intakeDown;
-import static frc.robot.Constants.IntakeConstants.intakeVoltage;
+import static frc.robot.Constants.IntakeConstants.intakeRollerVoltage;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
@@ -28,7 +28,7 @@ public class IntakeFuel extends Command {
   public void execute() {
     if(Intake.getInstance().getTargetPosition() == intakeDown && Intake.getInstance().tiltAtTarget())
     {
-      Intake.getInstance().runIntake(intakeVoltage);
+      Intake.getInstance().runIntake(intakeRollerVoltage);
     } else
     { 
       Intake.getInstance().stopRoller();

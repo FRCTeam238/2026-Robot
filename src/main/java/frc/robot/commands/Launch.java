@@ -21,7 +21,7 @@ public class Launch extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Feeder.getInstance().setSpeed(FeederConstants.launchSpeed);
+    Feeder.getInstance().setSpeed(FeederConstants.feederSpeed);
     Launcher.getInstance().setSpeed(LauncherConstants.launchSpeed);
   }
 
