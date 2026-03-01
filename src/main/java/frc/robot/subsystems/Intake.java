@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -21,11 +22,16 @@ import static frc.robot.Constants.IntakeConstants.*;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
     TalonFX rollerMotor, tiltMotor;
+    CANcoder tiltSensor;
     double targetPosition;
   
     @NotLogged private static Intake singleton;
 
   public Intake() {
+
+    tiltSensor = new CANcoder(tiltID);
+    tiltMotor = new TalonFX(tiltID);
+    rollerMotor = new TalonFX(rollerID);
 
     var config = new TalonFXConfiguration();
     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -42,6 +48,8 @@ public class Intake extends SubsystemBase {
     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; //Positive value deploys intake out from robot
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     config.CurrentLimits.StatorCurrentLimit = tiltCurrentLimit;
+    config.Feedback.withRemoteCANcoder(tiltSensor);
+    config.Feedback.RotorToSensorRatio = intakePivotRatio;
 
     // set slot 0 gains
     var slot0Configs = config.Slot0;
@@ -51,8 +59,9 @@ public class Intake extends SubsystemBase {
     slot0Configs.kP = tiltKP;
     slot0Configs.kI = tiltKI;
     slot0Configs.kD = tiltKD;
-    //slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
-    //slot0Configs.kG = tiltKG;
+    slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
+    slot0Configs.kG = tiltKG;
+    
 
     // set Motion Magic Expo settings
     var motionMagicConfigs = config.MotionMagic;
