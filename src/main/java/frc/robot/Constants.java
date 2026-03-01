@@ -13,7 +13,7 @@ public class Constants {
         public static final boolean fieldRelative = true;
 
         public static final int frontRightDriveCANId = 19;
-        public static final int frontLeftDriveCANId = 0;
+        public static final int frontLeftDriveCANId = 30;
         public static final int backRightDriveCANId = 10;
         public static final int backLeftDriveCANId = 9;
 
@@ -61,8 +61,8 @@ public class Constants {
                                                           // meters
     }
     public class FeederConstants {
-        public static int leftMotorID = 14;
-        public static int rightMotorID = 17;
+        public static int upperMotorID = 5;
+        public static int lowerMotorID = 4;
         public static double currentLimit = 40.0;
 
         public static double feederSpeed = 10; //voltage

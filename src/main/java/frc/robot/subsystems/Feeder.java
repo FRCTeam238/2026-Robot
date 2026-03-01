@@ -17,42 +17,42 @@ import static frc.robot.Constants.FeederConstants.*;
 
 public class Feeder extends SubsystemBase {
 
-TalonFX leftMotor, rightMotor;
+TalonFX upperMotor, lowerMotor;
 
 @NotLogged private static Feeder singleton;
 
 
   /** Creates a new Feeder. */
   public Feeder() {
-    leftMotor = new TalonFX(leftMotorID);
-    rightMotor = new TalonFX(rightMotorID);
+    upperMotor = new TalonFX(upperMotorID);
+    lowerMotor = new TalonFX(lowerMotorID);
 
     var config = new TalonFXConfiguration();
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     config.CurrentLimits.StatorCurrentLimit = currentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
-    leftMotor.getConfigurator().apply(config);
-    leftMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
-    leftMotor.getSupplyVoltage().setUpdateFrequency(20);
-    leftMotor.getSupplyCurrent().setUpdateFrequency(20);
-    leftMotor.getStatorCurrent().setUpdateFrequency(20);
-    leftMotor.optimizeBusUtilization();
+    upperMotor.getConfigurator().apply(config);
+    upperMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
+    upperMotor.getSupplyVoltage().setUpdateFrequency(20);
+    upperMotor.getSupplyCurrent().setUpdateFrequency(20);
+    upperMotor.getStatorCurrent().setUpdateFrequency(20);
+    upperMotor.optimizeBusUtilization();
 
     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    rightMotor.getConfigurator().apply(config);
-    rightMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
-    rightMotor.getSupplyVoltage().setUpdateFrequency(20);
-    rightMotor.getSupplyCurrent().setUpdateFrequency(20);
-    rightMotor.getStatorCurrent().setUpdateFrequency(20);
-    rightMotor.optimizeBusUtilization();
+    lowerMotor.getConfigurator().apply(config);
+    lowerMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
+    lowerMotor.getSupplyVoltage().setUpdateFrequency(20);
+    lowerMotor.getSupplyCurrent().setUpdateFrequency(20);
+    lowerMotor.getStatorCurrent().setUpdateFrequency(20);
+    lowerMotor.optimizeBusUtilization();
 
   }
 
   
     public void setSpeed (double speed) {
-        leftMotor.setVoltage(speed);
-        rightMotor.setVoltage(speed);
+        upperMotor.setVoltage(speed);
+        lowerMotor.setVoltage(speed);
     }
 
     public void stop () {
