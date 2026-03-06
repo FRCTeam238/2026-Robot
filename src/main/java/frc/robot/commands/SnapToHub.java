@@ -21,94 +21,51 @@ import frc.robot.subsystems.Drivetrain;
 public class SnapToHub extends Command {
 
   private Translation2d hubPoint;
-  private PIDController angleController;
+  private PIDController xController;
+  private PIDController yController;
+  private PIDController rotationController;
   private boolean finished;
 
   /** Creates a new SnapToHub. */
   public SnapToHub() {
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Drivetrain.getInstance());
-    angleController = new PIDController(kP, kI, kD);
+    xController = new PIDController(kP, kI, kD);
+    yController = new PIDController(kP, kI, kD);
+    rotationController = new PIDController(kP, kI, kD);
+    rotationController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //Get hub coordnates
     hubPoint = util.getHubPoint();
-    //Get finished variable
     finished = false;
+    xController.setTolerance(0.1); // adjust as needed
+    yController.setTolerance(0.1);
+    rotationController.setTolerance(0.05);
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //get robot position, calculate rotation
     Pose2d currentPose = Drivetrain.getInstance().getPose();
-    double xSpeed = getXSpeed(currentPose);
-    double ySpeed = getYSpeed(currentPose);
-    double targetRotation = getErrorRotation(currentPose);
-  // getXSpeed and getYSpeed returns distance. How do we translate it to return speed?
-    Drivetrain.getInstance().driveFieldRelative(xSpeed, ySpeed, targetRotation);
-    // Assumption: PID returns 0 
-    finished = xSpeed == 0 && ySpeed == 0 && targetRotation == 0;
-    if (isFinished()){
+    double xSpeed = xController.calculate(currentPose.getX(), hubPoint.getX());
+    double ySpeed = yController.calculate(currentPose.getY(), hubPoint.getY());
+    double targetAngle = Math.atan2(hubPoint.getY() - currentPose.getY(), hubPoint.getX() - currentPose.getX());
+    double rotationSpeed = rotationController.calculate(currentPose.getRotation().getRadians(), targetAngle);
+
+    // Optionally clamp speeds to max/min values
+    xSpeed = Math.max(Math.min(xSpeed, 1.0), -1.0);
+    ySpeed = Math.max(Math.min(ySpeed, 1.0), -1.0);
+    rotationSpeed = Math.max(Math.min(rotationSpeed, 1.0), -1.0);
+
+    Drivetrain.getInstance().driveFieldRelative(xSpeed, ySpeed, rotationSpeed);
+
+    finished = xController.atSetpoint() && yController.atSetpoint() && rotationController.atSetpoint();
+    if (finished) {
       Drivetrain.getInstance().stop();
     }
-    //Hold button
-  }
-
-  private double getXSpeed(Pose2d currentPose) {
-    //get current x
-    double currentX = currentPose.getX();
-
-    //get x distance to hub
-    Translation2d currentTranslation = currentPose.getTranslation();
-    Translation2d deltaToHub = hubPoint.minus(currentTranslation);
-    //double distanceToHub = deltaToHub.getNorm();
-
-    //calc difference
-    double xDistanceToHub = deltaToHub.getX(); 
-    double xDistanceToRange = xDistanceToHub - Constants.SnapConstants.xRangeToHub;
-    //use pid controller to get step
-    double xStep = angleController.calculate(currentX, xDistanceToRange);
-
-    //Set X points using PID Controller with speeds
-    
-
-    return xStep;
-  }
-
-  private double getYSpeed(Pose2d currentPose) {
-   //get current y
-    double currentY = currentPose.getY();
-
-    //get y distance to hub
-    Translation2d currentTranslation = currentPose.getTranslation();
-    Translation2d deltaToHub = hubPoint.minus(currentTranslation);
-
-    //calc difference
-    double yDistanceToHub = deltaToHub.getY(); 
-    double yDistanceToRange = yDistanceToHub - Constants.SnapConstants.yRangeToHub;
-    //use pid controller to get step
-    double yStep = angleController.calculate(currentY, yDistanceToRange);
-
-    //Set X points using PID Controller with speeds
-    
-
-    return yStep;
-  }
-
-  private double getErrorRotation(Pose2d currentPose) {
-    Translation2d currentTranslation = currentPose.getTranslation();
-    Translation2d deltaToHub = hubPoint.minus(currentTranslation);
-   //double distanceToHub = deltaToHub.getNorm();
-    Rotation2d targetRotation = deltaToHub.getAngle();
-    Rotation2d currentRotation = currentPose.getRotation();
-    // Rotation2d errorRotation = targetRotation.minus(currentRotation);
-    double rotationStep = angleController.calculate(currentRotation.getRadians(), targetRotation.getRadians());
-    return rotationStep;
   }
 
   // Called once the command ends or is interrupted.
