@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -21,8 +22,10 @@ import static frc.robot.Constants.IntakeConstants.*;
 @Logged
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-    TalonFX rollerMotor, tiltMotor;
-    CANcoder tiltSensor;
+    @NotLogged
+      TalonFX rollerMotor, tiltMotor;
+    @NotLogged
+      CANcoder tiltSensor;
     double targetPosition;
   
     @NotLogged private static Intake singleton;
@@ -66,8 +69,10 @@ public class Intake extends SubsystemBase {
     // set Motion Magic Expo settings
     var motionMagicConfigs = config.MotionMagic;
     motionMagicConfigs.MotionMagicCruiseVelocity = tiltCruise;
-    motionMagicConfigs.MotionMagicExpo_kV = tiltExpoKV;
-    motionMagicConfigs.MotionMagicExpo_kA = tiltExpoKA;
+    motionMagicConfigs.MotionMagicAcceleration = tiltAcceleration;
+    motionMagicConfigs.MotionMagicJerk = tiltJerk;
+    //motionMagicConfigs.MotionMagicExpo_kV = tiltExpoKV;
+   // motionMagicConfigs.MotionMagicExpo_kA = tiltExpoKA;
     
 
     tiltMotor.getConfigurator().apply(config);
@@ -86,7 +91,7 @@ public class Intake extends SubsystemBase {
 
   public void setTiltPosition(double position) {
     targetPosition = position;
-    tiltMotor.setControl(new MotionMagicExpoVoltage(position));
+    tiltMotor.setControl(new MotionMagicVoltage(position));
   }
 
   public double getTargetPosition() {

@@ -13,13 +13,13 @@ public class Constants {
         public static final boolean fieldRelative = true;
 
         public static final int frontRightDriveCANId = 19;
-        public static final int frontLeftDriveCANId = 30;
-        public static final int backRightDriveCANId = 10;
+        public static final int frontLeftDriveCANId = 10;
+        public static final int backRightDriveCANId = 30;
         public static final int backLeftDriveCANId = 9;
 
         public static final int frontRightTurnCANId = 18;
-        public static final int frontLeftTurnCANId = 1;
-        public static final int backRightTurnCANId = 11;
+        public static final int frontLeftTurnCANId = 11;
+        public static final int backRightTurnCANId = 1;
         public static final int backLeftTurnCANId = 8;
 
         public static final double kP = 10;
@@ -75,16 +75,16 @@ public class Constants {
         public static double currentLimit = 60.0;
 
         //https://tinyurl.com/2026-238-launcher
-        public static final double kP = 0.46;
+        public static final double kP = 0.4;  //Theoretical 0.46
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final double kV = 0.19;
+        public static final double kV = 0.13;  //Theoretical 0.19
         public static final double kA = 0.51;
         public static final double kS = 0;
 
         public static final double tolerance = 2.0; //Value is a percentage of requested speed
 
-        public static final double launchSpeed = 3000; //Value in RPM
+        public static final double launchSpeed = 70; //Value in RPS
     }
 
     public class IntakeConstants {
@@ -95,20 +95,22 @@ public class Constants {
         public static double rollerCurrentLimit = 30.0;
         public static double tiltCurrentLimit = 60.0;
 
-        public static final double tiltKP = 0;  //ReCalc  123.47
+        public static final double tiltKP = 3;  //ReCalc  123.47
         public static final double tiltKI = 0;
         public static final double tiltKD = 0; //ReCalc 9.05
-        public static final double tiltKV = 5.64;
-        public static final double tiltKS = 0;
-        public static final double tiltKA = 0.06;
-        public static final double tiltKG = 0.33;
+        public static final double tiltKV = 5;
+        public static final double tiltKS = 0.05;
+        public static final double tiltKA = 0.15;
+        public static final double tiltKG = 0.25;
         public static final double tiltCruise = 1;  //Max velocity is ~116 rev/s.
-        public static final double tiltExpoKV = 5.64;
-        public static final double tiltExpoKA = 0.06;
+        public static final double tiltAcceleration = 3;
+        public static final double tiltJerk = 15;
+        //public static final double tiltExpoKV = 5.64;
+        //public static final double tiltExpoKA = 0.06;
 
         public static final double intakePivotRatio = 47.5;
-        public static final double intakeDown = 0.05;
-        public static final double intakeUp = .333*38.0/12.0*15.0; //~ .333 rotations of output * 38/12 chain ratio * 15:1 planetary ratio
+        public static final double intakeDown = 0;
+        public static final double intakeUp = .32;
 
         public static final double intakeRollerVoltage = 10;
     }

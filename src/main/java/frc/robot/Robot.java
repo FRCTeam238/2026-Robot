@@ -46,10 +46,15 @@ public class Robot extends TimedRobot {
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
     StatusLogger.start();
-    Epilogue.bind(this);
-    
+
     controls = Controls.getInstance();
     drivetrain = Drivetrain.getInstance();
+    launcher = Launcher.getInstance();
+    intake = Intake.getInstance();
+    feeder = Feeder.getInstance();
+    //Epilogue.bind(this);
+    
+ 
   }
   
   public static boolean isPracticeBot() {

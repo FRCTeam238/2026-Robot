@@ -21,6 +21,7 @@ import static frc.robot.Constants.LauncherConstants.*;
 @Logged
 public class Launcher extends SubsystemBase {
 
+  @NotLogged
   TalonFX leftUp, leftLow, rightUp, rightLow;
   double requestedSpeed=0;
 

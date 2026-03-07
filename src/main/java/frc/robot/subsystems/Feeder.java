@@ -17,6 +17,7 @@ import static frc.robot.Constants.FeederConstants.*;
 
 public class Feeder extends SubsystemBase {
 
+  @NotLogged
 TalonFX upperMotor, lowerMotor;
 
 @NotLogged private static Feeder singleton;
