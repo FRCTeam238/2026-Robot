@@ -27,11 +27,9 @@ public class IntakeFuel extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Intake.getInstance().getTargetPosition() == intakeDown && Intake.getInstance().tiltAtTarget())
-    {
+    if (Intake.getInstance().getTargetPosition() == intakeDown && Intake.getInstance().tiltAtTarget()) {
       Intake.getInstance().runIntake(intakeRollerVoltage);
-    } else
-    { 
+    } else {
       Intake.getInstance().stopRoller();
     }
   }

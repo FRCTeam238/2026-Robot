@@ -35,13 +35,11 @@ public class Constants {
 
         public static final double kTrackWidth = Units.inchesToMeters(21.75);
         public static final double kWheelBase = Units.inchesToMeters(21.75);
-        public static final SwerveDriveKinematics kDriveKinematics =
-            new SwerveDriveKinematics(
+        public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
                 new Translation2d((kWheelBase / 2), kTrackWidth / 2),
                 new Translation2d((kWheelBase / 2), -kTrackWidth / 2),
                 new Translation2d((-kWheelBase / 2), kTrackWidth / 2),
-                new Translation2d((-kWheelBase / 2), -kTrackWidth / 2)
-            );
+                new Translation2d((-kWheelBase / 2), -kTrackWidth / 2));
 
         public static double maxAngularVelocityRadsPerSec = 2 * Math.PI;
 
@@ -50,23 +48,27 @@ public class Constants {
         public static final double positionTolerance = 0.08;
         public static final double xandyvelocityTolerance = 0.08;
 
-        //Vision constants
-        public static Transform3d rightCameraLocation = new Transform3d(-0.2707, 0.1775, 0.3732, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
-        public static Transform3d leftCameraLocation = new Transform3d(-0.2707, -0.1775, 0.3732, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
+        // Vision constants
+        public static Transform3d rightCameraLocation = new Transform3d(-0.2707, 0.1775, 0.3732,
+                new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
+        public static Transform3d leftCameraLocation = new Transform3d(-0.2707, -0.1775, 0.3732,
+                new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
         public static double maxVisionDistanceTolerance = 5;// for the max distance between cam and tag in meters
         public static double maxAmbiguity = 1; // max ambiguity out of 1
         public static double zTolerance = 0.25;
         public static double rollPitchTolerance = Units.degreesToRadians(10);
         public static double visionPoseDiffTolerance = 99; // for the diff between estimated vision pose and odometry in
-                                                          // meters
+                                                           // meters
     }
+
     public class FeederConstants {
         public static int upperMotorID = 5;
         public static int lowerMotorID = 4;
         public static double currentLimit = 40.0;
 
-        public static double feederSpeed = 10; //voltage
+        public static double feederSpeed = 10; // voltage
     }
+
     public class LauncherConstants {
         public static int leftUpID = 7;
         public static int leftLowID = 6;
@@ -74,39 +76,39 @@ public class Constants {
         public static int rightLowID = 3;
         public static double currentLimit = 60.0;
 
-        //https://tinyurl.com/2026-238-launcher
-        public static final double kP = 0.4;  //Theoretical 0.46
+        // https://tinyurl.com/2026-238-launcher
+        public static final double kP = 0.4; // Theoretical 0.46
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final double kV = 0.13;  //Theoretical 0.19
+        public static final double kV = 0.13; // Theoretical 0.19
         public static final double kA = 0.51;
         public static final double kS = 0;
 
-        public static final double tolerance = 2.0; //Value is a percentage of requested speed
+        public static final double tolerance = 2.0; // Value is a percentage of requested speed
 
-        public static final double launchSpeed = 70; //Value in RPS
+        public static final double launchSpeed = 70; // Value in RPS
     }
 
     public class IntakeConstants {
-        //https://tinyurl.com/2026-238-Intake
+        // https://tinyurl.com/2026-238-Intake
         public static int tiltID = 12;
         public static int rollerID = 17;
 
         public static double rollerCurrentLimit = 30.0;
         public static double tiltCurrentLimit = 60.0;
 
-        public static final double tiltKP = 3;  //ReCalc  123.47
+        public static final double tiltKP = 3; // ReCalc 123.47
         public static final double tiltKI = 0;
-        public static final double tiltKD = 0; //ReCalc 9.05
+        public static final double tiltKD = 0; // ReCalc 9.05
         public static final double tiltKV = 5;
         public static final double tiltKS = 0.05;
         public static final double tiltKA = 0.15;
         public static final double tiltKG = 0.25;
-        public static final double tiltCruise = 1;  //Max velocity is ~116 rev/s.
+        public static final double tiltCruise = 1; // Max velocity is ~116 rev/s.
         public static final double tiltAcceleration = 3;
         public static final double tiltJerk = 15;
-        //public static final double tiltExpoKV = 5.64;
-        //public static final double tiltExpoKA = 0.06;
+        // public static final double tiltExpoKV = 5.64;
+        // public static final double tiltExpoKA = 0.06;
 
         public static final double intakePivotRatio = 47.5;
         public static final double intakeDown = 0;
@@ -114,7 +116,7 @@ public class Constants {
 
         public static final double intakeRollerVoltage = 10;
     }
-    
+
     public class OperatorConstants {
 
         public static double driverJoystickDeadzone = .1;

@@ -87,7 +87,8 @@ public class Drivetrain extends SubsystemBase {
   SwerveSample trajectoryPose = new SwerveSample(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new double[] { 0, 0, 0, 0 },
       new double[] { 0, 0, 0, 0 });
 
-  @NotLogged private static Drivetrain singleton;
+  @NotLogged
+  private static Drivetrain singleton;
 
   private Drivetrain() {
     SmartDashboard.putData("field", field);
@@ -111,7 +112,7 @@ public class Drivetrain extends SubsystemBase {
 
     if (usingVision) {
       setupVision();
-    }    
+    }
   }
 
   public static Drivetrain getInstance() {
@@ -268,40 +269,41 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public Command choreoCommand(
-          Trajectory<SwerveSample> trajectory,
-          BooleanSupplier isReversed) {
+      Trajectory<SwerveSample> trajectory,
+      BooleanSupplier isReversed) {
 
-      var time = new Timer();
+    var time = new Timer();
 
-      return new FunctionalCommand(
-         time::restart,
-         () -> {// execute
-            driveWithChassisSpeeds(choreoController(trajectory.sampleAt(time.get(), isReversed.getAsBoolean()).get()));
-      }, 
-      (interrupted) -> {//end
-        time.stop();
-        // if (interrupted) {
-        //    driveWithChassisSpeeds(new ChassisSpeeds()); 
-        // } else {
-        //     driveWithChassisSpeeds((choreoController(trajectory.getFinalSample(isReversed.getAsBoolean()).get())));
-        // }
-        driveFromJoysticks(0, 0, 0);; 
+    return new FunctionalCommand(
+        time::restart,
+        () -> {// execute
+          driveWithChassisSpeeds(choreoController(trajectory.sampleAt(time.get(), isReversed.getAsBoolean()).get()));
+        },
+        (interrupted) -> {// end
+          time.stop();
+          // if (interrupted) {
+          // driveWithChassisSpeeds(new ChassisSpeeds());
+          // } else {
+          // driveWithChassisSpeeds((choreoController(trajectory.getFinalSample(isReversed.getAsBoolean()).get())));
+          // }
+          driveFromJoysticks(0, 0, 0);
+          ;
 
-        setCommand("None");
-      }, 
-      () -> {//isFinished
+          setCommand("None");
+        },
+        () -> {// isFinished
           var distanceFromGoal = getPose().relativeTo(trajectory.getFinalPose(isReversed.getAsBoolean()).get());
-          //is this good?
-          return (time.hasElapsed(trajectory.getTotalTime()) 
-            && Math.abs(distanceFromGoal.getX()) < positionTolerance
-            && Math.abs(distanceFromGoal.getY()) < positionTolerance
-            && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance);
-            // || (time.hasElapsed(0.08) && detectCrash.getAsBoolean() && hasCrashed());
-      },
-      this);
+          // is this good?
+          return (time.hasElapsed(trajectory.getTotalTime())
+              && Math.abs(distanceFromGoal.getX()) < positionTolerance
+              && Math.abs(distanceFromGoal.getY()) < positionTolerance
+              && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance);
+          // || (time.hasElapsed(0.08) && detectCrash.getAsBoolean() && hasCrashed());
+        },
+        this);
   }
 
-  public void setDesiredPose(Pose2d pose){
+  public void setDesiredPose(Pose2d pose) {
     desiredPose = pose;
   }
 
@@ -369,7 +371,8 @@ public class Drivetrain extends SubsystemBase {
    */
   private void runVision() {
     for (var result : rightCam.getAllUnreadResults()) {
-      if (!result.hasTargets()) continue;
+      if (!result.hasTargets())
+        continue;
       // if best visible target is too far away for our liking, discard it, else use
       // it
       rightTagDistance = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
@@ -382,10 +385,10 @@ public class Drivetrain extends SubsystemBase {
         continue;
 
       var em = rightEstimator.estimateCoprocMultiTagPose(result);
-            if (em.isEmpty()) {
-                em = rightEstimator.estimateLowestAmbiguityPose(result);
-            }
-      if(em.isEmpty())
+      if (em.isEmpty()) {
+        em = rightEstimator.estimateLowestAmbiguityPose(result);
+      }
+      if (em.isEmpty())
         continue;
       // Check if estimate has us flying in the air and reject
       if (rightPoseEstimate.getZ() > zTolerance)
@@ -406,7 +409,8 @@ public class Drivetrain extends SubsystemBase {
     }
 
     for (var result : leftCam.getAllUnreadResults()) {
-      if (!result.hasTargets()) continue;
+      if (!result.hasTargets())
+        continue;
       // if best visible target is too far away for our liking, discard it, else use
       // it
       leftTagDistance = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
@@ -420,9 +424,9 @@ public class Drivetrain extends SubsystemBase {
 
       var em = leftEstimator.estimateCoprocMultiTagPose(result);
       if (em.isEmpty()) {
-          em = leftEstimator.estimateLowestAmbiguityPose(result);
+        em = leftEstimator.estimateLowestAmbiguityPose(result);
       }
-      if(em.isEmpty())
+      if (em.isEmpty())
         continue;
       // Check if estimate has us flying in the air and reject
       if (leftPoseEstimate.getZ() > zTolerance)

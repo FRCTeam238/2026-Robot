@@ -18,10 +18,12 @@ import static frc.robot.Constants.FeederConstants.*;
 @Logged
 public class Feeder extends SubsystemBase {
 
-@NotLogged TalonFX upperMotor, lowerMotor;
-@NotLogged private static Feeder singleton;
+  @NotLogged
+  TalonFX upperMotor, lowerMotor;
+  @NotLogged
+  private static Feeder singleton;
 
-String command = "";
+  String command = "";
 
   /** Creates a new Feeder. */
   public Feeder() {
@@ -52,22 +54,23 @@ String command = "";
   public void setCommand(String name) {
     command = name;
   }
-    public void setSpeed (double speed) {
-        upperMotor.setVoltage(speed);
-        lowerMotor.setVoltage(speed);
-    }
 
-    public void stop () {
-        setSpeed(0);
-    }
+  public void setSpeed(double speed) {
+    upperMotor.setVoltage(speed);
+    lowerMotor.setVoltage(speed);
+  }
+
+  public void stop() {
+    setSpeed(0);
+  }
 
   public static Feeder getInstance() {
     if (singleton == null)
       singleton = new Feeder();
     return singleton;
   }
-    
-    //Unjam method?
+
+  // Unjam method?
 
   @Override
   public void periodic() {

@@ -21,12 +21,15 @@ import static frc.robot.Constants.IntakeConstants.*;
 @Logged
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-    @NotLogged TalonFX rollerMotor, tiltMotor;
-    @NotLogged CANcoder tiltSensor;
-    double targetPosition = 0;
-    private String command = "";
-  
-    @NotLogged private static Intake singleton;
+  @NotLogged
+  TalonFX rollerMotor, tiltMotor;
+  @NotLogged
+  CANcoder tiltSensor;
+  double targetPosition = 0;
+  private String command = "";
+
+  @NotLogged
+  private static Intake singleton;
 
   public Intake() {
 
@@ -46,7 +49,7 @@ public class Intake extends SubsystemBase {
     rollerMotor.getStatorCurrent().setUpdateFrequency(20);
     rollerMotor.optimizeBusUtilization();
 
-    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; //Positive value stows intake
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Positive value stows intake
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     config.CurrentLimits.StatorCurrentLimit = tiltCurrentLimit;
     config.Feedback.withRemoteCANcoder(tiltSensor);
@@ -56,22 +59,20 @@ public class Intake extends SubsystemBase {
     var slot0Configs = config.Slot0;
     slot0Configs.kS = tiltKS;
     slot0Configs.kV = tiltKV;
-    slot0Configs.kA = tiltKA; 
+    slot0Configs.kA = tiltKA;
     slot0Configs.kP = tiltKP;
     slot0Configs.kI = tiltKI;
     slot0Configs.kD = tiltKD;
     slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
     slot0Configs.kG = tiltKG;
-    
 
     // set Motion Magic Expo settings
     var motionMagicConfigs = config.MotionMagic;
     motionMagicConfigs.MotionMagicCruiseVelocity = tiltCruise;
     motionMagicConfigs.MotionMagicAcceleration = tiltAcceleration;
     motionMagicConfigs.MotionMagicJerk = tiltJerk;
-    //motionMagicConfigs.MotionMagicExpo_kV = tiltExpoKV;
-   // motionMagicConfigs.MotionMagicExpo_kA = tiltExpoKA;
-    
+    // motionMagicConfigs.MotionMagicExpo_kV = tiltExpoKV;
+    // motionMagicConfigs.MotionMagicExpo_kA = tiltExpoKA;
 
     tiltMotor.getConfigurator().apply(config);
 
@@ -87,7 +88,7 @@ public class Intake extends SubsystemBase {
     tiltMotor.optimizeBusUtilization();
   }
 
-    public void setCommand(String name) {
+  public void setCommand(String name) {
     command = name;
   }
 
@@ -109,12 +110,13 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean tiltAtTarget() {
-    return tiltMotor.getMotionMagicAtTarget().getValue(); //this is whatever MotionMagic decides for reaching the target. Write our own if not good??
+    return tiltMotor.getMotionMagicAtTarget().getValue(); // this is whatever MotionMagic decides for reaching the
+                                                          // target. Write our own if not good??
   }
 
-  public void stopRoller () {
-        runIntake(0);
-    }
+  public void stopRoller() {
+    runIntake(0);
+  }
 
   public static Intake getInstance() {
     if (singleton == null)

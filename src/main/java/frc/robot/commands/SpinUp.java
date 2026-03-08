@@ -21,22 +21,22 @@ public class SpinUp extends Command {
   @Override
   public void initialize() {
     Launcher.getInstance().setSpeed(launchSpeed);
-            Launcher.getInstance().setCommand("SpinUp");
+    Launcher.getInstance().setCommand("SpinUp");
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(interrupted)
-    {
+    if (interrupted) {
       Launcher.getInstance().stop();
     }
-            Launcher.getInstance().setCommand("");
+    Launcher.getInstance().setCommand("");
 
   }
 

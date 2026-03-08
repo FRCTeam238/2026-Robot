@@ -31,7 +31,6 @@ public class Controls {
     @NotLogged
     CommandJoystick leftJoystick = new CommandJoystick(2);
 
-
     DriveType driveType = DriveType.JOYSTICK;
 
     private Controls() {
@@ -43,10 +42,10 @@ public class Controls {
         driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
-        
-        Drivetrain.getInstance().setDefaultCommand(new Drive());          
+
+        Drivetrain.getInstance().setDefaultCommand(new Drive());
     }
-    
+
     public static Controls getInstance() {
         if (singleton == null) {
             singleton = new Controls();
@@ -54,10 +53,10 @@ public class Controls {
         return singleton;
     }
 
-    @Logged 
+    @Logged
     public double[] getSwerveJoystickValues() {
         double slowmodePercent = getSlowmode() ? 1 : .67;
-        
+
         switch (getDriveType()) {
             case JOYSTICK -> {
                 return new double[] {
