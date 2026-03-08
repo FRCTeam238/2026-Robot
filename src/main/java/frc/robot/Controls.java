@@ -39,11 +39,22 @@ public class Controls {
         driveTypeChooser.setDefaultOption("XBOX", DriveType.JOYSTICK);
         SmartDashboard.putData(driveTypeChooser);
 
+        bindDriverButtons();
+        bindOperatorButtons();
+
+        Drivetrain.getInstance().setDefaultCommand(new Drive());
+    }
+
+    private void bindDriverButtons()
+    {
         driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
+    }
 
-        Drivetrain.getInstance().setDefaultCommand(new Drive());
+    private void bindOperatorButtons()
+    {
+
     }
 
     public static Controls getInstance() {
