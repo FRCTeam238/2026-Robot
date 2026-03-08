@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -22,11 +21,10 @@ import static frc.robot.Constants.IntakeConstants.*;
 @Logged
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-    @NotLogged
-      TalonFX rollerMotor, tiltMotor;
-    @NotLogged
-      CANcoder tiltSensor;
-    double targetPosition;
+    @NotLogged TalonFX rollerMotor, tiltMotor;
+    @NotLogged CANcoder tiltSensor;
+    double targetPosition = 0;
+    private String command = "";
   
     @NotLogged private static Intake singleton;
 
@@ -48,7 +46,7 @@ public class Intake extends SubsystemBase {
     rollerMotor.getStatorCurrent().setUpdateFrequency(20);
     rollerMotor.optimizeBusUtilization();
 
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; //Positive value deploys intake out from robot
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; //Positive value stows intake
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     config.CurrentLimits.StatorCurrentLimit = tiltCurrentLimit;
     config.Feedback.withRemoteCANcoder(tiltSensor);
@@ -78,7 +76,7 @@ public class Intake extends SubsystemBase {
     tiltMotor.getConfigurator().apply(config);
 
     tiltMotor.getConfigurator().apply(config);
-    tiltMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
+    tiltMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hertz, 20ms
     tiltMotor.getPosition().setUpdateFrequency(50);
     tiltMotor.getClosedLoopError().setUpdateFrequency(50);
     tiltMotor.getClosedLoopOutput().setUpdateFrequency(50);
@@ -89,9 +87,17 @@ public class Intake extends SubsystemBase {
     tiltMotor.optimizeBusUtilization();
   }
 
+    public void setCommand(String name) {
+    command = name;
+  }
+
   public void setTiltPosition(double position) {
     targetPosition = position;
     tiltMotor.setControl(new MotionMagicVoltage(position));
+  }
+
+  public void stopTilt() {
+    tiltMotor.stopMotor();
   }
 
   public double getTargetPosition() {

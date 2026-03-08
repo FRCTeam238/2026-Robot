@@ -57,9 +57,6 @@ public class Drivetrain extends SubsystemBase {
 
   boolean filterByDistanceFromOdometryPose = false;
 
-  ArrayList<Pose2d> leftList;
-  ArrayList<Pose2d> rightList;
-
   double lastLinearAccelX = 0;
   double lastLinearAccelY = 0;
 

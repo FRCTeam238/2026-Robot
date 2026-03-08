@@ -9,19 +9,19 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.FeederConstants.*;
 
-
+@Logged
 public class Feeder extends SubsystemBase {
 
-  @NotLogged
-TalonFX upperMotor, lowerMotor;
-
+@NotLogged TalonFX upperMotor, lowerMotor;
 @NotLogged private static Feeder singleton;
 
+String command = "";
 
   /** Creates a new Feeder. */
   public Feeder() {
@@ -47,10 +47,11 @@ TalonFX upperMotor, lowerMotor;
     lowerMotor.getSupplyCurrent().setUpdateFrequency(20);
     lowerMotor.getStatorCurrent().setUpdateFrequency(20);
     lowerMotor.optimizeBusUtilization();
-
   }
 
-  
+  public void setCommand(String name) {
+    command = name;
+  }
     public void setSpeed (double speed) {
         upperMotor.setVoltage(speed);
         lowerMotor.setVoltage(speed);

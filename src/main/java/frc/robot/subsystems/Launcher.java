@@ -21,9 +21,9 @@ import static frc.robot.Constants.LauncherConstants.*;
 @Logged
 public class Launcher extends SubsystemBase {
 
-  @NotLogged
-  TalonFX leftUp, leftLow, rightUp, rightLow;
-  double requestedSpeed=0;
+  @NotLogged TalonFX leftUp, leftLow, rightUp, rightLow;
+  double requestedSpeed = 0;
+  String command ="";
 
   @NotLogged private static Launcher singleton;
 
@@ -34,7 +34,7 @@ public class Launcher extends SubsystemBase {
     rightUp = new TalonFX(rightUpID);
     rightLow = new TalonFX(rightLowID);
 
-     var config = new TalonFXConfiguration();
+    var config = new TalonFXConfiguration();
     config.Slot0.kP = kP;
     config.Slot0.kI = kI;
     config.Slot0.kD = kD;
@@ -65,6 +65,10 @@ public class Launcher extends SubsystemBase {
 
     leftLow.setControl(new Follower(leftUp.getDeviceID(), MotorAlignmentValue.Aligned));
     rightLow.setControl(new Follower(rightUp.getDeviceID(), MotorAlignmentValue.Aligned));
+  }
+
+  public void setCommand(String name) {
+    command = name;
   }
 
   public void setSpeed(double speed) {

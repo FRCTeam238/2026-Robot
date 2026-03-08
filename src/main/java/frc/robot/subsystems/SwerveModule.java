@@ -23,13 +23,10 @@ import edu.wpi.first.math.util.Units;
 
 @Logged
 public class SwerveModule {
-  TalonFX driveMotor;
-  @NotLogged
-  SparkMax turnMotor;
-  @NotLogged
-  SparkClosedLoopController turningPIDController;
-  @NotLogged
-  AbsoluteEncoder turnEncoder;
+  @NotLogged TalonFX driveMotor;
+  @NotLogged SparkMax turnMotor;
+  @NotLogged SparkClosedLoopController turningPIDController;
+  @NotLogged AbsoluteEncoder turnEncoder;
 
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
 

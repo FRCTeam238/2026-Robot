@@ -21,6 +21,7 @@ public class IntakeFuel extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Intake.getInstance().setCommand("IntakeFuel");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,6 +40,7 @@ public class IntakeFuel extends Command {
   @Override
   public void end(boolean interrupted) {
     Intake.getInstance().stopRoller();
+    Intake.getInstance().setCommand("");
   }
 
   // Returns true when the command should end.

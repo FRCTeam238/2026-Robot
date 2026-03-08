@@ -37,9 +37,9 @@ public class Robot extends TimedRobot {
   public Launcher launcher;
   public Controls controls;
 
-  private List<String> autoNames;
-  private SendableChooser<String> autoChooser;
-  private String lastSelectedAuto;
+  @NotLogged private List<String> autoNames;
+  @NotLogged private SendableChooser<String> autoChooser;
+  @NotLogged private String lastSelectedAuto;
 
   public Robot() {
     SignalLogger.start();
@@ -47,14 +47,13 @@ public class Robot extends TimedRobot {
     DriverStation.startDataLog(DataLogManager.getLog());
     StatusLogger.start();
 
+    Epilogue.bind(this);
+
     controls = Controls.getInstance();
     drivetrain = Drivetrain.getInstance();
     launcher = Launcher.getInstance();
     intake = Intake.getInstance();
     feeder = Feeder.getInstance();
-    //Epilogue.bind(this);
-    
- 
   }
   
   public static boolean isPracticeBot() {

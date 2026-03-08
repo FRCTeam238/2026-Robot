@@ -9,6 +9,7 @@ import frc.robot.subsystems.Launcher;
 import frc.robot.Constants.FeederConstants;
 import frc.robot.Constants.LauncherConstants;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Intake;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class Launch extends Command {
@@ -23,6 +24,8 @@ public class Launch extends Command {
   public void initialize() {
     Feeder.getInstance().setSpeed(FeederConstants.feederSpeed);
     Launcher.getInstance().setSpeed(LauncherConstants.launchSpeed);
+    Feeder.getInstance().setCommand("LaunchFuel");
+    Launcher.getInstance().setCommand("LaunchFuel");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,6 +37,8 @@ public class Launch extends Command {
   public void end(boolean interrupted) {
     Feeder.getInstance().stop();
     Launcher.getInstance().stop();
+        Feeder.getInstance().setCommand("");
+    Launcher.getInstance().setCommand("");
   }
 
   // Returns true when the command should end.
