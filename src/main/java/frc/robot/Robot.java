@@ -26,6 +26,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launcher;
+import frc.robot.subsystems.Vision;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
   public Intake intake;
   public Launcher launcher;
   public Controls controls;
+  public Vision vision;
 
   @NotLogged
   private List<String> autoNames;
@@ -43,6 +45,8 @@ public class Robot extends TimedRobot {
   private SendableChooser<String> autoChooser;
   @NotLogged
   private String lastSelectedAuto;
+  @NotLogged
+  public static boolean enableVision = true;
 
   public Robot() {
     SignalLogger.start();
@@ -57,6 +61,12 @@ public class Robot extends TimedRobot {
     launcher = Launcher.getInstance();
     intake = Intake.getInstance();
     feeder = Feeder.getInstance();
+
+    if (enableVision) {
+      vision = Vision.getInstance();
+    } else {
+      Epilogue.visionLogger.disable();
+    }
   }
 
   public static boolean isPracticeBot() {

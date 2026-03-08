@@ -32,6 +32,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -52,34 +54,11 @@ public class Drivetrain extends SubsystemBase {
 
   boolean usingVision = false;
 
-  PhotonCamera leftCam;
-  PhotonCamera rightCam;
-
-  boolean filterByDistanceFromOdometryPose = false;
-
-  double lastLinearAccelX = 0;
-  double lastLinearAccelY = 0;
-
-  PhotonPoseEstimator rightEstimator;
-  PhotonPoseEstimator leftEstimator;
-  PhotonPipelineResult lastResult = new PhotonPipelineResult();
-
-  double rightTagDistance = 0;
-  double rightAmbiguity = 0;
-  double rightBestID = 0;
-  double rightOffsetDistance = 0;
-  Pose3d rightPoseEstimate = new Pose3d();
-
-  double leftTagDistance = 0;
-  double leftAmbiguity = 0;
-  double leftBestID = 0;
-  double leftOffsetDistance = 0;
-  Pose3d leftPoseEstimate = new Pose3d();
-
-  Pose2d desiredPose = Pose2d.kZero;
-
   @NotLogged
   SwerveDrivePoseEstimator odometry;
+  Pose2d desiredPose = Pose2d.kZero;
+  double lastLinearAccelX = 0;
+  double lastLinearAccelY = 0;
   AHRS gyro;
   PIDController x, y, theta;
   String command = "None";
@@ -109,10 +88,6 @@ public class Drivetrain extends SubsystemBase {
     y = new PIDController(kP, kI, kD);
     theta = new PIDController(kPAngular, kIAngular, kDAngular);
     theta.enableContinuousInput(-Math.PI, Math.PI);
-
-    if (usingVision) {
-      setupVision();
-    }
   }
 
   public static Drivetrain getInstance() {
@@ -133,8 +108,8 @@ public class Drivetrain extends SubsystemBase {
         });
     field.setRobotPose(getPose());
 
-    if (usingVision) {
-      runVision();
+    if (Robot.enableVision) {
+      Vision.getInstance().runVision();
     }
   }
 
@@ -335,115 +310,4 @@ public class Drivetrain extends SubsystemBase {
     return retval;
   }
 
-  // =========VISION STUFF=========
-
-  /**
-   * run this whenever you want vision stuff, otherwise, leave it out
-   */
-  private void setupVision() {
-    leftCam = new PhotonCamera("LeftCam");
-    rightCam = new PhotonCamera("RightCam");
-
-    rightEstimator = new PhotonPoseEstimator(
-        AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark),
-        PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-        rightCameraLocation // TODO: Make real numbers
-    );
-    leftEstimator = new PhotonPoseEstimator(
-        AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark),
-        leftCameraLocation // TODO: Make real numbers
-    );
-  }
-
-  private void updatePoseEstimate(Optional<EstimatedRobotPose> estimate) {
-    if (estimate.isPresent()) {
-      odometry.addVisionMeasurement(estimate.get().estimatedPose.toPose2d(), estimate.get().timestampSeconds);
-    }
-  }
-
-  @NotLogged
-  public Transform3d getRightCamToTarget() {
-    return rightCam.getLatestResult().getBestTarget().bestCameraToTarget;
-  }
-
-  /**
-   * wrapper for running all periodic vision code
-   */
-  private void runVision() {
-    for (var result : rightCam.getAllUnreadResults()) {
-      if (!result.hasTargets())
-        continue;
-      // if best visible target is too far away for our liking, discard it, else use
-      // it
-      rightTagDistance = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
-      if (rightTagDistance > maxVisionDistanceTolerance)
-        continue;
-      // Check if 3D ambiguity is too high and skip if it is. May not be needed
-      // because of chosen estimator strategy
-      rightAmbiguity = result.getBestTarget().poseAmbiguity;
-      if (rightAmbiguity > maxAmbiguity)
-        continue;
-
-      var em = rightEstimator.estimateCoprocMultiTagPose(result);
-      if (em.isEmpty()) {
-        em = rightEstimator.estimateLowestAmbiguityPose(result);
-      }
-      if (em.isEmpty())
-        continue;
-      // Check if estimate has us flying in the air and reject
-      if (rightPoseEstimate.getZ() > zTolerance)
-        continue;
-      // Check if estimate says we're rolled and reject
-      if (rightPoseEstimate.getRotation().getX() > rollPitchTolerance)
-        continue;
-      // Check if estimate says we're pitched and reject
-      if (rightPoseEstimate.getRotation().getY() > rollPitchTolerance)
-        continue;
-      // Check if estimate is close enough to where we think we are
-      rightOffsetDistance = rightPoseEstimate.toPose2d().getTranslation()
-          .getDistance(odometry.getEstimatedPosition().getTranslation());
-      if (rightOffsetDistance > visionPoseDiffTolerance)
-        continue;
-      // Measurement passed all filters, add to global pose estimate
-      odometry.addVisionMeasurement(rightPoseEstimate.toPose2d(), em.get().timestampSeconds);
-    }
-
-    for (var result : leftCam.getAllUnreadResults()) {
-      if (!result.hasTargets())
-        continue;
-      // if best visible target is too far away for our liking, discard it, else use
-      // it
-      leftTagDistance = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
-      if (leftTagDistance > maxVisionDistanceTolerance)
-        continue;
-      // Check if 3D ambiguity is too high and skip if it is. May not be needed
-      // because of chosen estimator strategy
-      leftAmbiguity = result.getBestTarget().poseAmbiguity;
-      if (leftAmbiguity > maxAmbiguity)
-        continue;
-
-      var em = leftEstimator.estimateCoprocMultiTagPose(result);
-      if (em.isEmpty()) {
-        em = leftEstimator.estimateLowestAmbiguityPose(result);
-      }
-      if (em.isEmpty())
-        continue;
-      // Check if estimate has us flying in the air and reject
-      if (leftPoseEstimate.getZ() > zTolerance)
-        continue;
-      // Check if estimate says we're rolled and reject
-      if (leftPoseEstimate.getRotation().getX() > rollPitchTolerance)
-        continue;
-      // Check if estimate says we're pitched and reject
-      if (leftPoseEstimate.getRotation().getY() > rollPitchTolerance)
-        continue;
-      // Check if estimate is close enough to where we think we are
-      leftOffsetDistance = leftPoseEstimate.toPose2d().getTranslation()
-          .getDistance(odometry.getEstimatedPosition().getTranslation());
-      if (leftOffsetDistance > visionPoseDiffTolerance)
-        continue;
-      // Measurement passed all filters, add to global pose estimate
-      odometry.addVisionMeasurement(leftPoseEstimate.toPose2d(), em.get().timestampSeconds);
-    }
-  }
 }

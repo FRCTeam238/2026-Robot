@@ -47,18 +47,6 @@ public class Constants {
         public static final double velocityTolerance = 0.8;
         public static final double positionTolerance = 0.08;
         public static final double xandyvelocityTolerance = 0.08;
-
-        // Vision constants
-        public static Transform3d rightCameraLocation = new Transform3d(-0.2707, 0.1775, 0.3732,
-                new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
-        public static Transform3d leftCameraLocation = new Transform3d(-0.2707, -0.1775, 0.3732,
-                new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
-        public static double maxVisionDistanceTolerance = 5;// for the max distance between cam and tag in meters
-        public static double maxAmbiguity = 1; // max ambiguity out of 1
-        public static double zTolerance = 0.25;
-        public static double rollPitchTolerance = Units.degreesToRadians(10);
-        public static double visionPoseDiffTolerance = 99; // for the diff between estimated vision pose and odometry in
-                                                           // meters
     }
 
     public class FeederConstants {
@@ -126,5 +114,20 @@ public class Constants {
             JOYSTICK,
             XBOX,
         }
+    }
+
+    public class VisionConstants {
+        public static boolean filterByDistanceFromOdometryPose = false;
+
+        public static Transform3d backCameraLocation = new Transform3d(-0.2707, 0.1775, 0.3732,
+                new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
+        public static Transform3d frontCameraLocation = new Transform3d(-0.2707, -0.1775, 0.3732,
+                new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
+        public static double maxVisionDistanceTolerance = 5;// for the max distance between cam and tag in meters
+        public static double maxAmbiguity = 1; // max ambiguity out of 1
+        public static double zTolerance = 0.25;
+        public static double rollPitchTolerance = Units.degreesToRadians(10);
+        public static double visionPoseDiffTolerance = 1; // for the diff between estimated vision pose and odometry in
+                                                          // meters
     }
 }
