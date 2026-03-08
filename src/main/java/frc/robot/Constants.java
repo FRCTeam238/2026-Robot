@@ -54,7 +54,7 @@ public class Constants {
         public static int lowerMotorID = 4;
         public static double currentLimit = 40.0;
 
-        public static double feederSpeed = 10; // voltage
+        public static double feederSpeed = 10; //Used for both Intake and Outtake, in Voltage
     }
 
     public class LauncherConstants {
@@ -74,7 +74,7 @@ public class Constants {
 
         public static final double tolerance = 2.0; // Value is a percentage of requested speed
 
-        public static final double launchSpeed = 70; // Value in RPS
+        public static final double launchSpeed = 57; // Value in RPS
     }
 
     public class IntakeConstants {
@@ -95,14 +95,18 @@ public class Constants {
         public static final double tiltCruise = 1; // Max velocity is ~116 rev/s.
         public static final double tiltAcceleration = 3;
         public static final double tiltJerk = 15;
+        public static final double tiltTolerance = .05;
+
+
         // public static final double tiltExpoKV = 5.64;
         // public static final double tiltExpoKA = 0.06;
 
         public static final double intakePivotRatio = 47.5;
         public static final double intakeDown = 0;
-        public static final double intakeUp = .32;
+        public static final double intakeMid = .2;
+        public static final double intakeUp = .33;
 
-        public static final double intakeRollerVoltage = 10;
+        public static final double intakeRollerVoltage = 12; //Used for both Intake and Outtake
     }
 
     public class OperatorConstants {

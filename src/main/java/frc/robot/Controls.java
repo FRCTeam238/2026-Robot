@@ -11,7 +11,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.DeployIntake;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeFuel;
+import frc.robot.commands.IntakeMid;
+import frc.robot.commands.OuttakeFuel;
+import frc.robot.commands.LaunchSequence;
+import frc.robot.commands.RetractIntake;
+import frc.robot.commands.SpinUp;
+import frc.robot.commands.IntakeMid;
 import frc.robot.subsystems.Drivetrain;
 import static frc.robot.Constants.OperatorConstants.*;
 
@@ -23,7 +31,7 @@ public class Controls {
     static SendableChooser<DriveType> driveTypeChooser = new SendableChooser<DriveType>();
 
     @NotLogged
-    CommandXboxController controller = new CommandXboxController(0);
+    CommandXboxController operatorController = new CommandXboxController(0);
     @NotLogged
     CommandXboxController driverController = new CommandXboxController(3);
     @NotLogged
@@ -54,7 +62,13 @@ public class Controls {
 
     private void bindOperatorButtons()
     {
-
+        operatorController.a().onTrue(new DeployIntake());
+        operatorController.y().onTrue(new RetractIntake());
+        operatorController.leftBumper().whileTrue(new IntakeFuel());
+        operatorController.b().whileTrue(new OuttakeFuel());
+        operatorController.rightBumper().whileTrue(new LaunchSequence());
+        operatorController.x().onTrue(new SpinUp());
+        operatorController.leftTrigger().onTrue(new IntakeMid());
     }
 
     public static Controls getInstance() {
@@ -114,9 +128,9 @@ public class Controls {
 
     public Command rumbleCommand() {
         return new RunCommand(() -> {
-            controller.setRumble(RumbleType.kBothRumble, 1);
+            operatorController.setRumble(RumbleType.kBothRumble, 1);
         }).finallyDo(() -> {
-            controller.setRumble(RumbleType.kBothRumble, 0);
+            operatorController.setRumble(RumbleType.kBothRumble, 0);
         });
     }
 }

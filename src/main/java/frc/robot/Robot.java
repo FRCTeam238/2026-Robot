@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
   @NotLogged
   private String lastSelectedAuto;
   @NotLogged
-  public static boolean enableVision = true;
+  public static boolean enableVision = false;
 
   public Robot() {
     SignalLogger.start();
@@ -56,11 +56,11 @@ public class Robot extends TimedRobot {
 
     Epilogue.bind(this);
 
-    controls = Controls.getInstance();
     drivetrain = Drivetrain.getInstance();
     launcher = Launcher.getInstance();
     intake = Intake.getInstance();
     feeder = Feeder.getInstance();
+    controls = Controls.getInstance();
 
     if (enableVision) {
       vision = Vision.getInstance();

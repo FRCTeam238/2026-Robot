@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
     rollerMotor = new TalonFX(rollerID);
 
     var config = new TalonFXConfiguration();
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     config.CurrentLimits.StatorCurrentLimit = rollerCurrentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -110,8 +110,10 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean tiltAtTarget() {
-    return tiltMotor.getMotionMagicAtTarget().getValue(); // this is whatever MotionMagic decides for reaching the
-                                                          // target. Write our own if not good??
+    double currentPosition = tiltMotor.getPosition().getValueAsDouble();
+    double error = Math.abs(currentPosition - targetPosition);
+
+    return error < tiltTolerance;
   }
 
   public void stopRoller() {

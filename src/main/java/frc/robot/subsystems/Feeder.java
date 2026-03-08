@@ -42,7 +42,7 @@ public class Feeder extends SubsystemBase {
     upperMotor.getStatorCurrent().setUpdateFrequency(20);
     upperMotor.optimizeBusUtilization();
 
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     lowerMotor.getConfigurator().apply(config);
     lowerMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
     lowerMotor.getSupplyVoltage().setUpdateFrequency(20);
@@ -57,6 +57,10 @@ public class Feeder extends SubsystemBase {
 
   public void setSpeed(double speed) {
     upperMotor.setVoltage(speed);
+    lowerMotor.setVoltage(speed);
+  }
+
+  public void outtakeLower(double speed) {
     lowerMotor.setVoltage(speed);
   }
 

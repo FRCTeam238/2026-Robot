@@ -42,7 +42,7 @@ public class Launcher extends SubsystemBase {
     config.Slot0.kD = kD;
     config.Slot0.kV = kV;
     config.Slot0.kS = kS;
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     config.CurrentLimits.StatorCurrentLimit = currentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -55,7 +55,16 @@ public class Launcher extends SubsystemBase {
     leftUp.getStatorCurrent().setUpdateFrequency(20);
     leftUp.optimizeBusUtilization();
 
-    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    leftLow.getConfigurator().apply(config);
+    leftLow.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
+    leftLow.getClosedLoopError().setUpdateFrequency(50);
+    leftLow.getClosedLoopOutput().setUpdateFrequency(50);
+    leftLow.getSupplyVoltage().setUpdateFrequency(20);
+    leftLow.getSupplyCurrent().setUpdateFrequency(20);
+    leftLow.getStatorCurrent().setUpdateFrequency(20);
+    leftLow.optimizeBusUtilization();
+
+    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     rightUp.getConfigurator().apply(config);
     rightUp.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
     rightUp.getClosedLoopError().setUpdateFrequency(50);
@@ -64,6 +73,15 @@ public class Launcher extends SubsystemBase {
     rightUp.getSupplyCurrent().setUpdateFrequency(20);
     rightUp.getStatorCurrent().setUpdateFrequency(20);
     rightUp.optimizeBusUtilization();
+
+    rightLow.getConfigurator().apply(config);
+    rightLow.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
+    rightLow.getClosedLoopError().setUpdateFrequency(50);
+    rightLow.getClosedLoopOutput().setUpdateFrequency(50);
+    rightLow.getSupplyVoltage().setUpdateFrequency(20);
+    rightLow.getSupplyCurrent().setUpdateFrequency(20);
+    rightLow.getStatorCurrent().setUpdateFrequency(20);
+    rightLow.optimizeBusUtilization();
 
     leftLow.setControl(new Follower(leftUp.getDeviceID(), MotorAlignmentValue.Aligned));
     rightLow.setControl(new Follower(rightUp.getDeviceID(), MotorAlignmentValue.Aligned));
@@ -84,6 +102,8 @@ public class Launcher extends SubsystemBase {
   }
 
   public boolean atSpeed() {
+    if (leftUp.getClosedLoopReference().getValueAsDouble() < 1)
+      return false;
     double leftError = leftUp.getClosedLoopError().getValueAsDouble();
     if (Math.abs(leftError / requestedSpeed * 100) > tolerance) {
       return false;
