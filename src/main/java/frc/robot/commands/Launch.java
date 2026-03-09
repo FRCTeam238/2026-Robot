@@ -14,16 +14,19 @@ import frc.robot.subsystems.Intake;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class Launch extends Command {
 
+  private double launchSpeed;
+
   /** Creates a new Launch. */
-  public Launch() {
+  public Launch(double launchSpeed) {
     addRequirements(Launcher.getInstance(), Feeder.getInstance());
+    this.launchSpeed = launchSpeed;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     Feeder.getInstance().setSpeed(FeederConstants.feederSpeed); //Used for both Intake and Outtake
-    Launcher.getInstance().setSpeed(LauncherConstants.launchSpeed);
+    Launcher.getInstance().setSpeed(launchSpeed);
     Feeder.getInstance().setCommand("LaunchFuel");
     Launcher.getInstance().setCommand("LaunchFuel");
   }

@@ -78,7 +78,8 @@ public class Constants {
 
         public static final double tolerance = 2.0; // Value is a percentage of requested speed
 
-        public static final double launchSpeed = 57; // Value in RPS
+        public static final double launchSpeedNear = 57; // Value in RPS
+        public static final double launchSpeedFar = 157; //Value in RPS          TODO: Find real values
     }
 
     public class IntakeConstants {

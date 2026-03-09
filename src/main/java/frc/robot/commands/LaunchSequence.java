@@ -11,9 +11,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LaunchSequence extends SequentialCommandGroup {
   /** Creates a new LaunchSequence. */
-  public LaunchSequence() {
+
+  public LaunchSequence(double launchSpeed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new SpinUp(), new Launch());
+    addCommands(new SpinUp(launchSpeed), new Launch(launchSpeed));
   }
 }
