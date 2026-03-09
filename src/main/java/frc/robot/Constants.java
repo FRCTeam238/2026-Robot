@@ -47,6 +47,10 @@ public class Constants {
         public static final double velocityTolerance = 0.8;
         public static final double positionTolerance = 0.08;
         public static final double xandyvelocityTolerance = 0.08;
+
+        public static final double translationKP = 5.0;
+        public static final double rotationKP = 3.0;
+        public static final double crossTrackKP = 2.0;
     }
 
     public class FeederConstants {

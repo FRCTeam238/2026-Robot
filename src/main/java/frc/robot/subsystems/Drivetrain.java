@@ -2,7 +2,10 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.DriveConstants.*;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
@@ -13,8 +16,11 @@ import choreo.trajectory.SwerveSample;
 import choreo.trajectory.Trajectory;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.epilogue.logging.EpilogueBackend;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -23,6 +29,12 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLogEntry;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.StructArrayLogEntry;
+import edu.wpi.first.util.datalog.StructLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -33,6 +45,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.lib.BLine.FollowPath;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -66,8 +79,10 @@ public class Drivetrain extends SubsystemBase {
   SwerveSample trajectoryPose = new SwerveSample(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new double[] { 0, 0, 0, 0 },
       new double[] { 0, 0, 0, 0 });
 
-  @NotLogged
-  private static Drivetrain singleton;
+  @NotLogged private static Drivetrain singleton;
+  @NotLogged private static Map<String, DataLogEntry> blineLogging;
+
+  public FollowPath.Builder blineBuilder;
 
   private Drivetrain() {
     SmartDashboard.putData("field", field);
@@ -176,6 +191,10 @@ public class Drivetrain extends SubsystemBase {
     setModuleStates(swerveModuleStates);
   }
 
+  public ChassisSpeeds getChassisSpeeds() {
+    return kDriveKinematics.toChassisSpeeds(getSwerveModuleStates());
+  }
+
   public void setModuleStates(SwerveModuleState[] states) {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, maxVelocityMetersPerSec);
     frontLeft.setDesiredState(states[0]);
@@ -264,7 +283,7 @@ public class Drivetrain extends SubsystemBase {
           driveFromJoysticks(0, 0, 0);
           ;
 
-          setCommand("None");
+          setCommand("");
         },
         () -> {// isFinished
           var distanceFromGoal = getPose().relativeTo(trajectory.getFinalPose(isReversed.getAsBoolean()).get());
@@ -310,4 +329,55 @@ public class Drivetrain extends SubsystemBase {
     return retval;
   }
 
+  public void configureBLine()
+  {
+    blineBuilder = new FollowPath.Builder(
+      this, 
+      this::getPose, 
+      this::getChassisSpeeds, 
+      this::driveWithChassisSpeeds, 
+      new PIDController(translationKP, 0, 0),
+      new PIDController(rotationKP, 0, 0),
+      new PIDController(crossTrackKP, 0, 0)).withDefaultShouldFlip();
+      
+    blineLogging = new HashMap<>();
+    FollowPath.setDoubleLoggingConsumer(this::blineLoggerDouble);
+    FollowPath.setBooleanLoggingConsumer(this::blineLoggerBool);
+    FollowPath.setPoseLoggingConsumer(this::blineLoggerPose);
+    FollowPath.setTranslationListLoggingConsumer(this::blineLoggerTranslationArray);
+  }
+
+  public void blineLoggerBool(Pair<String, Boolean> pair) {
+    if(!blineLogging.containsKey(pair.getFirst()))
+    {
+      blineLogging.put(pair.getFirst(), new BooleanLogEntry(DataLogManager.getLog(), pair.getFirst()));
+    }
+    ((BooleanLogEntry) blineLogging.get(pair.getFirst())).append(pair.getSecond());
+  }
+
+  public void blineLoggerDouble(Pair<String, Double> pair) {
+    if(!blineLogging.containsKey(pair.getFirst()))
+    {
+      blineLogging.put(pair.getFirst(), new DoubleLogEntry(DataLogManager.getLog(), pair.getFirst()));
+    }
+    ((DoubleLogEntry) blineLogging.get(pair.getFirst())).append(pair.getSecond());
+  }
+
+  public void blineLoggerPose(Pair<String, Pose2d> pair) {
+    if(!blineLogging.containsKey(pair.getFirst()))
+    {
+      blineLogging.put(pair.getFirst(), StructLogEntry.create(DataLogManager.getLog(), pair.getFirst(), Pose2d.struct));
+    }
+    
+    ((StructLogEntry<Pose2d>) blineLogging.get(pair.getFirst())).append(pair.getSecond());
+  }
+
+  public void blineLoggerTranslationArray(Pair<String, Translation2d[]> pair) {
+    if(!blineLogging.containsKey(pair.getFirst()))
+    {
+      blineLogging.put(pair.getFirst(), StructArrayLogEntry.create(DataLogManager.getLog(), pair.getFirst(), Translation2d.struct));
+    }
+    
+    ((StructArrayLogEntry<Translation2d>) blineLogging.get(pair.getFirst())).append(pair.getSecond());
+  }
 }
