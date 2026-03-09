@@ -68,7 +68,7 @@ public class Controls {
         operatorController.b().whileTrue(new OuttakeFuel());
         operatorController.rightBumper().whileTrue(new LaunchSequence());
         operatorController.x().onTrue(new SpinUp());
-        operatorController.leftTrigger().onTrue(new IntakeMid());
+        operatorController.leftTrigger().whileTrue(new IntakeMid());
     }
 
     public static Controls getInstance() {
