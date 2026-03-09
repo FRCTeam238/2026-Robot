@@ -67,12 +67,11 @@ public class Controls {
     {
         operatorController.a().onTrue(new DeployIntake());
         operatorController.y().onTrue(new RetractIntake());
-        operatorController.leftBumper().whileTrue(new IntakeFuel());
+        operatorController.b().whileTrue(new IntakeMid());
 
-        operatorController.b().whileTrue(new OuttakeFuel());
-        operatorController.x().onTrue(new SpinUp(LauncherConstants.launchSpeedFar));
-        operatorController.rightBumper().onTrue(new SpinUp(LauncherConstants.launchSpeedNear));
-        operatorController.leftTrigger().whileTrue(new IntakeMid());
+        operatorController.rightTrigger().whileTrue(new IntakeFuel());
+        operatorController.rightBumper().whileTrue(new OuttakeFuel());
+        
     }
 
     public static Controls getInstance() {
