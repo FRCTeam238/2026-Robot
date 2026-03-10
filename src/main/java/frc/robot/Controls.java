@@ -20,6 +20,8 @@ import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.SpinUp;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Launcher;
+
 import static frc.robot.Constants.OperatorConstants.*;
 import frc.robot.Constants;
 import frc.robot.Constants.LauncherConstants;
@@ -58,17 +60,17 @@ public class Controls {
         driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
-
-        driverController.rightTrigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedFar));
-        driverController.leftTrigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
+        
+        leftJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedFar));
+        rightJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
     }
 
-    private void bindOperatorButtons()
-    {
+    private void bindOperatorButtons() {
+    
         operatorController.a().onTrue(new DeployIntake());
         operatorController.y().onTrue(new RetractIntake());
         operatorController.b().whileTrue(new IntakeMid());
-
+        
         operatorController.rightTrigger().whileTrue(new IntakeFuel());
         operatorController.rightBumper().whileTrue(new OuttakeFuel());
         
