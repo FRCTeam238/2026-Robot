@@ -35,6 +35,8 @@ public class Feeder extends SubsystemBase {
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     config.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
+    config.CurrentLimits.SupplyCurrentLimit = supplyCurrentLimit;
+    config.CurrentLimits.SupplyCurrentLimitEnable = true;
     upperMotor.getConfigurator().apply(config);
     upperMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
     upperMotor.getSupplyVoltage().setUpdateFrequency(20);

@@ -42,6 +42,8 @@ public class Intake extends SubsystemBase {
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     config.CurrentLimits.StatorCurrentLimit = rollerStatorCurrentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
+    config.CurrentLimits.SupplyCurrentLimit = rollerSupplyCurrentLimit;
+    config.CurrentLimits.SupplyCurrentLimitEnable = true;
     rollerMotor.getConfigurator().apply(config);
     rollerMotor.getVelocity().setUpdateFrequency(20);
     rollerMotor.getSupplyVoltage().setUpdateFrequency(20);
@@ -51,7 +53,10 @@ public class Intake extends SubsystemBase {
 
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Positive value stows intake
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    config.CurrentLimits.StatorCurrentLimit = tiltCurrentLimit;
+    config.CurrentLimits.StatorCurrentLimit = tiltStatorCurrentLimit;
+    config.CurrentLimits.StatorCurrentLimitEnable = true;
+    config.CurrentLimits.SupplyCurrentLimit = tiltSupplyCurrentLimit;
+    config.CurrentLimits.SupplyCurrentLimitEnable = true;
     config.Feedback.withRemoteCANcoder(tiltSensor);
     config.Feedback.RotorToSensorRatio = intakePivotRatio;
 
