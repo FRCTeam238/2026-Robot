@@ -128,10 +128,10 @@ public class Constants {
     public class VisionConstants {
         public static boolean filterByDistanceFromOdometryPose = false;
 
-        public static Transform3d backCameraLocation = new Transform3d(-0.2707, 0.1775, 0.3732,
-                new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
-        public static Transform3d frontCameraLocation = new Transform3d(-0.2707, -0.1775, 0.3732,
-                new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
+        public static Transform3d backCameraLocation = new Transform3d(-0.2643124, -0.2286, 0.3913632,
+                new Rotation3d(0, Units.degreesToRadians(-23), Units.degreesToRadians(180)));
+        public static Transform3d frontCameraLocation = new Transform3d(-0.083693, -0.254254, 0.7286752,
+                new Rotation3d(0, 0, 0));
         public static double maxVisionDistanceTolerance = 5;// for the max distance between cam and tag in meters
         public static double maxAmbiguity = 1; // max ambiguity out of 1
         public static double zTolerance = 0.25;

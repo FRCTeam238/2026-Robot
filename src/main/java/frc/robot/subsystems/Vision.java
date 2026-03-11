@@ -54,11 +54,11 @@ public class Vision {
         backEstimator = new PhotonPoseEstimator(
                 AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark),
                 PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-                backCameraLocation // TODO: Make real numbers
+                backCameraLocation
         );
         frontEstimator = new PhotonPoseEstimator(
                 AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark),
-                frontCameraLocation // TODO: Make real numbers
+                frontCameraLocation
         );
     }
 
@@ -92,6 +92,7 @@ public class Vision {
             }
             if (em.isEmpty())
                 continue;
+            backPoseEstimate = em.get().estimatedPose;
             // Check if estimate has us flying in the air and reject
             if (backPoseEstimate.getZ() > zTolerance)
                 continue;
@@ -130,6 +131,7 @@ public class Vision {
             }
             if (em.isEmpty())
                 continue;
+            frontPoseEstimate = em.get().estimatedPose;
             // Check if estimate has us flying in the air and reject
             if (frontPoseEstimate.getZ() > zTolerance)
                 continue;

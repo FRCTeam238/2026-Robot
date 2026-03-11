@@ -65,8 +65,6 @@ public class Drivetrain extends SubsystemBase {
   @NotLogged
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
-  boolean usingVision = false;
-
   @NotLogged
   SwerveDrivePoseEstimator odometry;
   Pose2d desiredPose = Pose2d.kZero;
