@@ -9,63 +9,72 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.FeederConstants.*;
 
-
+@Logged
 public class Feeder extends SubsystemBase {
 
-TalonFX leftMotor, rightMotor;
+  @NotLogged
+  TalonFX upperMotor, lowerMotor;
+  @NotLogged
+  private static Feeder singleton;
 
-@NotLogged private static Feeder singleton;
-
+  String command = "";
 
   /** Creates a new Feeder. */
   public Feeder() {
-    leftMotor = new TalonFX(leftMotorID);
-    rightMotor = new TalonFX(rightMotorID);
+    upperMotor = new TalonFX(upperMotorID);
+    lowerMotor = new TalonFX(lowerMotorID);
 
     var config = new TalonFXConfiguration();
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     config.CurrentLimits.StatorCurrentLimit = currentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
-    leftMotor.getConfigurator().apply(config);
-    leftMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
-    leftMotor.getSupplyVoltage().setUpdateFrequency(20);
-    leftMotor.getSupplyCurrent().setUpdateFrequency(20);
-    leftMotor.getStatorCurrent().setUpdateFrequency(20);
-    leftMotor.optimizeBusUtilization();
+    upperMotor.getConfigurator().apply(config);
+    upperMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
+    upperMotor.getSupplyVoltage().setUpdateFrequency(20);
+    upperMotor.getSupplyCurrent().setUpdateFrequency(20);
+    upperMotor.getStatorCurrent().setUpdateFrequency(20);
+    upperMotor.optimizeBusUtilization();
 
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    rightMotor.getConfigurator().apply(config);
-    rightMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
-    rightMotor.getSupplyVoltage().setUpdateFrequency(20);
-    rightMotor.getSupplyCurrent().setUpdateFrequency(20);
-    rightMotor.getStatorCurrent().setUpdateFrequency(20);
-    rightMotor.optimizeBusUtilization();
-
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    lowerMotor.getConfigurator().apply(config);
+    lowerMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
+    lowerMotor.getSupplyVoltage().setUpdateFrequency(20);
+    lowerMotor.getSupplyCurrent().setUpdateFrequency(20);
+    lowerMotor.getStatorCurrent().setUpdateFrequency(20);
+    lowerMotor.optimizeBusUtilization();
   }
 
-  
-    public void setSpeed (double speed) {
-        leftMotor.setVoltage(speed);
-        rightMotor.setVoltage(speed);
-    }
+  public void setCommand(String name) {
+    command = name;
+  }
 
-    public void stop () {
-        setSpeed(0);
-    }
+  public void setSpeed(double speed) {
+    upperMotor.setVoltage(speed);
+    lowerMotor.setVoltage(speed);
+  }
+
+  public void outtakeLower(double speed) {
+    lowerMotor.setVoltage(speed);
+  }
+
+  public void stop() {
+    setSpeed(0);
+  }
 
   public static Feeder getInstance() {
     if (singleton == null)
       singleton = new Feeder();
     return singleton;
   }
-    
-    //Unjam method?
+
+  // Unjam method?
 
   @Override
   public void periodic() {

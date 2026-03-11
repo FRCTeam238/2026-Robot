@@ -23,6 +23,7 @@ import edu.wpi.first.math.util.Units;
 
 @Logged
 public class SwerveModule {
+  @NotLogged
   TalonFX driveMotor;
   @NotLogged
   SparkMax turnMotor;
@@ -44,12 +45,10 @@ public class SwerveModule {
         .pid(
             SwerveModuleConstants.turnP,
             SwerveModuleConstants.turnI,
-            SwerveModuleConstants.turnD
-            )
+            SwerveModuleConstants.turnD)
         .positionWrappingMinInput(SwerveModuleConstants.kTurningEncoderPositionPIDMinInput)
         .positionWrappingMaxInput(SwerveModuleConstants.kTurningEncoderPositionPIDMaxInput)
-        .positionWrappingEnabled(true).
-        feedForward.kV(SwerveModuleConstants.turnFF);
+        .positionWrappingEnabled(true).feedForward.kV(SwerveModuleConstants.turnFF);
 
     turnEncoder = turnMotor.getAbsoluteEncoder();
     turnConfig
@@ -145,7 +144,7 @@ public class SwerveModule {
     public static double driveFF = 2.5;
     public static double driveKs = .07;
 
-    public static double wheelDiameter = Units.inchesToMeters(4.13);//4.13?
+    public static double wheelDiameter = Units.inchesToMeters(4.13);// 4.13?
     public static double wheelCircumference = wheelDiameter * Math.PI;
     public static double driveRatio = 50. / 14. * 17. / 27. * 45. / 15.; // MK4I L2
     public static double kDriveMetersPerRev = wheelCircumference / driveRatio;

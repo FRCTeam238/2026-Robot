@@ -5,7 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -20,15 +21,24 @@ import static frc.robot.Constants.IntakeConstants.*;
 @Logged
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-    TalonFX rollerMotor, tiltMotor;
-    double targetPosition;
-  
-    @NotLogged private static Intake singleton;
+  @NotLogged
+  TalonFX rollerMotor, tiltMotor;
+  @NotLogged
+  CANcoder tiltSensor;
+  double targetPosition = 0;
+  private String command = "";
+
+  @NotLogged
+  private static Intake singleton;
 
   public Intake() {
 
+    tiltSensor = new CANcoder(tiltID);
+    tiltMotor = new TalonFX(tiltID);
+    rollerMotor = new TalonFX(rollerID);
+
     var config = new TalonFXConfiguration();
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     config.CurrentLimits.StatorCurrentLimit = rollerCurrentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -39,32 +49,35 @@ public class Intake extends SubsystemBase {
     rollerMotor.getStatorCurrent().setUpdateFrequency(20);
     rollerMotor.optimizeBusUtilization();
 
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive; //Positive value deploys intake out from robot
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // Positive value stows intake
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     config.CurrentLimits.StatorCurrentLimit = tiltCurrentLimit;
+    config.Feedback.withRemoteCANcoder(tiltSensor);
+    config.Feedback.RotorToSensorRatio = intakePivotRatio;
 
     // set slot 0 gains
     var slot0Configs = config.Slot0;
     slot0Configs.kS = tiltKS;
     slot0Configs.kV = tiltKV;
-    slot0Configs.kA = tiltKA; 
+    slot0Configs.kA = tiltKA;
     slot0Configs.kP = tiltKP;
     slot0Configs.kI = tiltKI;
     slot0Configs.kD = tiltKD;
-    //slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
-    //slot0Configs.kG = tiltKG;
+    slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
+    slot0Configs.kG = tiltKG;
 
     // set Motion Magic Expo settings
     var motionMagicConfigs = config.MotionMagic;
     motionMagicConfigs.MotionMagicCruiseVelocity = tiltCruise;
-    motionMagicConfigs.MotionMagicExpo_kV = tiltExpoKV;
-    motionMagicConfigs.MotionMagicExpo_kA = tiltExpoKA;
-    
+    motionMagicConfigs.MotionMagicAcceleration = tiltAcceleration;
+    motionMagicConfigs.MotionMagicJerk = tiltJerk;
+    // motionMagicConfigs.MotionMagicExpo_kV = tiltExpoKV;
+    // motionMagicConfigs.MotionMagicExpo_kA = tiltExpoKA;
 
     tiltMotor.getConfigurator().apply(config);
 
     tiltMotor.getConfigurator().apply(config);
-    tiltMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
+    tiltMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hertz, 20ms
     tiltMotor.getPosition().setUpdateFrequency(50);
     tiltMotor.getClosedLoopError().setUpdateFrequency(50);
     tiltMotor.getClosedLoopOutput().setUpdateFrequency(50);
@@ -75,9 +88,17 @@ public class Intake extends SubsystemBase {
     tiltMotor.optimizeBusUtilization();
   }
 
+  public void setCommand(String name) {
+    command = name;
+  }
+
   public void setTiltPosition(double position) {
     targetPosition = position;
-    tiltMotor.setControl(new MotionMagicExpoVoltage(position));
+    tiltMotor.setControl(new MotionMagicVoltage(position));
+  }
+
+  public void stopTilt() {
+    tiltMotor.stopMotor();
   }
 
   public double getTargetPosition() {
@@ -89,12 +110,15 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean tiltAtTarget() {
-    return tiltMotor.getMotionMagicAtTarget().getValue(); //this is whatever MotionMagic decides for reaching the target. Write our own if not good??
+    double currentPosition = tiltMotor.getPosition().getValueAsDouble();
+    double error = Math.abs(currentPosition - targetPosition);
+
+    return error < tiltTolerance;
   }
 
-  public void stopRoller () {
-        runIntake(0);
-    }
+  public void stopRoller() {
+    runIntake(0);
+  }
 
   public static Intake getInstance() {
     if (singleton == null)

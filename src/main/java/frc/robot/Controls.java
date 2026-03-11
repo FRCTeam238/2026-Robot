@@ -11,9 +11,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.DeployIntake;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeFuel;
+import frc.robot.commands.IntakeMid;
+import frc.robot.commands.OuttakeFuel;
+import frc.robot.commands.LaunchSequence;
+import frc.robot.commands.RetractIntake;
 import frc.robot.subsystems.Drivetrain;
+
 import static frc.robot.Constants.OperatorConstants.*;
+import frc.robot.Constants.LauncherConstants;
 
 @Logged
 public class Controls {
@@ -23,14 +31,13 @@ public class Controls {
     static SendableChooser<DriveType> driveTypeChooser = new SendableChooser<DriveType>();
 
     @NotLogged
-    CommandXboxController controller = new CommandXboxController(0);
+    CommandXboxController operatorController = new CommandXboxController(0);
     @NotLogged
     CommandXboxController driverController = new CommandXboxController(3);
     @NotLogged
     CommandJoystick rightJoystick = new CommandJoystick(1);
     @NotLogged
     CommandJoystick leftJoystick = new CommandJoystick(2);
-
 
     DriveType driveType = DriveType.JOYSTICK;
 
@@ -40,13 +47,32 @@ public class Controls {
         driveTypeChooser.setDefaultOption("XBOX", DriveType.JOYSTICK);
         SmartDashboard.putData(driveTypeChooser);
 
+        bindDriverButtons();
+        bindOperatorButtons();
+
+        Drivetrain.getInstance().setDefaultCommand(new Drive());
+    }
+
+    private void bindDriverButtons() {
         driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         
-        Drivetrain.getInstance().setDefaultCommand(new Drive());          
+        leftJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedFar));
+        rightJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
     }
+
+    private void bindOperatorButtons() {
     
+        operatorController.a().onTrue(new DeployIntake());
+        operatorController.y().onTrue(new RetractIntake());
+        operatorController.b().whileTrue(new IntakeMid());
+        
+        operatorController.rightTrigger().whileTrue(new IntakeFuel());
+        operatorController.rightBumper().whileTrue(new OuttakeFuel());
+        
+    }
+
     public static Controls getInstance() {
         if (singleton == null) {
             singleton = new Controls();
@@ -54,10 +80,10 @@ public class Controls {
         return singleton;
     }
 
-    @Logged 
+    @Logged
     public double[] getSwerveJoystickValues() {
         double slowmodePercent = getSlowmode() ? 1 : .67;
-        
+
         switch (getDriveType()) {
             case JOYSTICK -> {
                 return new double[] {
@@ -104,9 +130,9 @@ public class Controls {
 
     public Command rumbleCommand() {
         return new RunCommand(() -> {
-            controller.setRumble(RumbleType.kBothRumble, 1);
+            operatorController.setRumble(RumbleType.kBothRumble, 1);
         }).finallyDo(() -> {
-            controller.setRumble(RumbleType.kBothRumble, 0);
+            operatorController.setRumble(RumbleType.kBothRumble, 0);
         });
     }
 }

@@ -4,12 +4,12 @@
 
 package frc.robot.commands;
 
-import static frc.robot.Constants.IntakeConstants.intakeDown;
 import static frc.robot.Constants.IntakeConstants.intakeUp;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.autonomous.Auto;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Launcher;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class RetractIntake extends Command {
@@ -23,15 +23,19 @@ public class RetractIntake extends Command {
   @Override
   public void initialize() {
     Intake.getInstance().setTiltPosition(intakeUp);
+    Intake.getInstance().setCommand("RetractIntake");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    Intake.getInstance().setCommand("");
+  }
 
   // Returns true when the command should end.
   @Override

@@ -4,40 +4,46 @@
 
 package frc.robot.commands;
 
-import static frc.robot.Constants.LauncherConstants.launchSpeed;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Launcher;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SpinUp extends Command {
   /** Creates a new SpinUp. */
-  public SpinUp() {
+
+  private double launchSpeed;
+
+  public SpinUp(double launchSpeed) {
     addRequirements(Launcher.getInstance());
+    this.launchSpeed = launchSpeed;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     Launcher.getInstance().setSpeed(launchSpeed);
+    Launcher.getInstance().setCommand("SpinUp");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(interrupted)
-    {
+    if (interrupted) {
       Launcher.getInstance().stop();
     }
+    Launcher.getInstance().setCommand("");
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return Launcher.getInstance().atSpeed();
+    //return false;
   }
 }

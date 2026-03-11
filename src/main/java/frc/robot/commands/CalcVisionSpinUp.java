@@ -4,50 +4,47 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Robot;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Launcher;
-import frc.robot.Constants.FeederConstants;
-import frc.robot.Constants.LauncherConstants;
-import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.Intake;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Launch extends Command {
+public class CalcVisionSpinUp extends Command {
+  /** Creates a new SpinUp. */
 
-  private double launchSpeed;
-
-  /** Creates a new Launch. */
-  public Launch(double launchSpeed) {
-    addRequirements(Launcher.getInstance(), Feeder.getInstance());
-    this.launchSpeed = launchSpeed;
+  public CalcVisionSpinUp() {
+    addRequirements(Launcher.getInstance());
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Feeder.getInstance().setSpeed(FeederConstants.feederSpeed); //Used for both Intake and Outtake
-    Launcher.getInstance().setSpeed(launchSpeed);
-    Feeder.getInstance().setCommand("LaunchFuel");
-    Launcher.getInstance().setCommand("LaunchFuel");
+    Launcher.getInstance().setCommand("CalcVisionSpinUp");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double flyWheelSpeed = Launcher.getInstance().calculateLaunchSpeed();
+    Launcher.getInstance().setSpeed(flyWheelSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Feeder.getInstance().stop();
-    Launcher.getInstance().stop();
-    Feeder.getInstance().setCommand("");
+    if (interrupted) {
+      Launcher.getInstance().stop();
+    }
     Launcher.getInstance().setCommand("");
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Launcher.getInstance().atSpeed();
   }
 }

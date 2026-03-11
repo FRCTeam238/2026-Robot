@@ -2,7 +2,10 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.DriveConstants.*;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
@@ -13,8 +16,11 @@ import choreo.trajectory.SwerveSample;
 import choreo.trajectory.Trajectory;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.epilogue.logging.EpilogueBackend;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -23,6 +29,12 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLogEntry;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.StructArrayLogEntry;
+import edu.wpi.first.util.datalog.StructLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -32,6 +44,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
+import frc.robot.lib.BLine.FollowPath;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -50,39 +65,11 @@ public class Drivetrain extends SubsystemBase {
   @NotLogged
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
-  boolean usingVision = true;
-
-  PhotonCamera leftCam;
-  PhotonCamera rightCam;
-
-  boolean filterByDistanceFromOdometryPose = false;
-
-  ArrayList<Pose2d> leftList;
-  ArrayList<Pose2d> rightList;
-
-  double lastLinearAccelX = 0;
-  double lastLinearAccelY = 0;
-
-  PhotonPoseEstimator rightEstimator;
-  PhotonPoseEstimator leftEstimator;
-  PhotonPipelineResult lastResult = new PhotonPipelineResult();
-
-  double rightTagDistance = 0;
-  double rightAmbiguity = 0;
-  double rightBestID = 0;
-  double rightOffsetDistance = 0;
-  Pose3d rightPoseEstimate = new Pose3d();
-
-  double leftTagDistance = 0;
-  double leftAmbiguity = 0;
-  double leftBestID = 0;
-  double leftOffsetDistance = 0;
-  Pose3d leftPoseEstimate = new Pose3d();
-
-  Pose2d desiredPose = Pose2d.kZero;
-
   @NotLogged
   SwerveDrivePoseEstimator odometry;
+  Pose2d desiredPose = Pose2d.kZero;
+  double lastLinearAccelX = 0;
+  double lastLinearAccelY = 0;
   AHRS gyro;
   PIDController x, y, theta;
   String command = "None";
@@ -91,6 +78,9 @@ public class Drivetrain extends SubsystemBase {
       new double[] { 0, 0, 0, 0 });
 
   @NotLogged private static Drivetrain singleton;
+  @NotLogged private static Map<String, DataLogEntry> blineLogging;
+
+  public FollowPath.Builder blineBuilder;
 
   private Drivetrain() {
     SmartDashboard.putData("field", field);
@@ -111,10 +101,6 @@ public class Drivetrain extends SubsystemBase {
     y = new PIDController(kP, kI, kD);
     theta = new PIDController(kPAngular, kIAngular, kDAngular);
     theta.enableContinuousInput(-Math.PI, Math.PI);
-
-    if (usingVision) {
-      setupVision();
-    }    
   }
 
   public static Drivetrain getInstance() {
@@ -135,8 +121,8 @@ public class Drivetrain extends SubsystemBase {
         });
     field.setRobotPose(getPose());
 
-    if (usingVision) {
-      runVision();
+    if (Robot.enableVision) {
+      Vision.getInstance().runVision();
     }
   }
 
@@ -201,6 +187,10 @@ public class Drivetrain extends SubsystemBase {
   public void driveWithChassisSpeeds(ChassisSpeeds speeds) {
     var swerveModuleStates = kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.discretize(speeds, .02));
     setModuleStates(swerveModuleStates);
+  }
+
+  public ChassisSpeeds getChassisSpeeds() {
+    return kDriveKinematics.toChassisSpeeds(getSwerveModuleStates());
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
@@ -271,40 +261,41 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public Command choreoCommand(
-          Trajectory<SwerveSample> trajectory,
-          BooleanSupplier isReversed) {
+      Trajectory<SwerveSample> trajectory,
+      BooleanSupplier isReversed) {
 
-      var time = new Timer();
+    var time = new Timer();
 
-      return new FunctionalCommand(
-         time::restart,
-         () -> {// execute
-            driveWithChassisSpeeds(choreoController(trajectory.sampleAt(time.get(), isReversed.getAsBoolean()).get()));
-      }, 
-      (interrupted) -> {//end
-        time.stop();
-        // if (interrupted) {
-        //    driveWithChassisSpeeds(new ChassisSpeeds()); 
-        // } else {
-        //     driveWithChassisSpeeds((choreoController(trajectory.getFinalSample(isReversed.getAsBoolean()).get())));
-        // }
-        driveFromJoysticks(0, 0, 0);; 
+    return new FunctionalCommand(
+        time::restart,
+        () -> {// execute
+          driveWithChassisSpeeds(choreoController(trajectory.sampleAt(time.get(), isReversed.getAsBoolean()).get()));
+        },
+        (interrupted) -> {// end
+          time.stop();
+          // if (interrupted) {
+          // driveWithChassisSpeeds(new ChassisSpeeds());
+          // } else {
+          // driveWithChassisSpeeds((choreoController(trajectory.getFinalSample(isReversed.getAsBoolean()).get())));
+          // }
+          driveFromJoysticks(0, 0, 0);
+          ;
 
-        setCommand("None");
-      }, 
-      () -> {//isFinished
+          setCommand("");
+        },
+        () -> {// isFinished
           var distanceFromGoal = getPose().relativeTo(trajectory.getFinalPose(isReversed.getAsBoolean()).get());
-          //is this good?
-          return (time.hasElapsed(trajectory.getTotalTime()) 
-            && Math.abs(distanceFromGoal.getX()) < positionTolerance
-            && Math.abs(distanceFromGoal.getY()) < positionTolerance
-            && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance);
-            // || (time.hasElapsed(0.08) && detectCrash.getAsBoolean() && hasCrashed());
-      },
-      this);
+          // is this good?
+          return (time.hasElapsed(trajectory.getTotalTime())
+              && Math.abs(distanceFromGoal.getX()) < positionTolerance
+              && Math.abs(distanceFromGoal.getY()) < positionTolerance
+              && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance);
+          // || (time.hasElapsed(0.08) && detectCrash.getAsBoolean() && hasCrashed());
+        },
+        this);
   }
 
-  public void setDesiredPose(Pose2d pose){
+  public void setDesiredPose(Pose2d pose) {
     desiredPose = pose;
   }
   
@@ -340,113 +331,55 @@ public class Drivetrain extends SubsystemBase {
     return retval;
   }
 
-  // =========VISION STUFF=========
-
-  /**
-   * run this whenever you want vision stuff, otherwise, leave it out
-   */
-  private void setupVision() {
-    leftCam = new PhotonCamera("LeftCam");
-    rightCam = new PhotonCamera("RightCam");
-
-    rightEstimator = new PhotonPoseEstimator(
-        AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark),
-        PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-        rightCameraLocation // TODO: Make real numbers
-    );
-    leftEstimator = new PhotonPoseEstimator(
-        AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark),
-        leftCameraLocation // TODO: Make real numbers
-    );
+  public void configureBLine()
+  {
+    blineBuilder = new FollowPath.Builder(
+      this, 
+      this::getPose, 
+      this::getChassisSpeeds, 
+      this::driveWithChassisSpeeds, 
+      new PIDController(translationKP, 0, 0),
+      new PIDController(rotationKP, 0, 0),
+      new PIDController(crossTrackKP, 0, 0)).withDefaultShouldFlip();
+      
+    blineLogging = new HashMap<>();
+    FollowPath.setDoubleLoggingConsumer(this::blineLoggerDouble);
+    FollowPath.setBooleanLoggingConsumer(this::blineLoggerBool);
+    FollowPath.setPoseLoggingConsumer(this::blineLoggerPose);
+    FollowPath.setTranslationListLoggingConsumer(this::blineLoggerTranslationArray);
   }
 
-  private void updatePoseEstimate(Optional<EstimatedRobotPose> estimate) {
-    if (estimate.isPresent()) {
-      odometry.addVisionMeasurement(estimate.get().estimatedPose.toPose2d(), estimate.get().timestampSeconds);
+  public void blineLoggerBool(Pair<String, Boolean> pair) {
+    if(!blineLogging.containsKey(pair.getFirst()))
+    {
+      blineLogging.put(pair.getFirst(), new BooleanLogEntry(DataLogManager.getLog(), pair.getFirst()));
     }
+    ((BooleanLogEntry) blineLogging.get(pair.getFirst())).append(pair.getSecond());
   }
 
-  @NotLogged
-  public Transform3d getRightCamToTarget() {
-    return rightCam.getLatestResult().getBestTarget().bestCameraToTarget;
+  public void blineLoggerDouble(Pair<String, Double> pair) {
+    if(!blineLogging.containsKey(pair.getFirst()))
+    {
+      blineLogging.put(pair.getFirst(), new DoubleLogEntry(DataLogManager.getLog(), pair.getFirst()));
+    }
+    ((DoubleLogEntry) blineLogging.get(pair.getFirst())).append(pair.getSecond());
   }
 
-  /**
-   * wrapper for running all periodic vision code
-   */
-  private void runVision() {
-    for (var result : rightCam.getAllUnreadResults()) {
-      if (!result.hasTargets()) continue;
-      // if best visible target is too far away for our liking, discard it, else use
-      // it
-      rightTagDistance = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
-      if (rightTagDistance > maxVisionDistanceTolerance)
-        continue;
-      // Check if 3D ambiguity is too high and skip if it is. May not be needed
-      // because of chosen estimator strategy
-      rightAmbiguity = result.getBestTarget().poseAmbiguity;
-      if (rightAmbiguity > maxAmbiguity)
-        continue;
-
-      var em = rightEstimator.estimateCoprocMultiTagPose(result);
-            if (em.isEmpty()) {
-                em = rightEstimator.estimateLowestAmbiguityPose(result);
-            }
-      if(em.isEmpty())
-        continue;
-      // Check if estimate has us flying in the air and reject
-      if (rightPoseEstimate.getZ() > zTolerance)
-        continue;
-      // Check if estimate says we're rolled and reject
-      if (rightPoseEstimate.getRotation().getX() > rollPitchTolerance)
-        continue;
-      // Check if estimate says we're pitched and reject
-      if (rightPoseEstimate.getRotation().getY() > rollPitchTolerance)
-        continue;
-      // Check if estimate is close enough to where we think we are
-      rightOffsetDistance = rightPoseEstimate.toPose2d().getTranslation()
-          .getDistance(odometry.getEstimatedPosition().getTranslation());
-      if (rightOffsetDistance > visionPoseDiffTolerance)
-        continue;
-      // Measurement passed all filters, add to global pose estimate
-      odometry.addVisionMeasurement(rightPoseEstimate.toPose2d(), em.get().timestampSeconds);
+  public void blineLoggerPose(Pair<String, Pose2d> pair) {
+    if(!blineLogging.containsKey(pair.getFirst()))
+    {
+      blineLogging.put(pair.getFirst(), StructLogEntry.create(DataLogManager.getLog(), pair.getFirst(), Pose2d.struct));
     }
+    
+    ((StructLogEntry<Pose2d>) blineLogging.get(pair.getFirst())).append(pair.getSecond());
+  }
 
-    for (var result : leftCam.getAllUnreadResults()) {
-      if (!result.hasTargets()) continue;
-      // if best visible target is too far away for our liking, discard it, else use
-      // it
-      leftTagDistance = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
-      if (leftTagDistance > maxVisionDistanceTolerance)
-        continue;
-      // Check if 3D ambiguity is too high and skip if it is. May not be needed
-      // because of chosen estimator strategy
-      leftAmbiguity = result.getBestTarget().poseAmbiguity;
-      if (leftAmbiguity > maxAmbiguity)
-        continue;
-
-      var em = leftEstimator.estimateCoprocMultiTagPose(result);
-      if (em.isEmpty()) {
-          em = leftEstimator.estimateLowestAmbiguityPose(result);
-      }
-      if(em.isEmpty())
-        continue;
-      // Check if estimate has us flying in the air and reject
-      if (leftPoseEstimate.getZ() > zTolerance)
-        continue;
-      // Check if estimate says we're rolled and reject
-      if (leftPoseEstimate.getRotation().getX() > rollPitchTolerance)
-        continue;
-      // Check if estimate says we're pitched and reject
-      if (leftPoseEstimate.getRotation().getY() > rollPitchTolerance)
-        continue;
-      // Check if estimate is close enough to where we think we are
-      leftOffsetDistance = leftPoseEstimate.toPose2d().getTranslation()
-          .getDistance(odometry.getEstimatedPosition().getTranslation());
-      if (leftOffsetDistance > visionPoseDiffTolerance)
-        continue;
-      // Measurement passed all filters, add to global pose estimate
-      odometry.addVisionMeasurement(leftPoseEstimate.toPose2d(), em.get().timestampSeconds);
+  public void blineLoggerTranslationArray(Pair<String, Translation2d[]> pair) {
+    if(!blineLogging.containsKey(pair.getFirst()))
+    {
+      blineLogging.put(pair.getFirst(), StructArrayLogEntry.create(DataLogManager.getLog(), pair.getFirst(), Translation2d.struct));
     }
+    
+    ((StructArrayLogEntry<Translation2d>) blineLogging.get(pair.getFirst())).append(pair.getSecond());
   }
 }
