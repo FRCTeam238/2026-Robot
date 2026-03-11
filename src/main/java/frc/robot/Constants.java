@@ -54,6 +54,8 @@ public class Constants {
         public static final double positionTolerance = 0.08;
         public static final double xandyvelocityTolerance = 0.08;
 
+        public static final double snapToleranceAngle = Units.degreesToRadians(2);
+
         //Vision constants
         public static Transform3d rightCameraLocation = new Transform3d(-0.2707, 0.1775, 0.3732, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
         public static Transform3d leftCameraLocation = new Transform3d(-0.2707, -0.1775, 0.3732, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));

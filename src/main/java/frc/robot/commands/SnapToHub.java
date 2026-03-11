@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import static frc.robot.Constants.DriveConstants.snapToleranceAngle;
 import static frc.robot.Constants.LauncherConstants.kD;
 import static frc.robot.Constants.LauncherConstants.kI;
 import static frc.robot.Constants.LauncherConstants.kP;
@@ -22,7 +23,6 @@ public class SnapToHub extends Command {
 
   private Translation2d hubPoint;
   private PIDController angleController;
-  private boolean finished;
 
   /** Creates a new SnapToHub. */
   public SnapToHub() {
@@ -36,28 +36,21 @@ public class SnapToHub extends Command {
   public void initialize() {
     //Get hub coordnates
     hubPoint = util.getHubPoint();
-    //Get finished variable
-    finished = false;
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     //get robot position, calculate rotation
-    Pose2d currentPose = Drivetrain.getInstance().getPose();
-    double xSpeed = getXSpeed(currentPose);
-    double ySpeed = getYSpeed(currentPose);
-    double targetRotation = getErrorRotation(currentPose);
+    //Pose2d currentPose = Drivetrain.getInstance().getPose();
+    //double xSpeed = getXSpeed(currentPose);
+    //double ySpeed = getYSpeed(currentPose);
+    double targetRotation = calculateRotationSpeed();
   // getXSpeed and getYSpeed returns distance. How do we translate it to return speed?
-    Drivetrain.getInstance().driveFieldRelative(xSpeed, ySpeed, targetRotation);
+    Drivetrain.getInstance().driveFieldRelative(0, 0, targetRotation);
     // Assumption: PID returns 0 
-    finished = xSpeed == 0 && ySpeed == 0 && targetRotation == 0;
-    if (isFinished()){
-      Drivetrain.getInstance().stop();
+    //finished = xSpeed <= snapToleranceDistance && ySpeed <= snapToleranceDistance && targetRotation <= snapToleranceAngle;
     }
-    //Hold button
-  }
 
   private double getXSpeed(Pose2d currentPose) {
     //get current x
@@ -100,7 +93,8 @@ public class SnapToHub extends Command {
     return yStep;
   }
 
-  private double getErrorRotation(Pose2d currentPose) {
+  private double calculateRotationSpeed() {
+    Pose2d currentPose = Drivetrain.getInstance().getPose();
     Translation2d currentTranslation = currentPose.getTranslation();
     Translation2d deltaToHub = hubPoint.minus(currentTranslation);
    //double distanceToHub = deltaToHub.getNorm();
@@ -109,6 +103,16 @@ public class SnapToHub extends Command {
     // Rotation2d errorRotation = targetRotation.minus(currentRotation);
     double rotationStep = angleController.calculate(currentRotation.getRadians(), targetRotation.getRadians());
     return rotationStep;
+  }
+
+  private double getErrorRotation(Pose2d currentPose) {
+    Translation2d currentTranslation = currentPose.getTranslation();
+    Translation2d deltaToHub = hubPoint.minus(currentTranslation);
+   //double distanceToHub = deltaToHub.getNorm();
+    Rotation2d targetRotation = deltaToHub.getAngle();
+    Rotation2d currentRotation = currentPose.getRotation();
+    Rotation2d errorRotation = targetRotation.minus(currentRotation);
+    return errorRotation.getRadians();
   }
 
   // Called once the command ends or is interrupted.
@@ -120,6 +124,6 @@ public class SnapToHub extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return finished;
+    return getErrorRotation(Drivetrain.getInstance().getPose()) <= snapToleranceAngle;
   }
 }
