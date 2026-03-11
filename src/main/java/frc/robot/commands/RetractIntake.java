@@ -14,6 +14,7 @@ import frc.robot.subsystems.Launcher;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class RetractIntake extends Command {
   /** Creates a new RetractIntake. */
+  @Auto
   public RetractIntake() {
     addRequirements(Intake.getInstance());
   }

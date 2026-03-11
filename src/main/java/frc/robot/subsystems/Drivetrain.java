@@ -298,6 +298,10 @@ public class Drivetrain extends SubsystemBase {
   public void setDesiredPose(Pose2d pose) {
     desiredPose = pose;
   }
+  
+  public void stop () {
+        driveFieldRelative(0.0,0.0,0.0);
+    }
 
   public boolean hasCrashed() {
 

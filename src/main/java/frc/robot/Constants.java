@@ -48,6 +48,8 @@ public class Constants {
         public static final double positionTolerance = 0.08;
         public static final double xandyvelocityTolerance = 0.08;
 
+        public static final double snapToleranceAngle = Units.degreesToRadians(2);
+
         public static final double translationKP = 5.0;
         public static final double rotationKP = 3.0;
         public static final double crossTrackKP = 2.0;
@@ -125,7 +127,17 @@ public class Constants {
         }
     }
 
+    public static class SnapConstants {
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        public static final double xRangeToHub = 0; 
+        public static final double yRangeToHub = 0; 
+
     public class VisionConstants {
+        public static Translation2d hubRedPoint = new Translation2d(11.901,4.021); //Coordnites in Meters
+        public static Translation2d hubBluePoint = new Translation2d(4.637,4.021);
+      
         public static boolean filterByDistanceFromOdometryPose = false;
 
         public static Transform3d backCameraLocation = new Transform3d(-0.2643124, -0.2286, 0.3913632,
