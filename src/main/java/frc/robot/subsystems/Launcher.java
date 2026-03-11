@@ -50,7 +50,7 @@ public class Launcher extends SubsystemBase {
     config.Slot0.kS = kS;
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    config.CurrentLimits.StatorCurrentLimit = currentLimit;
+    config.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     leftUp.getConfigurator().apply(config);
     leftUp.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms

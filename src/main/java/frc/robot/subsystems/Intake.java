@@ -40,7 +40,7 @@ public class Intake extends SubsystemBase {
     var config = new TalonFXConfiguration();
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    config.CurrentLimits.StatorCurrentLimit = rollerCurrentLimit;
+    config.CurrentLimits.StatorCurrentLimit = rollerStatorCurrentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     rollerMotor.getConfigurator().apply(config);
     rollerMotor.getVelocity().setUpdateFrequency(20);

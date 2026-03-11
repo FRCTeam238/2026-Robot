@@ -58,7 +58,8 @@ public class Constants {
     public class FeederConstants {
         public static int upperMotorID = 5;
         public static int lowerMotorID = 4;
-        public static double currentLimit = 40.0;
+        public static double statorCurrentLimit = 60.0;
+        public static double supplyCurrentLimit = 40.0;
 
         public static double feederSpeed = 10; //Used for both Intake and Outtake, in Voltage
     }
@@ -68,7 +69,8 @@ public class Constants {
         public static int leftLowID = 6;
         public static int rightUpID = 2;
         public static int rightLowID = 3;
-        public static double currentLimit = 60.0;
+        public static double statorCurrentLimit = 80.0;
+        public static double supplyCurentLimit = 50;
 
         // https://tinyurl.com/2026-238-launcher
         public static final double kP = 0.4; // Theoretical 0.46
@@ -89,8 +91,10 @@ public class Constants {
         public static int tiltID = 12;
         public static int rollerID = 17;
 
-        public static double rollerCurrentLimit = 30.0;
-        public static double tiltCurrentLimit = 60.0;
+        public static double rollerStatorCurrentLimit = 50.0;
+        public static double rollerSupplyCurrentLimit = 30;
+        public static double tiltStatorCurrentLimit = 60.0;
+        public static double tiltSupplyCurrentLimit = 20;
 
         public static final double tiltKP = 3; // ReCalc 123.47
         public static final double tiltKI = 0;

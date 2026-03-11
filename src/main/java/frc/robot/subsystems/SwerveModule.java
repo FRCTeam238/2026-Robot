@@ -73,8 +73,10 @@ public class SwerveModule {
     config.Slot0.kV = SwerveModuleConstants.driveFF;
     config.Slot0.kS = SwerveModuleConstants.driveKs;
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    config.CurrentLimits.StatorCurrentLimit = SwerveModuleConstants.driveCurrentLimit;
+    config.CurrentLimits.StatorCurrentLimit = SwerveModuleConstants.driveStatorCurrentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
+    config.CurrentLimits.SupplyCurrentLimit = SwerveModuleConstants.driveSupplyCurrentLimit;
+    config.CurrentLimits.SupplyCurrentLimitEnable = true;
     config.Feedback.SensorToMechanismRatio = 1 / SwerveModuleConstants.kDriveMetersPerRev;
     driveMotor.getConfigurator().apply(config);
     driveMotor.getVelocity().setUpdateFrequency(100); // Set update frequency to 100 Hert, 10ms
@@ -137,7 +139,8 @@ public class SwerveModule {
     public static double turnD = 0.05;
     public static double turnFF = 0;
 
-    public static int driveCurrentLimit = 80;
+    public static int driveStatorCurrentLimit = 80;
+    public static int driveSupplyCurrentLimit = 50;
     public static double driveP = 5;
     public static double driveI = 0;
     public static double driveD = 0.001;

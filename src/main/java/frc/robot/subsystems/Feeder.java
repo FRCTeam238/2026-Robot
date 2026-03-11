@@ -33,7 +33,7 @@ public class Feeder extends SubsystemBase {
     var config = new TalonFXConfiguration();
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    config.CurrentLimits.StatorCurrentLimit = currentLimit;
+    config.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     upperMotor.getConfigurator().apply(config);
     upperMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
