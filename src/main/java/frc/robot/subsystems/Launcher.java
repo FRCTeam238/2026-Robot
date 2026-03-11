@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.util;
 
 import static frc.robot.Constants.LauncherConstants.*;
 
@@ -138,9 +139,10 @@ public class Launcher extends SubsystemBase {
   {
     Pose2d currentPose = Drivetrain.getInstance().getPose();
     Translation2d currentTranslation = currentPose.getTranslation();
-    Translation2d deltaToHub = hubPoint.minus(currentTranslation);
+    Translation2d deltaToHub = util.getHubPoint().minus(currentTranslation);
     distanceToHub = deltaToHub.getNorm();
     calculatedSpeed = rpsMap.get(distanceToHub);
+    return calculatedSpeed;
   }
 
   @Override

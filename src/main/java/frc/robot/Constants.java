@@ -133,6 +133,7 @@ public class Constants {
         public static final double kD = 0;
         public static final double xRangeToHub = 0; 
         public static final double yRangeToHub = 0; 
+    }
 
     public class VisionConstants {
         public static Translation2d hubRedPoint = new Translation2d(11.901,4.021); //Coordnites in Meters
