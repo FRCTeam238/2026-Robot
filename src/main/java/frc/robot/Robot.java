@@ -12,7 +12,6 @@ import com.revrobotics.util.StatusLogger;
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -39,8 +38,6 @@ public class Robot extends TimedRobot {
   public Launcher launcher;
   public Controls controls;
   public Vision vision;
-
-  public static InterpolatingDoubleTreeMap rpsMap;
 
   @NotLogged
   private List<String> autoNames;
@@ -70,9 +67,6 @@ public class Robot extends TimedRobot {
     } else {
       Epilogue.visionLogger.disable();
     }
-
-    rpsMap = new InterpolatingDoubleTreeMap();
-    rpsMap.put(2.0, 60.0); //2m = 60rps on flywheel
   }
 
   public static boolean isPracticeBot() {

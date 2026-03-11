@@ -18,12 +18,9 @@ import frc.robot.commands.IntakeMid;
 import frc.robot.commands.OuttakeFuel;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.RetractIntake;
-import frc.robot.commands.SpinUp;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Launcher;
 
 import static frc.robot.Constants.OperatorConstants.*;
-import frc.robot.Constants;
 import frc.robot.Constants.LauncherConstants;
 
 @Logged

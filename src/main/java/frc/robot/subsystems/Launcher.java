@@ -14,20 +14,25 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 
 import static frc.robot.Constants.LauncherConstants.*;
 
 @Logged
 public class Launcher extends SubsystemBase {
 
-  @NotLogged
-  TalonFX leftUp, leftLow, rightUp, rightLow;
+  @NotLogged TalonFX leftUp, leftLow, rightUp, rightLow;
+  @NotLogged InterpolatingDoubleTreeMap rpsMap;
   double requestedSpeed = 0;
+  double calculatedSpeed;
+  double distanceToHub;
   String command = "";
 
-  @NotLogged
-  private static Launcher singleton;
+  @NotLogged private static Launcher singleton;
 
   /** Creates a new Launcher. */
   public Launcher() {
@@ -85,6 +90,14 @@ public class Launcher extends SubsystemBase {
 
     leftLow.setControl(new Follower(leftUp.getDeviceID(), MotorAlignmentValue.Aligned));
     rightLow.setControl(new Follower(rightUp.getDeviceID(), MotorAlignmentValue.Aligned));
+
+    setupLaunchTable();
+  }
+
+  public void setupLaunchTable()
+  {
+    rpsMap = new InterpolatingDoubleTreeMap();
+    rpsMap.put(2.0, 60.0); //2m = 60rps on flywheel
   }
 
   public void setCommand(String name) {
@@ -119,6 +132,15 @@ public class Launcher extends SubsystemBase {
     if (singleton == null)
       singleton = new Launcher();
     return singleton;
+  }
+
+  public double calculateLaunchSpeed ()
+  {
+    Pose2d currentPose = Drivetrain.getInstance().getPose();
+    Translation2d currentTranslation = currentPose.getTranslation();
+    Translation2d deltaToHub = hubPoint.minus(currentTranslation);
+    distanceToHub = deltaToHub.getNorm();
+    calculatedSpeed = rpsMap.get(distanceToHub);
   }
 
   @Override
