@@ -20,7 +20,7 @@ public class LaunchSequenceDashboard extends SequentialCommandGroup {
 
     SmartDashboard.putNumber("nearShot", Constants.LauncherConstants.launchSpeedNear);
     addCommands(new SpinUpDashboard(),
-        new Launch(Constants.LauncherConstants.launchSpeedNear)); // Import CalcVisionSpinUp + CalcLaunchSpeed?
+        new LaunchDashboard()); // Import CalcVisionSpinUp + CalcLaunchSpeed?
 
   }
 
