@@ -69,7 +69,7 @@ public class Controls {
         operatorController.b().whileTrue(new IntakeMid());
         
         operatorController.rightTrigger().whileTrue(new IntakeFuel());
-        operatorController.rightBumper().whileTrue(new OuttakeFuel());
+        operatorController.leftTrigger().whileTrue(new OuttakeFuel());
         
     }
 
