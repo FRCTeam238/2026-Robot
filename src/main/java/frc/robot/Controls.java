@@ -18,6 +18,7 @@ import frc.robot.commands.IntakeMid;
 import frc.robot.commands.OuttakeFuel;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.SnapToHub;
 import frc.robot.subsystems.Drivetrain;
 
 import static frc.robot.Constants.OperatorConstants.*;
@@ -60,6 +61,8 @@ public class Controls {
         
         leftJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedFar));
         rightJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
+
+        rightJoystick.top().whileTrue(new SnapToHub());
     }
 
     private void bindOperatorButtons() {
@@ -69,7 +72,7 @@ public class Controls {
         operatorController.b().whileTrue(new IntakeMid());
         
         operatorController.rightTrigger().whileTrue(new IntakeFuel());
-        operatorController.rightBumper().whileTrue(new OuttakeFuel());
+        operatorController.leftTrigger().whileTrue(new OuttakeFuel());
         
     }
 
