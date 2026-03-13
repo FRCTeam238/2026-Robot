@@ -101,6 +101,8 @@ public class Drivetrain extends SubsystemBase {
     y = new PIDController(kP, kI, kD);
     theta = new PIDController(kPAngular, kIAngular, kDAngular);
     theta.enableContinuousInput(-Math.PI, Math.PI);
+
+    configureBLine();
   }
 
   public static Drivetrain getInstance() {
