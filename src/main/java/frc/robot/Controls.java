@@ -18,6 +18,7 @@ import frc.robot.commands.IntakeMid;
 import frc.robot.commands.OuttakeFuel;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.SnapToHub;
 import frc.robot.subsystems.Drivetrain;
 
 import static frc.robot.Constants.OperatorConstants.*;
@@ -57,6 +58,8 @@ public class Controls {
         driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
+
+        rightJoystick.button(3).whileTrue(new SnapToHub());
         
         leftJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedFar));
         rightJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));

@@ -5,20 +5,25 @@
 package frc.robot.commands;
 
 import static frc.robot.Constants.DriveConstants.snapToleranceAngle;
-import static frc.robot.Constants.LauncherConstants.kD;
-import static frc.robot.Constants.LauncherConstants.kI;
-import static frc.robot.Constants.LauncherConstants.kP;
+import static frc.robot.Constants.SnapConstants.kD;
+import static frc.robot.Constants.SnapConstants.kI;
+import static frc.robot.Constants.SnapConstants.kP;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.util;
 import frc.robot.subsystems.Drivetrain;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+
+@Logged
 public class SnapToHub extends Command {
 
   private Translation2d hubPoint;
@@ -47,7 +52,7 @@ public class SnapToHub extends Command {
     //double ySpeed = getYSpeed(currentPose);
     double targetRotation = calculateRotationSpeed();
   // getXSpeed and getYSpeed returns distance. How do we translate it to return speed?
-    Drivetrain.getInstance().driveFieldRelative(0, 0, targetRotation);
+    Drivetrain.getInstance().driveFieldRelative(0,0,targetRotation);
     // Assumption: PID returns 0 
     //finished = xSpeed <= snapToleranceDistance && ySpeed <= snapToleranceDistance && targetRotation <= snapToleranceAngle;
     }
@@ -102,6 +107,7 @@ public class SnapToHub extends Command {
     Rotation2d currentRotation = currentPose.getRotation();
     // Rotation2d errorRotation = targetRotation.minus(currentRotation);
     double rotationStep = angleController.calculate(currentRotation.getRadians(), targetRotation.getRadians());
+    SmartDashboard.putNumber("speed", rotationStep);
     return rotationStep;
   }
 
@@ -110,8 +116,11 @@ public class SnapToHub extends Command {
     Translation2d deltaToHub = hubPoint.minus(currentTranslation);
    //double distanceToHub = deltaToHub.getNorm();
     Rotation2d targetRotation = deltaToHub.getAngle();
+    SmartDashboard.putNumber("targetAngle", targetRotation.getRadians());
     Rotation2d currentRotation = currentPose.getRotation();
+    SmartDashboard.putNumber("currentAngle", currentRotation.getRadians());
     Rotation2d errorRotation = targetRotation.minus(currentRotation);
+    SmartDashboard.putNumber("errorAngle", errorRotation.getRadians());
     return errorRotation.getRadians();
   }
 
@@ -124,6 +133,6 @@ public class SnapToHub extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return getErrorRotation(Drivetrain.getInstance().getPose()) <= snapToleranceAngle;
+    return Math.abs(getErrorRotation(Drivetrain.getInstance().getPose())) <= snapToleranceAngle;
   }
 }

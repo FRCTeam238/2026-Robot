@@ -132,7 +132,7 @@ public class Constants {
     }
 
     public static class SnapConstants {
-        public static final double kP = 0;
+        public static final double kP = 5;
         public static final double kI = 0;
         public static final double kD = 0;
         public static final double xRangeToHub = 0; 

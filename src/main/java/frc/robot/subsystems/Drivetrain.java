@@ -87,7 +87,7 @@ public class Drivetrain extends SubsystemBase {
     gyro = new AHRS(NavXComType.kUSB1);
     odometry = new SwerveDrivePoseEstimator(
         kDriveKinematics,
-        gyro.getRotation2d(),
+        gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
             frontLeft.getPosition(),
             frontRight.getPosition(),
@@ -112,7 +112,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     odometry.update(
-        gyro.getRotation2d(),
+        gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
             frontLeft.getPosition(),
             frontRight.getPosition(),
@@ -136,7 +136,7 @@ public class Drivetrain extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose) {
     odometry.resetPosition(
-        gyro.getRotation2d(),
+        gyro.getRotation2d().unaryMinus(),
         new SwerveModulePosition[] {
             frontLeft.getPosition(),
             frontRight.getPosition(),
@@ -253,11 +253,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getHeading() {
-    return gyro.getRotation2d().getDegrees();
+    return gyro.getRotation2d().unaryMinus().getDegrees();
   }
 
   public double getTurnRate() {
-    return gyro.getRate();
+    return -1*gyro.getRate();
   }
 
   public Command choreoCommand(
