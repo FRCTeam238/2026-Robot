@@ -6,6 +6,7 @@ package frc.robot.autos;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.BLinePath;
+import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.SpinUp;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -18,7 +19,7 @@ public class Test90 extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new BLinePath("Test90", true),
-      new SpinUp(30).withTimeout(1)
+      new LaunchSequence(30).withTimeout(1)
     );
   }
 }
