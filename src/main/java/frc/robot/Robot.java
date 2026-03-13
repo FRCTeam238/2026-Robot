@@ -27,6 +27,12 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Vision;
+import frc.robot.autos.ShootAuto;
+import frc.robot.autos.StationaryAuto;
+import frc.robot.autos.Test90;
+import frc.robot.autos.TestL;
+import frc.robot.autos.TestMoveAndTurn;
+import frc.robot.autos.TestStraight;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -42,7 +48,7 @@ public class Robot extends TimedRobot {
   @NotLogged
   private List<String> autoNames;
   @NotLogged
-  private SendableChooser<String> autoChooser;
+  private SendableChooser<Command> autoChooser;
   @NotLogged
   private String lastSelectedAuto;
   @NotLogged
@@ -61,6 +67,15 @@ public class Robot extends TimedRobot {
     intake = Intake.getInstance();
     feeder = Feeder.getInstance();
     controls = Controls.getInstance();
+
+    autoChooser = new SendableChooser<Command>();
+    autoChooser.setDefaultOption("StationaryAuto", new StationaryAuto());
+    autoChooser.addOption("ShootAuto", new ShootAuto());
+    autoChooser.addOption("TestStraight", new TestStraight());
+    autoChooser.addOption("TestL", new TestL());
+    autoChooser.addOption("Test90", new Test90());
+    autoChooser.addOption("TestMoveAndTurn", new TestMoveAndTurn());
+    SmartDashboard.putData(autoChooser);
 
     if (enableVision) {
       vision = Vision.getInstance();
@@ -100,6 +115,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    m_autonomousCommand = autoChooser.getSelected();
     if (m_autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(m_autonomousCommand);
     }
