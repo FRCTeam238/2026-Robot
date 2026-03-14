@@ -5,6 +5,12 @@
 package frc.robot.autos;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.BLinePath;
+import frc.robot.commands.CalcLaunchSequence;
+import frc.robot.commands.DeployIntake;
+import frc.robot.commands.IntakeFuel;
+import frc.robot.commands.SnapToHub;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -14,6 +20,15 @@ public class L_FullBump extends SequentialCommandGroup {
   public L_FullBump() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands();
+    addCommands(
+      new BLinePath("L_Bump", true),
+      new BLinePath("L_FindInMid", false).deadlineFor(new DeployIntake()),
+      new WaitCommand(1),
+      new BLinePath("L_MidApproach", false),
+      new BLinePath("L_MidCollect", false).deadlineFor(new IntakeFuel()),
+      new BLinePath("L_BackFromMid", false),
+      new SnapToHub().withTimeout(1),
+      new CalcLaunchSequence()
+    );
   }
 }

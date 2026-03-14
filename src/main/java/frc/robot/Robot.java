@@ -28,9 +28,11 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Vision;
 import frc.robot.autos.C_ShootDepotSnap;
+import frc.robot.autos.L_FullBump;
 import frc.robot.autos.L_ShootDepotSnap;
 import frc.robot.autos.NormConst_2ft;
 import frc.robot.autos.R_BackAndShoot;
+import frc.robot.autos.R_FullBump;
 import frc.robot.autos.ShootAuto;
 import frc.robot.autos.StationaryAuto;
 import frc.robot.autos.Test90;
@@ -91,6 +93,8 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("L_ShootDepotSnap", new L_ShootDepotSnap());
     autoChooser.addOption("C_ShootDepotSnap", new C_ShootDepotSnap());
     autoChooser.addOption("R_BackAndShoot", new R_BackAndShoot());
+    autoChooser.addOption("L_FullBump", new L_FullBump());
+    autoChooser.addOption("R_FullBump", new R_FullBump());
     SmartDashboard.putData(autoChooser);
 
     if (enableVision) {
