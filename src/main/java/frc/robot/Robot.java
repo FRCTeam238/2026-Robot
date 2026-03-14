@@ -35,9 +35,9 @@ import frc.robot.autos.TestBump;
 import frc.robot.autos.TestL;
 import frc.robot.autos.TestMoveAndTurn;
 import frc.robot.autos.TestStraight;
-import frc.robot.autos.Test_3a_8v_2ft;
-import frc.robot.autos.Test_4a_10v_2ft;
-import frc.robot.autos.Test_4a_10v_3ft;
+import frc.robot.autos.Test_3v_8a_2ft;
+import frc.robot.autos.Test_4v_10a_2ft;
+import frc.robot.autos.Test_4v_10a_3ft;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -82,9 +82,9 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("TestMoveAndTurn", new TestMoveAndTurn());
     autoChooser.addOption("TestBump", new TestBump());
     autoChooser.addOption("NormConst_2ft", new NormConst_2ft());
-    autoChooser.addOption("Test_3v_8a_2ft", new Test_3a_8v_2ft());
-    autoChooser.addOption("Test_4v_10a_2ft", new Test_4a_10v_2ft());
-    autoChooser.addOption("Test_4v_10a_3ft", new Test_4a_10v_3ft());
+    autoChooser.addOption("Test_3v_8a_2ft", new Test_3v_8a_2ft());
+    autoChooser.addOption("Test_4v_10a_2ft", new Test_4v_10a_2ft());
+    autoChooser.addOption("Test_4v_10a_3ft", new Test_4v_10a_3ft());
     SmartDashboard.putData(autoChooser);
 
     if (enableVision) {

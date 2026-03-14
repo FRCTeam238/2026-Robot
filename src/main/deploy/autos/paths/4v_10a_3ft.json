@@ -26,13 +26,6 @@
         "start_ordinal": 0,
         "end_ordinal": 1
       }
-    ],
-    "max_acceleration_meters_per_sec2": [
-      {
-        "value": 10.0,
-        "start_ordinal": 0,
-        "end_ordinal": 1
-      }
     ]
   }
 }

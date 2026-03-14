@@ -101,6 +101,9 @@ public class Launcher extends SubsystemBase {
   {
     rpsMap = new InterpolatingDoubleTreeMap();
     rpsMap.put(2.0, 60.0); //2m = 60rps on flywheel
+    //Offset of Front Bumpers = 41"
+    //rpsMap.put(null, null); // dist= 55" to bumper/ 2.43 meters, speed= 62     Might Not Work?
+    rpsMap.put(2.82, 71.0); // dist= 70" to bumper/ 2.82 meters, speed= 71
   }
 
   public void setCommand(String name) {

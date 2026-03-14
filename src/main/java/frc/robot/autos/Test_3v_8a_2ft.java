@@ -5,24 +5,18 @@
 package frc.robot.autos;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.CalcLaunchSequence;
-import frc.robot.commands.DeployIntake;
-import frc.robot.commands.IntakeMid;
-import frc.robot.commands.Launch;
-import frc.robot.commands.LaunchSequence;
-import frc.robot.subsystems.Feeder;
+import frc.robot.commands.BLinePath;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShootAuto extends SequentialCommandGroup {
-  /** Creates a new ShootAuto. */
-  public ShootAuto() {
+public class Test_3v_8a_2ft extends SequentialCommandGroup {
+  /** Creates a new Test_3a_10v_2ft. */
+  public Test_3v_8a_2ft() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new IntakeMid(),
-      new LaunchSequence(60).withTimeout(4) 
+      new BLinePath("3v_8a_2ft", true)
     );
   }
 }
