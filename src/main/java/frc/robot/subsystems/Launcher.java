@@ -100,10 +100,14 @@ public class Launcher extends SubsystemBase {
   public void setupLaunchTable()
   {
     rpsMap = new InterpolatingDoubleTreeMap();
-    rpsMap.put(2.0, 60.0); //2m = 60rps on flywheel
-    //Offset of Front Bumpers = 41"
-    //rpsMap.put(null, null); // dist= 55" to bumper/ 2.43 meters, speed= 62     Might Not Work?
-    rpsMap.put(2.82, 71.0); // dist= 70" to bumper/ 2.82 meters, speed= 71
+    // Bumper to front offset = 41"
+    rpsMap.put(1.541, 43.0); //Kevin extrapolation
+    rpsMap.put(2.389, 57.0);// dist= 33.375" to bumper/ 1.889 meters, speed= 57
+    rpsMap.put(2.684, 62.0);// dist= 45" to bumper/ 2.184 meters, speed= 62
+    rpsMap.put(2.811, 65.0);// dist= 50" to bumper/ 2.311 meters, speed= 65
+    rpsMap.put(2.97, 68.0);// dist= 56.25" to bumper/ 2.47 meters, speed= 68
+    rpsMap.put(3.24, 71.0); // dist= 67" to bumper/ 2.74 meters, speed= 714
+    rpsMap.put(4.5, 93.0); // Kevin Extrapolation
   }
 
   public void setCommand(String name) {

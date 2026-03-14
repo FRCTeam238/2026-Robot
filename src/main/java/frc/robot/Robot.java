@@ -27,7 +27,10 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Vision;
+import frc.robot.autos.C_ShootDepotSnap;
+import frc.robot.autos.L_ShootDepotSnap;
 import frc.robot.autos.NormConst_2ft;
+import frc.robot.autos.R_BackAndShoot;
 import frc.robot.autos.ShootAuto;
 import frc.robot.autos.StationaryAuto;
 import frc.robot.autos.Test90;
@@ -76,15 +79,18 @@ public class Robot extends TimedRobot {
     autoChooser = new SendableChooser<Command>();
     autoChooser.setDefaultOption("StationaryAuto", new StationaryAuto());
     autoChooser.addOption("ShootAuto", new ShootAuto());
-    autoChooser.addOption("TestStraight", new TestStraight());
-    autoChooser.addOption("TestL", new TestL());
-    autoChooser.addOption("Test90", new Test90());
-    autoChooser.addOption("TestMoveAndTurn", new TestMoveAndTurn());
-    autoChooser.addOption("TestBump", new TestBump());
+    // autoChooser.addOption("TestStraight", new TestStraight());
+    // autoChooser.addOption("TestL", new TestL());
+    // autoChooser.addOption("Test90", new Test90());
+    // autoChooser.addOption("TestMoveAndTurn", new TestMoveAndTurn());
+    // autoChooser.addOption("TestBump", new TestBump());
     autoChooser.addOption("NormConst_2ft", new NormConst_2ft());
     autoChooser.addOption("Test_3v_8a_2ft", new Test_3v_8a_2ft());
     autoChooser.addOption("Test_4v_10a_2ft", new Test_4v_10a_2ft());
     autoChooser.addOption("Test_4v_10a_3ft", new Test_4v_10a_3ft());
+    autoChooser.addOption("L_ShootDepotSnap", new L_ShootDepotSnap());
+    autoChooser.addOption("C_ShootDepotSnap", new C_ShootDepotSnap());
+    autoChooser.addOption("R_BackAndShoot", new R_BackAndShoot());
     SmartDashboard.putData(autoChooser);
 
     if (enableVision) {

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.CalcLaunchSequence;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeFuel;
@@ -62,7 +63,7 @@ public class Controls {
 
         rightJoystick.button(3).whileTrue(new SnapToHub());
         
-        leftJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedFar));
+        leftJoystick.trigger().whileTrue(new CalcLaunchSequence());
         rightJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
 
     }
