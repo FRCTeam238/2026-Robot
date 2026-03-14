@@ -115,6 +115,7 @@ public class Constants {
         public static final double intakePivotRatio = 47.5;
         public static final double intakeDown = 0;
         public static final double intakeMid = .2;
+        public static final double intakeQuarters = .265;
         public static final double intakeUp = .33;
 
         public static final double intakeRollerVoltage = 12; //Used for both Intake and Outtake

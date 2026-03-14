@@ -16,6 +16,7 @@ import frc.robot.commands.DeployIntake;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeFuel;
 import frc.robot.commands.IntakeMid;
+import frc.robot.commands.IntakeQuarters;
 import frc.robot.commands.OuttakeFuel;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.LaunchSequenceDashboard;
@@ -78,8 +79,9 @@ public class Controls {
         
         operatorController.rightTrigger().whileTrue(new IntakeFuel());
         operatorController.leftTrigger().whileTrue(new OuttakeFuel());
+        operatorController.x().whileTrue(new IntakeQuarters());
 
-        operatorController.x().whileTrue(new LaunchSequenceDashboard());
+        //operatorController.x().whileTrue(new LaunchSequenceDashboard());
         
     }
 
