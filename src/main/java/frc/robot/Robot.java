@@ -30,6 +30,7 @@ import frc.robot.subsystems.Vision;
 import frc.robot.autos.ShootAuto;
 import frc.robot.autos.StationaryAuto;
 import frc.robot.autos.Test90;
+import frc.robot.autos.TestBump;
 import frc.robot.autos.TestL;
 import frc.robot.autos.TestMoveAndTurn;
 import frc.robot.autos.TestStraight;
@@ -75,6 +76,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("TestL", new TestL());
     autoChooser.addOption("Test90", new Test90());
     autoChooser.addOption("TestMoveAndTurn", new TestMoveAndTurn());
+    autoChooser.addOption("TestBump", new TestBump());
     SmartDashboard.putData(autoChooser);
 
     if (enableVision) {
