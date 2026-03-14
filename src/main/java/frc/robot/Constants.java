@@ -51,7 +51,7 @@ public class Constants {
         public static final double snapToleranceAngle = Units.degreesToRadians(2);
 
         public static final double translationKP = 5.0;
-        public static final double rotationKP = 3.0;
+        public static final double rotationKP = 5.0;
         public static final double crossTrackKP = 2.0;
     }
 
