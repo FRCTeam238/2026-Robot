@@ -21,6 +21,7 @@ import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.LaunchSequenceDashboard;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.SnapToHub;
+import frc.robot.commands.XLock;
 import frc.robot.subsystems.Drivetrain;
 
 import static frc.robot.Constants.OperatorConstants.*;
@@ -46,9 +47,9 @@ public class Controls {
 
     private Controls() {
         DriverStation.silenceJoystickConnectionWarning(true);
-        driveTypeChooser.addOption("JOYSTICK", DriveType.XBOX);
-        driveTypeChooser.setDefaultOption("XBOX", DriveType.JOYSTICK);
-        SmartDashboard.putData(driveTypeChooser);
+        // driveTypeChooser.addOption("JOYSTICK", DriveType.XBOX);
+        // driveTypeChooser.setDefaultOption("XBOX", DriveType.JOYSTICK);
+        // SmartDashboard.putData(driveTypeChooser);
 
         bindDriverButtons();
         bindOperatorButtons();
@@ -61,7 +62,8 @@ public class Controls {
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
 
-        rightJoystick.button(3).whileTrue(new SnapToHub());
+        //rightJoystick.button(3).whileTrue(new SnapToHub());
+        rightJoystick.button(3).whileTrue(new XLock());
         
         leftJoystick.trigger().whileTrue(new CalcLaunchSequence());
         rightJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
@@ -127,7 +129,8 @@ public class Controls {
     }
 
     public DriveType getDriveType() {
-        driveType = driveTypeChooser.getSelected();
+        // driveType = driveTypeChooser.getSelected();
+        driveType = DriveType.JOYSTICK;
         return driveType;
     }
 

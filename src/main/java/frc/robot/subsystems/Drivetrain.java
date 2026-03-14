@@ -384,4 +384,16 @@ public class Drivetrain extends SubsystemBase {
     
     ((StructArrayLogEntry<Translation2d>) blineLogging.get(pair.getFirst())).append(pair.getSecond());
   }
+
+  public void lockWheels() {
+
+    SwerveModuleState wheelLock[] = {
+      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+    };
+
+    setModuleStates(wheelLock);
+  }
 }
