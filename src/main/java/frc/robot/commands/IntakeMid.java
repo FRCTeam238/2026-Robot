@@ -29,7 +29,10 @@ public class IntakeMid extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    //if(Intake.getInstance().tiltAtTarget()) {     //Will spin the intake rollers indefinetely in this command?
     Intake.getInstance().runIntake(intakeRollerVoltage);
+    //  } 
   }
 
   // Called once the command ends or is interrupted.

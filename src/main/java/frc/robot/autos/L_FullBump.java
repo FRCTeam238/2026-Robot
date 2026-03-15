@@ -21,9 +21,10 @@ public class L_FullBump extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new BLinePath("L_Bump", true),
+      new BLinePath("L_BumpRunnup", true),
+      new BLinePath("L_Bump", false),
       new BLinePath("L_FindInMid", false).deadlineFor(new DeployIntake()),
-      new WaitCommand(1),
+      new WaitCommand(.5),
       new BLinePath("L_MidApproach", false),
       new BLinePath("L_MidCollect", false).deadlineFor(new IntakeFuel()),
       new BLinePath("L_BackFromMid", false),

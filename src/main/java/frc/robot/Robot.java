@@ -80,16 +80,16 @@ public class Robot extends TimedRobot {
 
     autoChooser = new SendableChooser<Command>();
     autoChooser.setDefaultOption("StationaryAuto", new StationaryAuto());
-    autoChooser.addOption("ShootAuto", new ShootAuto());
+    // autoChooser.addOption("ShootAuto", new ShootAuto());
     // autoChooser.addOption("TestStraight", new TestStraight());
     // autoChooser.addOption("TestL", new TestL());
     // autoChooser.addOption("Test90", new Test90());
     // autoChooser.addOption("TestMoveAndTurn", new TestMoveAndTurn());
     // autoChooser.addOption("TestBump", new TestBump());
-    autoChooser.addOption("NormConst_2ft", new NormConst_2ft());
-    autoChooser.addOption("Test_3v_8a_2ft", new Test_3v_8a_2ft());
-    autoChooser.addOption("Test_4v_10a_2ft", new Test_4v_10a_2ft());
-    autoChooser.addOption("Test_4v_10a_3ft", new Test_4v_10a_3ft());
+    // autoChooser.addOption("NormConst_2ft", new NormConst_2ft());
+    // autoChooser.addOption("Test_3v_8a_2ft", new Test_3v_8a_2ft());
+    // autoChooser.addOption("Test_4v_10a_2ft", new Test_4v_10a_2ft());
+    // autoChooser.addOption("Test_4v_10a_3ft", new Test_4v_10a_3ft());
     autoChooser.addOption("L_ShootDepotSnap", new L_ShootDepotSnap());
     autoChooser.addOption("C_ShootDepotSnap", new C_ShootDepotSnap());
     autoChooser.addOption("R_BackAndShoot", new R_BackAndShoot());

@@ -25,13 +25,17 @@ public class L_ShootDepotSnap extends SequentialCommandGroup {
       new BLinePath("L_BackAndShoot", true).withTimeout(3),
       new IntakeMid(),
       new SnapToHub().withTimeout(1),
-      new CalcLaunchSequence().withTimeout(4),
+      new CalcLaunchSequence().withTimeout(2.5),
       new BLinePath("L_Depot_Approach", false).deadlineFor(new DeployIntake()),
-      new WaitCommand(1),
+      new WaitCommand(0.25),
       new BLinePath("Depot_Intake", false).deadlineFor(new IntakeFuel()),
+      new IntakeFuel().withTimeout(1.25),
       new BLinePath("Depot_To_Shoot", false),
       new SnapToHub().withTimeout(1),
-      new CalcLaunchSequence().deadlineFor(new WaitCommand(2.5).andThen(new IntakeMid()))
+      new CalcLaunchSequence().deadlineFor(new WaitCommand(2.5).andThen(new IntakeMid())).withTimeout(5.5),
+      new BLinePath("LineUpBump", false).deadlineFor(new DeployIntake()),
+      new WaitCommand(0.25),
+      new BLinePath("DepotOverBump", false)
     );
   }
 }

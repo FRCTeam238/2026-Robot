@@ -31,7 +31,7 @@ public class IntakeQuarters extends Command {
   @Override
   public void execute() {
 
-    Intake.getInstance().runIntake(intakeRollerVoltage); //Unless interrupted Syntax? 
+    Intake.getInstance().runIntake(intakeRollerVoltage);
   }
 
   // Called once the command ends or is interrupted.

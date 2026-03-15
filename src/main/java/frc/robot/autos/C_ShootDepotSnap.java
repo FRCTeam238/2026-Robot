@@ -29,9 +29,13 @@ public class C_ShootDepotSnap extends SequentialCommandGroup {
       new BLinePath("C_Depot_Approach", false).deadlineFor(new DeployIntake()),
       new WaitCommand(1),
       new BLinePath("Depot_Intake", false).deadlineFor(new IntakeFuel()),
+      new IntakeFuel().withTimeout(1.25),
       new BLinePath("Depot_To_Shoot", false),
       new SnapToHub().withTimeout(1),
-      new CalcLaunchSequence().deadlineFor(new WaitCommand(2.5).andThen(new IntakeMid()))
+      new CalcLaunchSequence().deadlineFor(new WaitCommand(2.5).andThen(new IntakeMid())).withTimeout(5.5),
+      new BLinePath("LineUpBump", false).deadlineFor(new DeployIntake()),
+      new WaitCommand(0.25),
+      new BLinePath("DepotOverBump", false)
     );
   }
 }
