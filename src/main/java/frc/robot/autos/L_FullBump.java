@@ -10,6 +10,7 @@ import frc.robot.commands.BLinePath;
 import frc.robot.commands.CalcLaunchSequence;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.IntakeFuel;
+import frc.robot.commands.IntakeMid;
 import frc.robot.commands.SnapToHub;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -24,12 +25,12 @@ public class L_FullBump extends SequentialCommandGroup {
       new BLinePath("L_BumpRunnup", true),
       new BLinePath("L_Bump", false),
       new BLinePath("L_FindInMid", false).deadlineFor(new DeployIntake()),
-      new WaitCommand(.5),
+      new WaitCommand(.5).deadlineFor(new DeployIntake()),
       new BLinePath("L_MidApproach", false),
       new BLinePath("L_MidCollect", false).deadlineFor(new IntakeFuel()),
       new BLinePath("L_BackFromMid", false),
       new SnapToHub().withTimeout(1),
-      new CalcLaunchSequence()
+      new CalcLaunchSequence().deadlineFor(new WaitCommand(2.5).andThen(new IntakeMid()))
     );
   }
 }

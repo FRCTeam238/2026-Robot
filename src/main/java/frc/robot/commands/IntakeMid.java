@@ -29,17 +29,17 @@ public class IntakeMid extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    //if(Intake.getInstance().tiltAtTarget()) {     //Will spin the intake rollers indefinetely in this command?
+    
+    // while(Intake.getInstance().tiltAtTarget()) {     //Will spin the intake rollers indefinetely in this command?
     Intake.getInstance().runIntake(intakeRollerVoltage);
-    //  } 
+  // } 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     Intake.getInstance().setCommand("");
-    Intake.getInstance().stopRoller();
+    Intake.getInstance().stopRoller(); //Delete if line 33 works?
   }
 
   // Returns true when the command should end.

@@ -18,7 +18,6 @@ public class XLock extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
     Drivetrain.getInstance().setCommand("XLock");
   }
 
@@ -26,14 +25,12 @@ public class XLock extends Command {
   @Override
   public void execute() {
     Drivetrain.getInstance().lockWheels();
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     Drivetrain.getInstance().setCommand("");
-
   }
 
   // Returns true when the command should end.
