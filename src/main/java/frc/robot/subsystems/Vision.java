@@ -53,7 +53,6 @@ public class Vision {
 
         backEstimator = new PhotonPoseEstimator(
                 AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark),
-                PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
                 backCameraLocation
         );
         frontEstimator = new PhotonPoseEstimator(
