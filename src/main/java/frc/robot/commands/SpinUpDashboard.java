@@ -22,7 +22,7 @@ public class SpinUpDashboard extends Command {
   @Override
   public void initialize() {
 
-    double launchSpeed = SmartDashboard.getNumber("nearShot", LauncherConstants.launchSpeedNear);
+    double launchSpeed = SmartDashboard.getNumber("nearShot", LauncherConstants.launchSpeedTest);
     Launcher.getInstance().setSpeed(launchSpeed);
     Launcher.getInstance().setCommand("SpinUpDashboard");
   } 
