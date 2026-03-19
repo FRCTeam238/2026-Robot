@@ -4,8 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -17,10 +19,14 @@ import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.util;
 
+import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.Constants.LauncherConstants.*;
 
 @Logged
@@ -58,9 +64,11 @@ public class Launcher extends SubsystemBase {
     leftUp.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
     leftUp.getClosedLoopError().setUpdateFrequency(50);
     leftUp.getClosedLoopOutput().setUpdateFrequency(50);
+    leftUp.getMotorVoltage().setUpdateFrequency(100);
     leftUp.getSupplyVoltage().setUpdateFrequency(20);
     leftUp.getSupplyCurrent().setUpdateFrequency(20);
     leftUp.getStatorCurrent().setUpdateFrequency(20);
+    leftUp.getMotorVoltage().setUpdateFrequency(100);
     leftUp.optimizeBusUtilization();
 
     leftLow.getConfigurator().apply(config);
@@ -80,6 +88,7 @@ public class Launcher extends SubsystemBase {
     rightUp.getSupplyVoltage().setUpdateFrequency(20);
     rightUp.getSupplyCurrent().setUpdateFrequency(20);
     rightUp.getStatorCurrent().setUpdateFrequency(20);
+    rightUp.getMotorVoltage().setUpdateFrequency(100);
     rightUp.optimizeBusUtilization();
 
     rightLow.getConfigurator().apply(config);
@@ -114,7 +123,9 @@ public class Launcher extends SubsystemBase {
   }
 
   public void stop() {
-    setSpeed(0);
+    requestedSpeed = 0;
+    leftUp.setControl(new NeutralOut());
+    rightUp.setControl(new NeutralOut());
   }
 
   public boolean atSpeed() {
@@ -150,5 +161,29 @@ public class Launcher extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  private final SysIdRoutine m_sysIdRoutine =
+   new SysIdRoutine(
+      new SysIdRoutine.Config(
+         null,        // Use default ramp rate (1 V/s)
+         Volts.of(8), // Reduce dynamic step voltage to 4 to prevent brownout
+         null,        // Use default timeout (10 s)
+                      // Log state with Phoenix SignalLogger class
+         (state) -> SignalLogger.writeString("state", state.toString())
+      ),
+      new SysIdRoutine.Mechanism(
+         (volts) -> leftUp.setControl(new VelocityVoltage((volts.in(Volts)))),
+         null,
+         this
+      )
+   );
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+   return m_sysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+   return m_sysIdRoutine.dynamic(direction);
   }
 }

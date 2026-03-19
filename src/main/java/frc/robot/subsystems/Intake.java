@@ -4,8 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -14,8 +16,13 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.Constants.IntakeConstants.*;
 
 @Logged
@@ -79,6 +86,11 @@ public class Intake extends SubsystemBase {
     // motionMagicConfigs.MotionMagicExpo_kV = tiltExpoKV;
     // motionMagicConfigs.MotionMagicExpo_kA = tiltExpoKA;
 
+    config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = intakeUp;
+    config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = intakeDown;
+    config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+
     tiltMotor.getConfigurator().apply(config);
 
     tiltMotor.getConfigurator().apply(config);
@@ -134,6 +146,30 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+    private final SysIdRoutine m_sysIdRoutine =
+   new SysIdRoutine(
+      new SysIdRoutine.Config(
+         Volts.of(0.1).per(Second),        // Use default ramp rate (1 V/s)
+         Volts.of(1), // Reduce dynamic step voltage to 4 to prevent brownout
+         null,        // Use default timeout (10 s)
+                      // Log state with Phoenix SignalLogger class
+         (state) -> SignalLogger.writeString("state", state.toString())
+      ),
+      new SysIdRoutine.Mechanism(
+         (volts) -> tiltMotor.setControl(new VelocityVoltage((volts.in(Volts)))),
+         null,
+         this
+      )
+   );
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+   return m_sysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+   return m_sysIdRoutine.dynamic(direction);
   }
 
 }
