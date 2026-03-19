@@ -34,12 +34,14 @@ public class SnapToHub extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Drivetrain.getInstance());
     angleController = new PIDController(kP, kI, kD);
+    angleController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     //Get hub coordnates
+    Drivetrain.getInstance().setCommand("SnapToHub");
     hubPoint = util.getHubPoint();
   }
 
@@ -127,6 +129,7 @@ public class SnapToHub extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Drivetrain.getInstance().setCommand("");
     Drivetrain.getInstance().stop();
   }
 
