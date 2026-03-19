@@ -81,7 +81,7 @@ public class Controls {
         operatorController.leftTrigger().whileTrue(new OuttakeFuel());
         operatorController.x().whileTrue(new IntakeQuarters());
 
-        //operatorController.x().whileTrue(new LaunchSequenceDashboard());
+        operatorController.povUp().whileTrue(new LaunchSequenceDashboard());
         
     }
 
