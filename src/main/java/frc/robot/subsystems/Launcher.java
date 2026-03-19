@@ -61,6 +61,7 @@ public class Launcher extends SubsystemBase {
     leftUp.getSupplyVoltage().setUpdateFrequency(20);
     leftUp.getSupplyCurrent().setUpdateFrequency(20);
     leftUp.getStatorCurrent().setUpdateFrequency(20);
+    leftUp.getMotorVoltage().setUpdateFrequency(100);
     leftUp.optimizeBusUtilization();
 
     leftLow.getConfigurator().apply(config);
@@ -80,6 +81,7 @@ public class Launcher extends SubsystemBase {
     rightUp.getSupplyVoltage().setUpdateFrequency(20);
     rightUp.getSupplyCurrent().setUpdateFrequency(20);
     rightUp.getStatorCurrent().setUpdateFrequency(20);
+    rightUp.getMotorVoltage().setUpdateFrequency(100);
     rightUp.optimizeBusUtilization();
 
     rightLow.getConfigurator().apply(config);
