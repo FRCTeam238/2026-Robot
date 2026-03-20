@@ -22,13 +22,13 @@ public class L_FullBump extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new BLinePath("L_BumpRunnup", true),
-      new BLinePath("L_Bump", false),
-      new BLinePath("L_FindInMid", false).deadlineFor(new DeployIntake()),
+      new BLinePath("L_BumpRunnup", false, true),
+      new BLinePath("L_Bump", false, false),
+      new BLinePath("L_FindInMid", false,  false).deadlineFor(new DeployIntake()),
       new WaitCommand(.5).deadlineFor(new DeployIntake()),
-      new BLinePath("L_MidApproach", false),
-      new BLinePath("L_MidCollect", false).deadlineFor(new IntakeFuel()),
-      new BLinePath("L_BackFromMid", false),
+      new BLinePath("L_MidApproach", false, false),
+      new BLinePath("L_MidCollect", false, false).deadlineFor(new IntakeFuel()),
+      new BLinePath("L_BackFromMid", false, false),
       new SnapToHub().withTimeout(1),
       new CalcLaunchSequence().deadlineFor(new WaitCommand(2.5).andThen(new IntakeMid()))
     );

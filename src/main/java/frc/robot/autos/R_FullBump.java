@@ -22,13 +22,13 @@ public class R_FullBump extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new BLinePath("R_BumpRunnup", true),
-      new BLinePath("R_Bump", false), 
-      new BLinePath("R_FindInMid", false).deadlineFor(new DeployIntake()),
+      new BLinePath("R_BumpRunnup", false, true),
+      new BLinePath("R_Bump", false, false), 
+      new BLinePath("R_FindInMid", false, false).deadlineFor(new DeployIntake()),
       new WaitCommand(.5).deadlineFor(new DeployIntake()),
-      new BLinePath("R_MidApproach", false),
-      new BLinePath("R_MidCollect", false).deadlineFor(new IntakeFuel()),
-      new BLinePath("R_BackFromMid", false),
+      new BLinePath("R_MidApproach", false, false),
+      new BLinePath("R_MidCollect", false, false).deadlineFor(new IntakeFuel()),
+      new BLinePath("R_BackFromMid", false, false),
       new SnapToHub().withTimeout(1),
       new CalcLaunchSequence().deadlineFor(new WaitCommand(2.5).andThen(new IntakeMid()))
     );

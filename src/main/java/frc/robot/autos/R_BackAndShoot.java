@@ -18,7 +18,7 @@ public class R_BackAndShoot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new BLinePath("R_BackAndShoot", true).withTimeout(4),
+      new BLinePath("R_BackAndShoot", false, true).withTimeout(4),
       new IntakeMid(),
       new CalcLaunchSequence().withTimeout(10)
     );
