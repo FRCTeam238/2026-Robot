@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Intake;
 
-import static frc.robot.Constants.IntakeConstants.intakeMid;
 import static frc.robot.Constants.IntakeConstants.intakeQuarters;
 import static frc.robot.Constants.IntakeConstants.intakeRollerVoltage;
 

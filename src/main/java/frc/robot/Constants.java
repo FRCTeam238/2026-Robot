@@ -48,8 +48,6 @@ public class Constants {
         public static final double positionTolerance = 0.08;
         public static final double xandyvelocityTolerance = 0.08;
 
-        public static final double snapToleranceAngle = Units.degreesToRadians(2);
-
         public static final double translationKP = 5.0;
         public static final double rotationKP = 5.0;
         public static final double crossTrackKP = 2.0;
@@ -137,8 +135,7 @@ public class Constants {
         public static final double kP = 5;
         public static final double kI = 0;
         public static final double kD = 0;
-        public static final double xRangeToHub = 0; 
-        public static final double yRangeToHub = 0; 
+        public static final double snapToleranceAngle = Units.degreesToRadians(2);
     }
 
     public class VisionConstants {

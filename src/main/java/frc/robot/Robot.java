@@ -14,10 +14,7 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,22 +24,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Vision;
-import frc.robot.autos.C_ShootDepotSnap;
-import frc.robot.autos.L_FullBump;
-import frc.robot.autos.L_ShootDepotSnap;
-import frc.robot.autos.NormConst_2ft;
-import frc.robot.autos.R_BackAndShoot;
-import frc.robot.autos.R_FullBump;
-import frc.robot.autos.ShootAuto;
-import frc.robot.autos.StationaryAuto;
-import frc.robot.autos.Test90;
-import frc.robot.autos.TestBump;
-import frc.robot.autos.TestL;
-import frc.robot.autos.TestMoveAndTurn;
-import frc.robot.autos.TestStraight;
-import frc.robot.autos.Test_3v_8a_2ft;
-import frc.robot.autos.Test_4v_10a_2ft;
-import frc.robot.autos.Test_4v_10a_3ft;
+import frc.robot.autos.*;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -80,16 +62,6 @@ public class Robot extends TimedRobot {
 
     autoChooser = new SendableChooser<Command>();
     autoChooser.setDefaultOption("StationaryAuto", new StationaryAuto());
-    // autoChooser.addOption("ShootAuto", new ShootAuto());
-    // autoChooser.addOption("TestStraight", new TestStraight());
-    // autoChooser.addOption("TestL", new TestL());
-    // autoChooser.addOption("Test90", new Test90());
-    // autoChooser.addOption("TestMoveAndTurn", new TestMoveAndTurn());
-    // autoChooser.addOption("TestBump", new TestBump());
-    // autoChooser.addOption("NormConst_2ft", new NormConst_2ft());
-    // autoChooser.addOption("Test_3v_8a_2ft", new Test_3v_8a_2ft());
-    // autoChooser.addOption("Test_4v_10a_2ft", new Test_4v_10a_2ft());
-    // autoChooser.addOption("Test_4v_10a_3ft", new Test_4v_10a_3ft());
     autoChooser.addOption("L_ShootDepotSnap", new L_ShootDepotSnap());
     autoChooser.addOption("C_ShootDepotSnap", new C_ShootDepotSnap());
     autoChooser.addOption("R_BackAndShoot", new R_BackAndShoot());

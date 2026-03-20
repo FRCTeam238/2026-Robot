@@ -1,11 +1,5 @@
 package frc.robot.commands;
 
-import choreo.Choreo;
-import choreo.trajectory.SwerveSample;
-import choreo.trajectory.Trajectory;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.lib.BLine.Path;

@@ -6,7 +6,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -21,7 +20,6 @@ import frc.robot.commands.OuttakeFuel;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.LaunchSequenceDashboard;
 import frc.robot.commands.RetractIntake;
-import frc.robot.commands.SnapToHub;
 import frc.robot.commands.XLock;
 import frc.robot.subsystems.Drivetrain;
 

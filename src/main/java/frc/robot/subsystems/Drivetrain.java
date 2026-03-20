@@ -2,24 +2,14 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.DriveConstants.*;
 
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.BooleanSupplier;
-
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
 import choreo.trajectory.SwerveSample;
-import choreo.trajectory.Trajectory;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
-import edu.wpi.first.epilogue.logging.EpilogueBackend;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
@@ -36,21 +26,14 @@ import edu.wpi.first.util.datalog.StructArrayLogEntry;
 import edu.wpi.first.util.datalog.StructLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.lib.BLine.FollowPath;
-
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.targeting.PhotonPipelineResult;
 
 /** for swerve */
 @Logged
@@ -262,41 +245,6 @@ public class Drivetrain extends SubsystemBase {
     return -1*gyro.getRate();
   }
 
-  public Command choreoCommand(
-      Trajectory<SwerveSample> trajectory,
-      BooleanSupplier isReversed) {
-
-    var time = new Timer();
-
-    return new FunctionalCommand(
-        time::restart,
-        () -> {// execute
-          driveWithChassisSpeeds(choreoController(trajectory.sampleAt(time.get(), isReversed.getAsBoolean()).get()));
-        },
-        (interrupted) -> {// end
-          time.stop();
-          // if (interrupted) {
-          // driveWithChassisSpeeds(new ChassisSpeeds());
-          // } else {
-          // driveWithChassisSpeeds((choreoController(trajectory.getFinalSample(isReversed.getAsBoolean()).get())));
-          // }
-          driveFromJoysticks(0, 0, 0);
-          ;
-
-          setCommand("");
-        },
-        () -> {// isFinished
-          var distanceFromGoal = getPose().relativeTo(trajectory.getFinalPose(isReversed.getAsBoolean()).get());
-          // is this good?
-          return (time.hasElapsed(trajectory.getTotalTime())
-              && Math.abs(distanceFromGoal.getX()) < positionTolerance
-              && Math.abs(distanceFromGoal.getY()) < positionTolerance
-              && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance);
-          // || (time.hasElapsed(0.08) && detectCrash.getAsBoolean() && hasCrashed());
-        },
-        this);
-  }
-
   public void setDesiredPose(Pose2d pose) {
     desiredPose = pose;
   }
@@ -304,34 +252,6 @@ public class Drivetrain extends SubsystemBase {
   public void stop () {
         driveFieldRelative(0.0,0.0,0.0);
     }
-
-  public boolean hasCrashed() {
-
-    double linearAccelX = gyro.getWorldLinearAccelX();
-    double jerkX = linearAccelX - lastLinearAccelX;
-    lastLinearAccelX = linearAccelX;
-    double linearAccelY = gyro.getWorldLinearAccelY();
-    double jerkY = linearAccelY - lastLinearAccelY;
-    lastLinearAccelY = linearAccelY;
-
-    return Math.abs(jerkX) > 0.75 || Math.abs(jerkY) > 0.75;
-
-  }
-
-  public ChassisSpeeds choreoController(SwerveSample referenceState) {
-    Pose2d currentPose = getPose();
-    desiredPose = referenceState.getPose();
-    double xFF = referenceState.vx;
-    double yFF = referenceState.vy;
-    double rotationFF = referenceState.omega;
-    double xFeedback = x.calculate(currentPose.getX(), referenceState.x);
-    double yFeedback = y.calculate(currentPose.getY(), referenceState.y);
-    double rotationFeedback = theta.calculate(currentPose.getRotation().getRadians(), referenceState.heading);
-
-    ChassisSpeeds retval = ChassisSpeeds.fromFieldRelativeSpeeds(
-        xFF + xFeedback, yFF + yFeedback, rotationFF + rotationFeedback, currentPose.getRotation());
-    return retval;
-  }
 
   public void configureBLine()
   {
