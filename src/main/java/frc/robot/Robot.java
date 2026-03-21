@@ -67,6 +67,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("R_BackAndShoot", new R_BackAndShoot());
     autoChooser.addOption("L_FullBump", new L_FullBump());
     autoChooser.addOption("R_FullBump", new R_FullBump());
+    autoChooser.addOption("OneLineBumpTest", new OneLineBumpTest());
     SmartDashboard.putData(autoChooser);
 
     if (enableVision) {

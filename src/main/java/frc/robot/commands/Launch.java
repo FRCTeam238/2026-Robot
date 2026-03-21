@@ -27,6 +27,7 @@ public class Launch extends Command {
     Launcher.getInstance().setSpeed(launchSpeed);
     Feeder.getInstance().setCommand("LaunchFuel");
     Launcher.getInstance().setCommand("LaunchFuel");
+    System.out.println("Launching:");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
