@@ -136,6 +136,7 @@ public class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
         public static final double snapToleranceAngle = Units.degreesToRadians(2);
+        public static final double snapToleranceAngleNarrow = Units.degreesToRadians(1);
     }
 
     public class VisionConstants {

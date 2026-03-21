@@ -11,6 +11,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.util;
@@ -23,6 +24,7 @@ public class SnapToHub extends Command {
 
   private Translation2d hubPoint;
   private PIDController angleController;
+  private boolean xLock;
 
   /** Creates a new SnapToHub. */
   public SnapToHub() {
@@ -44,10 +46,15 @@ public class SnapToHub extends Command {
   @Override
   public void execute() {
     double targetRotation = calculateRotationSpeed();
-    Drivetrain.getInstance().driveFieldRelative(0,0,targetRotation);
 
-    if(isSnappedToHub()) {
-    Drivetrain.getInstance().lockWheels();
+    if(isSnappedToHubNarrow()) {
+      Drivetrain.getInstance().lockWheels();
+      xLock = true;
+    } else if (isSnappedToHubWide() && xLock) {
+      Drivetrain.getInstance().lockWheels();
+    } else {
+      Drivetrain.getInstance().driveFieldRelative(0,0,targetRotation);
+      xLock = false;
     }
   }
 
@@ -74,8 +81,12 @@ public class SnapToHub extends Command {
     return errorRotation.getRadians();
   }
   
-  public boolean isSnappedToHub() {
+  public boolean isSnappedToHubWide() {
     return Math.abs(getErrorRotation(Drivetrain.getInstance().getPose())) <= snapToleranceAngle;
+  }
+
+  public boolean isSnappedToHubNarrow() {
+    return Math.abs(getErrorRotation(Drivetrain.getInstance().getPose())) <= snapToleranceAngleNarrow;
   }
 
   // Called once the command ends or is interrupted.
@@ -88,6 +99,6 @@ public class SnapToHub extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isSnappedToHub();
+    return DriverStation.isAutonomous() && isSnappedToHubWide();
   }
 }
