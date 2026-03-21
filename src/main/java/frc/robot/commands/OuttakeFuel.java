@@ -37,9 +37,11 @@ public class OuttakeFuel extends Command {
       if (Intake.getInstance().getTargetPosition() == intakeDown) {
         Feeder.getInstance().outtakeLower(-feederSpeed);
       } else {
-        Intake.getInstance().stopRoller();
         Feeder.getInstance().stop();
       }
+    } else {
+      Intake.getInstance().stopRoller();
+      Feeder.getInstance().stop();
     }
   }
 
