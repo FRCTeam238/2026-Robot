@@ -31,14 +31,18 @@ public class OuttakeFuel extends Command {
   @Override
   public void execute() {
 
-    if(Intake.getInstance().getTargetPosition() == intakeDown && Intake.getInstance().tiltAtTarget()) {
+    if (Intake.getInstance().tiltAtTarget()) {
       Intake.getInstance().runIntake(-intakeRollerVoltage);
-      Feeder.getInstance().outtakeLower(-feederSpeed);
+
+      if (Intake.getInstance().getTargetPosition() == intakeDown) {
+        Feeder.getInstance().outtakeLower(-feederSpeed);
+      } else {
+        Feeder.getInstance().stop();
+      }
     } else {
       Intake.getInstance().stopRoller();
       Feeder.getInstance().stop();
     }
-
   }
 
   // Called once the command ends or is interrupted.

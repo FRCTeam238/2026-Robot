@@ -35,7 +35,7 @@ public class SnapToHub extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //Get hub coordnates
+    //Get hub coordinates
     Drivetrain.getInstance().setCommand("SnapToHub");
     hubPoint = util.getHubPoint();
   }
@@ -47,7 +47,7 @@ public class SnapToHub extends Command {
     Drivetrain.getInstance().driveFieldRelative(0,0,targetRotation);
 
     if(isSnappedToHub()) {
-      Drivetrain.getInstance().lockWheels();
+    Drivetrain.getInstance().lockWheels();
     }
   }
 
@@ -73,7 +73,7 @@ public class SnapToHub extends Command {
     SmartDashboard.putNumber("errorAngle", errorRotation.getRadians());
     return errorRotation.getRadians();
   }
-
+  
   public boolean isSnappedToHub() {
     return Math.abs(getErrorRotation(Drivetrain.getInstance().getPose())) <= snapToleranceAngle;
   }
