@@ -20,6 +20,7 @@ import frc.robot.commands.OuttakeFuel;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.LaunchSequenceDashboard;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.SnapToHub;
 import frc.robot.commands.XLock;
 import frc.robot.subsystems.Drivetrain;
 
@@ -61,8 +62,8 @@ public class Controls {
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
 
-        //rightJoystick.button(3).whileTrue(new SnapToHub());
-        rightJoystick.button(3).whileTrue(new XLock());
+        rightJoystick.button(3).whileTrue(new SnapToHub());
+        //rightJoystick.button(3).whileTrue(new XLock());
         
         leftJoystick.trigger().whileTrue(new CalcLaunchSequence());
         rightJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
