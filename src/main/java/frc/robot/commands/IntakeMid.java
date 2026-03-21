@@ -7,7 +7,6 @@ package frc.robot.commands;
 import frc.robot.subsystems.Intake;
 
 import static frc.robot.Constants.IntakeConstants.intakeMid;
-import static frc.robot.Constants.IntakeConstants.intakeRollerVoltage;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -29,17 +28,13 @@ public class IntakeMid extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-    // while(Intake.getInstance().tiltAtTarget()) {     //Will spin the intake rollers indefinetely in this command?
-    Intake.getInstance().runIntake(intakeRollerVoltage);
-  // } 
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     Intake.getInstance().setCommand("");
-    Intake.getInstance().stopRoller(); //Delete if line 33 works?
   }
 
   // Returns true when the command should end.
