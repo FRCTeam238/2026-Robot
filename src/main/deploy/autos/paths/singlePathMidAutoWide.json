@@ -55,14 +55,14 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.1546349906263756,
+      "t_ratio": 0.15463499062637642,
       "lib_key": "startIntake"
     },
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 7.368933877177616,
-        "y_meters": 6.877573235351016,
+        "x_meters": 7.398376489758089,
+        "y_meters": 6.985529481479432,
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {
@@ -72,8 +72,8 @@
     },
     {
       "type": "translation",
-      "x_meters": 7.46298099649636,
-      "y_meters": 4.795559465655641,
+      "x_meters": 7.3844673629484205,
+      "y_meters": 4.118379376304659,
       "intermediate_handoff_radius_meters": 0.2
     },
     {

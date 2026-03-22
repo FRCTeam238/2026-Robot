@@ -62,12 +62,16 @@ public class Robot extends TimedRobot {
 
     autoChooser = new SendableChooser<Command>();
     autoChooser.setDefaultOption("StationaryAuto", new StationaryAuto());
+    autoChooser.addOption("L_FullBump", new FullBump(false));
+    autoChooser.addOption("R_FullBump", new FullBump(true));
+    autoChooser.addOption("L_FullBump_Deep", new FullBumpDeep(false));
+    autoChooser.addOption("R_FullBump_Deep", new FullBumpDeep(true));
+    autoChooser.addOption("L_FullBump_Wide", new FullBumpWide(false));
+    autoChooser.addOption("R_FullBump_Wide", new FullBumpWide(true));
     autoChooser.addOption("L_ShootDepotSnap", new L_ShootDepotSnap());
     autoChooser.addOption("C_ShootDepotSnap", new C_ShootDepotSnap());
     autoChooser.addOption("R_BackAndShoot", new R_BackAndShoot());
-    autoChooser.addOption("L_FullBump", new L_FullBump());
-    autoChooser.addOption("R_FullBump", new R_FullBump());
-    autoChooser.addOption("OneLineBumpTest", new OneLineBumpTest());
+
     SmartDashboard.putData(autoChooser);
 
     if (enableVision) {

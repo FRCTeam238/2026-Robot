@@ -4,33 +4,27 @@
 
 package frc.robot.autos;
 
+import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.BLinePath;
 import frc.robot.commands.CalcLaunchSequence;
-import frc.robot.commands.DeployIntake;
-import frc.robot.commands.IntakeFuel;
 import frc.robot.commands.IntakeMid;
 import frc.robot.commands.SnapToHub;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class R_FullBump extends SequentialCommandGroup {
-  /** Creates a new R_FullBump. */
-  public R_FullBump() {
+public class FullBumpWide extends SequentialCommandGroup {
+  /** Creates a new OneLineBumpTest. */
+  public FullBumpWide(boolean rightSide) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new BLinePath("R_BumpRunnup", false, true),
-      new BLinePath("R_Bump", false, false), 
-      new BLinePath("R_FindInMid", false, false).deadlineFor(new DeployIntake()),
-      new WaitCommand(.5).deadlineFor(new DeployIntake()),
-      new BLinePath("R_MidApproach", false, false),
-      new BLinePath("R_MidCollect", false, false).deadlineFor(new IntakeFuel()),
-      new BLinePath("R_BackFromMid", false, false),
+      new BLinePath("singlePathMidAutoWide", rightSide, true),
       new SnapToHub().withTimeout(1),
-      new CalcLaunchSequence().deadlineFor(new WaitCommand(2.5).andThen(new IntakeMid()))
-    );
+      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(3).andThen(new IntakeMid())).withTimeout(9)),
+      new BLinePath("singlePathFinalBump", rightSide, false)
+      );
   }
 }

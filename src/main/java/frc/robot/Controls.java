@@ -66,8 +66,7 @@ public class Controls {
         //rightJoystick.button(3).whileTrue(new XLock());
         
         leftJoystick.trigger().whileTrue(new CalcLaunchSequence());
-        //rightJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
-        rightJoystick.trigger().whileTrue(new LaunchSequenceDashboard());
+        rightJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
 
     }
 
