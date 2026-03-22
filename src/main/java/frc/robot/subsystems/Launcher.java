@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -122,7 +123,9 @@ public class Launcher extends SubsystemBase {
   }
 
   public void stop() {
-    setSpeed(0);
+    requestedSpeed = 0;
+    leftUp.setControl(new NeutralOut());
+    rightUp.setControl(new NeutralOut());
   }
 
   public boolean atSpeed() {
