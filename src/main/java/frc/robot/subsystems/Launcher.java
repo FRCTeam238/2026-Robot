@@ -102,14 +102,19 @@ public class Launcher extends SubsystemBase {
   public void setupLaunchTable()
   {
     rpsMap = new InterpolatingDoubleTreeMap();
-    // Bumper to front offset = 41"
-    rpsMap.put(1.441, 43.0); //Kevin extrapolation
-    rpsMap.put(2.289, 57.0);// dist= 33.375" to bumper/ 1.889 meters, speed= 57
-    rpsMap.put(2.584, 62.0);// dist= 45" to bumper/ 2.184 meters, speed= 62
-    rpsMap.put(2.711, 65.0);// dist= 50" to bumper/ 2.311 meters, speed= 65
-    rpsMap.put(2.87, 68.0);// dist= 56.25" to bumper/ 2.47 meters, speed= 68
-    rpsMap.put(3.14, 71.0); // dist= 67" to bumper/ 2.74 meters, speed= 714
-    rpsMap.put(4.4, 93.0); // Kevin Extrapolation
+   // PRE UNH SPEED TABLE
+   // key = Meters away from hub
+   // vlaue = rps of flywheels
+    rpsMap.put(1.23825, 43.0); //Minimum distance with minimum speed
+    rpsMap.put(1.54305, 43.0);
+    rpsMap.put(1.84785, 44.0);
+    rpsMap.put(2.15265, 45.8);
+    rpsMap.put(2.45745, 48.5);
+    rpsMap.put(2.76225, 52.5); 
+    rpsMap.put(3.06705, 55.7);
+    rpsMap.put(3.37185, 58.4);
+    rpsMap.put(3.67665, 60.9);
+    rpsMap.put(5.9238, 84.209); //Max distance with Max speed
   }
 
   public void setCommand(String name) {
