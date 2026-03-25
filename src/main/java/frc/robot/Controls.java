@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -20,6 +21,7 @@ import frc.robot.commands.OuttakeFuel;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.commands.LaunchSequenceDashboard;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.SnapToAngle;
 import frc.robot.commands.SnapToHub;
 import frc.robot.commands.XLock;
 import frc.robot.subsystems.Drivetrain;
@@ -63,6 +65,11 @@ public class Controls {
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
 
         rightJoystick.button(3).whileTrue(new SnapToHub());
+        rightJoystick.button(6).whileTrue(new SnapToAngle(new Rotation2d(0)));
+        rightJoystick.button(7).whileTrue(new SnapToAngle(new Rotation2d(3*Math.PI/2)));
+        rightJoystick.button(8).whileTrue(new SnapToAngle(new Rotation2d(Math.PI)));
+        rightJoystick.button(9).whileTrue(new SnapToAngle(new Rotation2d(Math.PI/2)));
+        
         //rightJoystick.button(3).whileTrue(new XLock());
         
         leftJoystick.trigger().whileTrue(new CalcLaunchSequence());
