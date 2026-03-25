@@ -98,13 +98,13 @@ public class Constants {
         public static final double tiltKP = 3; // ReCalc 123.47
         public static final double tiltKI = 0;
         public static final double tiltKD = 0; // ReCalc 9.05
-        public static final double tiltKV = 5;
-        public static final double tiltKS = 0.05;
-        public static final double tiltKA = 0.15;
-        public static final double tiltKG = 0.25;
-        public static final double tiltCruise = 1; // Max velocity is ~116 rev/s.
-        public static final double tiltAcceleration = 3;
-        public static final double tiltJerk = 15;
+        public static final double tiltKV = 5.1;
+        public static final double tiltKS = 0.1;
+        public static final double tiltKA = 0.05;
+        public static final double tiltKG = 0.3;
+        public static final double tiltCruise = 1.5; // Max velocity is ~116 rev/s.
+        public static final double tiltAcceleration = 4;
+        public static final double tiltJerk = 20;
         public static final double tiltTolerance = .05;
 
 
