@@ -115,6 +115,8 @@ public class Launcher extends SubsystemBase {
     rpsMap.put(3.37185, 58.4);
     rpsMap.put(3.67665, 60.9);
     rpsMap.put(5.9238, 84.209); //Max distance with Max speed
+    rpsMap.put(6.00, 92.00);
+    rpsMap.put(50.00, 92.00);
   }
 
   public void setCommand(String name) {
