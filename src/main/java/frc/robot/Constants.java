@@ -78,7 +78,7 @@ public class Constants {
         public static final double kA = 0.51;
         public static final double kS = 0;
 
-        public static final double tolerance = 2.0; // Value is a percentage of requested speed
+        public static final double tolerance = 3.0; // Value is a percentage of requested speed
 
         public static final double launchSpeedNear = 48.5; // Value in RPS
         public static final double launchSpeedFar = 67; //Value in RPS         

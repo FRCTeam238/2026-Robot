@@ -111,9 +111,9 @@ public class Launcher extends SubsystemBase {
     rpsMap.put(2.15265, 45.8);
     rpsMap.put(2.45745, 48.5);
     rpsMap.put(2.76225, 52.5); 
-    rpsMap.put(3.06705, 55.7);
-    rpsMap.put(3.37185, 58.4);
-    rpsMap.put(3.67665, 60.9);
+    rpsMap.put(3.06705, 55.2);
+    rpsMap.put(3.37185, 57.9);
+    rpsMap.put(3.67665, 60.4);
     rpsMap.put(5.9238, 84.209); //Max distance with Max speed
     rpsMap.put(6.00, 92.00);
     rpsMap.put(50.00, 92.00);

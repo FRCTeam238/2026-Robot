@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.BLinePath;
 import frc.robot.commands.CalcLaunchSequence;
+import frc.robot.commands.IntakeFuel;
 import frc.robot.commands.IntakeMid;
 import frc.robot.commands.SnapToHub;
 
@@ -23,7 +24,7 @@ public class FullBumpDeep extends SequentialCommandGroup {
     addCommands(
       new BLinePath("singlePathMidAutoDeep", rightSide, true),
       new SnapToHub().withTimeout(1),
-      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(3).andThen(new IntakeMid())).withTimeout(9)),
+      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(3).andThen(new IntakeMid()).andThen(new IntakeFuel())).withTimeout(9)),
       new BLinePath("singlePathFinalBump", rightSide, false)
       );
   }

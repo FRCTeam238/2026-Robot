@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import static frc.robot.Constants.IntakeConstants.intakeRollerVoltage;
+import static frc.robot.Constants.IntakeConstants.intakeUp;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
@@ -26,6 +27,11 @@ public class IntakeFuel extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    if(Intake.getInstance().getTargetPosition() == intakeUp) {
+        Intake.getInstance().stopRoller();
+      }
+
     if (Intake.getInstance().tiltAtTarget()) {
       Intake.getInstance().runIntake(intakeRollerVoltage);
     } else {

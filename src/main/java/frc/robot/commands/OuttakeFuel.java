@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import static frc.robot.Constants.FeederConstants.feederSpeed;
 import static frc.robot.Constants.IntakeConstants.intakeDown;
+import static frc.robot.Constants.IntakeConstants.intakeUp;
 import static frc.robot.Constants.IntakeConstants.intakeRollerVoltage;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,6 +35,10 @@ public class OuttakeFuel extends Command {
     if (Intake.getInstance().tiltAtTarget()) {
       Intake.getInstance().runIntake(-intakeRollerVoltage);
 
+      if(Intake.getInstance().getTargetPosition() == intakeUp) {
+        Intake.getInstance().stopRoller(); 
+      }
+
       if (Intake.getInstance().getTargetPosition() == intakeDown) {
         Feeder.getInstance().outtakeLower(-feederSpeed);
       } else {
@@ -41,7 +46,7 @@ public class OuttakeFuel extends Command {
       }
     } else {
       Intake.getInstance().stopRoller();
-      Feeder.getInstance().stop();
+      Feeder.getInstance().stop(); 
     }
   }
 
