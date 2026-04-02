@@ -169,4 +169,12 @@ public class Launcher extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  public double getStatorCurrent(boolean isLeft){
+    if (isLeft){
+      return leftUp.getStatorCurrent().getValueAsDouble();
+    } else {
+      return rightUp.getStatorCurrent().getValueAsDouble();
+    }
+  }
 }
