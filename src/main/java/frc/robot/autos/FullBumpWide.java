@@ -24,7 +24,7 @@ public class FullBumpWide extends SequentialCommandGroup {
     addCommands(
       new BLinePath("singlePathMidAutoWide", rightSide, true),
       new SnapToHub().withTimeout(1),
-      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(3).andThen(new IntakeMid()).andThen(new IntakeFuel())).withTimeout(8.5)),
+      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(2).andThen(new IntakeMid()).andThen(new IntakeFuel()))),
       new BLinePath("singlePathFinalBump", rightSide, false)
       );
   }

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import static frc.robot.Constants.LauncherConstants.fuelDetectCurrent;
+import static frc.robot.Constants.LauncherConstants.minTime;
 import static frc.robot.Constants.LauncherConstants.stopTime;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -18,11 +19,13 @@ import frc.robot.subsystems.Feeder;
 public class CalcVisionLaunchSpeed extends Command {
 
   private Timer timer;
+  private Timer totalTime;
 
   /** Creates a new Launch. */
   public CalcVisionLaunchSpeed() {
     addRequirements(Launcher.getInstance(), Feeder.getInstance());
       timer = new Timer();
+      totalTime = new Timer();
   }
 
   // Called when the command is initially scheduled.
@@ -32,6 +35,7 @@ public class CalcVisionLaunchSpeed extends Command {
     Feeder.getInstance().setCommand("LaunchFuel");
     Launcher.getInstance().setCommand("LaunchFuel");
     timer.restart();
+    totalTime.restart();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -58,6 +62,6 @@ public class CalcVisionLaunchSpeed extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return DriverStation.isAutonomous() && (timer.get() > stopTime);
+    return DriverStation.isAutonomous() && (timer.get() > stopTime) && (totalTime.get() > minTime);
   }
 }

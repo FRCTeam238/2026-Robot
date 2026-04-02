@@ -86,6 +86,7 @@ public class Constants {
 
         public static final double stopTime = 0.5; // Value in Seconds
         public static final double fuelDetectCurrent = 20; //Value in Amps
+        public static final double minTime = 3; //Value in seconds
     }
 
     public class IntakeConstants {
