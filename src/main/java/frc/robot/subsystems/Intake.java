@@ -131,6 +131,10 @@ public class Intake extends SubsystemBase {
     return singleton;
   }
 
+  public void setTiltVoltage(){
+      tiltMotor.setVoltage(intakeTiltVoltage);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

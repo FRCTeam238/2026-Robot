@@ -33,6 +33,7 @@ public class DeployIntake extends Command {
   public void end(boolean interrupted) {
     Intake.getInstance().stopTilt();
     Intake.getInstance().setCommand("");
+    Intake.getInstance().setTiltVoltage();
   }
 
   // Returns true when the command should end.
