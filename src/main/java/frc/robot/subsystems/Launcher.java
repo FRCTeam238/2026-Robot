@@ -139,11 +139,11 @@ public class Launcher extends SubsystemBase {
     if (leftUp.getClosedLoopReference().getValueAsDouble() < 1)
       return false;
     double leftError = leftUp.getClosedLoopError().getValueAsDouble();
-    if (Math.abs(leftError / requestedSpeed * 100) > tolerance) {
+    if (Math.abs(leftError / requestedSpeed * 100) > tolerance && leftError > 0) {
       return false;
     }
     double rightError = rightUp.getClosedLoopError().getValueAsDouble();
-    if (Math.abs(rightError / requestedSpeed * 100) > tolerance) {
+    if (Math.abs(rightError / requestedSpeed * 100) > tolerance && rightError > 0) {
       return false;
     }
     return true;

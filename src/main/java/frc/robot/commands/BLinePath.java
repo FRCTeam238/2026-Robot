@@ -16,7 +16,7 @@ public class BLinePath extends SequentialCommandGroup {
         FollowPath.registerEventTrigger("deployIntake", new DeployIntake());
         FollowPath.registerEventTrigger("startIntake", new IntakeFuel());
         FollowPath.registerEventTrigger("stopIntake", new InstantCommand(() -> Intake.getInstance().stopRoller(), Intake.getInstance()));
-        FollowPath.registerEventTrigger("spinUp", new SpinUp(50));
+        FollowPath.registerEventTrigger("spinUp", new SpinUp(45));
         if (resetPosition) {
             drivetrain.blineBuilder.withPoseReset(drivetrain::resetOdometry);
         } else
