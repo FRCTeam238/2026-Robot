@@ -24,6 +24,15 @@ public class util {
         //Use info to translate the target point
         
     }
+
+    public static double getPassDistance(){
+        //Get x constants from red or blue
+        Optional <Alliance> currentAlliance = DriverStation.getAlliance();
+        if(currentAlliance.isPresent() && currentAlliance.get() == Alliance.Blue ) {
+            return Constants.VisionConstants.passBlue;
+        }
+        return Constants.VisionConstants.passRed;
+    }
 }
 
 

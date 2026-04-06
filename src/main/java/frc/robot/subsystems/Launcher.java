@@ -165,6 +165,15 @@ public class Launcher extends SubsystemBase {
     return calculatedSpeed;
   }
 
+  public double calculatePassSpeed()
+  {
+    Pose2d currentPose = Drivetrain.getInstance().getPose();
+    double currentX = currentPose.getTranslation().getX();
+    double distanceToZone = Math.abs(util.getPassDistance() - currentX);
+    calculatedSpeed = rpsMap.get(distanceToZone);
+    return calculatedSpeed;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
