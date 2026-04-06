@@ -4,7 +4,8 @@
 
 package frc.robot.commands;
 
-import static frc.robot.Constants.FeederConstants.feederSpeed;
+import static frc.robot.Constants.FeederConstants.feederSpeedLow;
+import static frc.robot.Constants.FeederConstants.feederSpeedUpper;
 import static frc.robot.Constants.IntakeConstants.intakeDown;
 import static frc.robot.Constants.IntakeConstants.intakeUp;
 import static frc.robot.Constants.IntakeConstants.intakeRollerVoltage;
@@ -40,7 +41,8 @@ public class OuttakeFuel extends Command {
       }
 
       if (Intake.getInstance().getTargetPosition() == intakeDown) {
-        Feeder.getInstance().outtakeLower(-feederSpeed);
+        Feeder.getInstance().outtakeLower(-feederSpeedUpper);
+        Feeder.getInstance().outtakeLower(-feederSpeedLow);
       } else {
         Feeder.getInstance().stop();
       }

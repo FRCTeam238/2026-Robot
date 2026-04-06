@@ -125,13 +125,13 @@ public class Launcher extends SubsystemBase {
   public void setSpeed(double speed) {
     requestedSpeed = speed;
     leftUp.setControl(new VelocityVoltage(speed));
-    rightUp.setControl(new VelocityVoltage(speed));
+    
   }
 
   public void stop() {
     requestedSpeed = 0;
     leftUp.setControl(new NeutralOut());
-    rightUp.setControl(new NeutralOut());
+
   }
 
   public boolean atSpeed() {
@@ -139,10 +139,6 @@ public class Launcher extends SubsystemBase {
       return false;
     double leftError = leftUp.getClosedLoopError().getValueAsDouble();
     if (Math.abs(leftError / requestedSpeed * 100) > tolerance) {
-      return false;
-    }
-    double rightError = rightUp.getClosedLoopError().getValueAsDouble();
-    if (Math.abs(rightError / requestedSpeed * 100) > tolerance) {
       return false;
     }
     return true;
@@ -173,7 +169,7 @@ public class Launcher extends SubsystemBase {
     if (isLeft){
       return leftUp.getStatorCurrent().getValueAsDouble();
     } else {
-      return rightUp.getStatorCurrent().getValueAsDouble();
+      return rightUp.getStatorCurrent().getValueAsDouble(); 
     }
   }
 }

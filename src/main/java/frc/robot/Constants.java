@@ -56,10 +56,12 @@ public class Constants {
     public class FeederConstants {
         public static int upperMotorID = 5;
         public static int lowerMotorID = 4;
-        public static double statorCurrentLimit = 60.0;
-        public static double supplyCurrentLimit = 40.0;
-
-        public static double feederSpeed = 10; //Used for both Intake and Outtake, in Voltage
+        public static double statorCurrentLimitUpper = 60.0;
+        public static double statorCurrentLimitLow = 60.0;
+        public static double supplyCurrentLimitUpper = 40.0;
+        public static double supplyCurrentLimitLow = 40.0;
+        public static double feederSpeedUpper = 10; //Used for both Intake and Outtake, in Voltage
+        public static double feederSpeedLow = 10;
     }
 
     public class LauncherConstants {
@@ -121,7 +123,7 @@ public class Constants {
         public static final double intakeQuarters = .265;
         public static final double intakeUp = .33;
 
-        public static final double intakeRollerVoltage = 12; //Used for both Intake and Outtake
+        public static final double intakeRollerVoltage = 9; //Used for both Intake and Outtake
         public static final double intakeTiltVoltage = -0.25; //Adds voltage downwards to limit the pop up when intaking
     }
 

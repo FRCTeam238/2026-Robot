@@ -23,7 +23,8 @@ public class Launch extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Feeder.getInstance().setSpeed(FeederConstants.feederSpeed); //Used for both Intake and Outtake
+    Feeder.getInstance().setSpeed(FeederConstants.feederSpeedUpper); //Used for both Intake and Outtake
+    Feeder.getInstance().setSpeed(FeederConstants.feederSpeedLow);
     Launcher.getInstance().setSpeed(launchSpeed);
     Feeder.getInstance().setCommand("LaunchFuel");
     Launcher.getInstance().setCommand("LaunchFuel");

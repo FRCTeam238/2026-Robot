@@ -31,7 +31,8 @@ public class CalcVisionLaunchSpeed extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Feeder.getInstance().setSpeed(FeederConstants.feederSpeed); //Used for both Intake and Outtake
+    Feeder.getInstance().setSpeed(FeederConstants.feederSpeedUpper); //Used for both Intake and Outtake
+    Feeder.getInstance().setSpeed(FeederConstants.feederSpeedLow);
     Feeder.getInstance().setCommand("LaunchFuel");
     Launcher.getInstance().setCommand("LaunchFuel");
     timer.restart();
