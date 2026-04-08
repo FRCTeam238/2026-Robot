@@ -29,7 +29,8 @@ public class LaunchDashboard extends Command {
 
     double launchSpeed = SmartDashboard.getNumber("nearShot", Constants.LauncherConstants.launchSpeedTest);
 
-    Feeder.getInstance().setSpeed(FeederConstants.feederSpeedUpper); // Used for both Intake and Outtake
+    Feeder.getInstance().setUpperSpeed(FeederConstants.feederSpeedUpper); // Used for both Intake and Outtake
+    Feeder.getInstance().setLowerSpeed(FeederConstants.feederSpeedLow);
     Launcher.getInstance().setSpeed(launchSpeed);
     Feeder.getInstance().setCommand("LaunchFuel");
     Launcher.getInstance().setCommand("LaunchFuel");

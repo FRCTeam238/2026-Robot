@@ -32,12 +32,10 @@ public class Feeder extends SubsystemBase {
 
     var config = new TalonFXConfiguration();
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     config.CurrentLimits.StatorCurrentLimit = statorCurrentLimitUpper;
-    config.CurrentLimits.StatorCurrentLimit = statorCurrentLimitLow;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     config.CurrentLimits.SupplyCurrentLimit = supplyCurrentLimitUpper;
-    config.CurrentLimits.SupplyCurrentLimit = supplyCurrentLimitLow;
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
     upperMotor.getConfigurator().apply(config);
     upperMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
@@ -47,6 +45,8 @@ public class Feeder extends SubsystemBase {
     upperMotor.optimizeBusUtilization();
 
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    config.CurrentLimits.StatorCurrentLimit = statorCurrentLimitLow;
+    config.CurrentLimits.SupplyCurrentLimit = supplyCurrentLimitLow;
     lowerMotor.getConfigurator().apply(config);
     lowerMotor.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
     lowerMotor.getSupplyVoltage().setUpdateFrequency(20);
@@ -61,6 +61,14 @@ public class Feeder extends SubsystemBase {
 
   public void setSpeed(double speed) {
     upperMotor.setVoltage(speed);
+    lowerMotor.setVoltage(speed);
+  }
+
+  public void setUpperSpeed(double speed) {
+    upperMotor.setVoltage(speed);
+  }
+
+  public void setLowerSpeed(double speed) {
     lowerMotor.setVoltage(speed);
   }
 
