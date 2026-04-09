@@ -138,7 +138,7 @@ public class Launcher extends SubsystemBase {
     if (leftUp.getClosedLoopReference().getValueAsDouble() < 1)
       return false;
     double leftError = leftUp.getClosedLoopError().getValueAsDouble();
-    if (Math.abs(leftError / requestedSpeed * 100) > tolerance) {
+    if (Math.abs(leftError / requestedSpeed * 100) > tolerance && leftError > 0) {
       return false;
     }
     return true;
@@ -157,6 +157,15 @@ public class Launcher extends SubsystemBase {
     Translation2d deltaToHub = util.getHubPoint().minus(currentTranslation);
     distanceToHub = deltaToHub.getNorm();
     calculatedSpeed = rpsMap.get(distanceToHub);
+    return calculatedSpeed;
+  }
+
+  public double calculatePassSpeed()
+  {
+    Pose2d currentPose = Drivetrain.getInstance().getPose();
+    double currentX = currentPose.getTranslation().getX();
+    double distanceToZone = Math.abs(util.getPassDistance() - currentX);
+    calculatedSpeed = rpsMap.get(distanceToZone);
     return calculatedSpeed;
   }
 

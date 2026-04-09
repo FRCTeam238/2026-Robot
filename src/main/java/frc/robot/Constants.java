@@ -149,6 +149,8 @@ public class Constants {
     public class VisionConstants {
         public static Translation2d hubRedPoint = new Translation2d(11.901,4.021); //Coordnites in Meters
         public static Translation2d hubBluePoint = new Translation2d(4.637,4.021);
+        public static double passBlue = Units.inchesToMeters(120); // X distance in meters
+        public static double passRed = Units.inchesToMeters(650.9 - 120); // used "- 120" for if we want to change how close we shoot to the wall
       
         public static boolean filterByDistanceFromOdometryPose = false;
 
