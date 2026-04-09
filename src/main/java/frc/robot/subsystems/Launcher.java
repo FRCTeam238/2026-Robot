@@ -73,7 +73,6 @@ public class Launcher extends SubsystemBase {
     leftLow.getStatorCurrent().setUpdateFrequency(20);
     leftLow.optimizeBusUtilization();
 
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     rightUp.getConfigurator().apply(config);
     rightUp.getVelocity().setUpdateFrequency(50); // Set update frequency to 50 Hert, 20ms
     rightUp.getClosedLoopError().setUpdateFrequency(50);
@@ -81,7 +80,6 @@ public class Launcher extends SubsystemBase {
     rightUp.getSupplyVoltage().setUpdateFrequency(20);
     rightUp.getSupplyCurrent().setUpdateFrequency(20);
     rightUp.getStatorCurrent().setUpdateFrequency(20);
-    rightUp.getMotorVoltage().setUpdateFrequency(100);
     rightUp.optimizeBusUtilization();
 
     rightLow.getConfigurator().apply(config);
@@ -94,7 +92,8 @@ public class Launcher extends SubsystemBase {
     rightLow.optimizeBusUtilization();
 
     leftLow.setControl(new Follower(leftUp.getDeviceID(), MotorAlignmentValue.Aligned));
-    rightLow.setControl(new Follower(rightUp.getDeviceID(), MotorAlignmentValue.Aligned));
+    rightLow.setControl(new Follower(leftUp.getDeviceID(), MotorAlignmentValue.Opposed));
+    rightUp.setControl(new Follower(leftUp.getDeviceID(), MotorAlignmentValue.Opposed));
 
     setupLaunchTable();
   }
@@ -126,13 +125,13 @@ public class Launcher extends SubsystemBase {
   public void setSpeed(double speed) {
     requestedSpeed = speed;
     leftUp.setControl(new VelocityVoltage(speed));
-    rightUp.setControl(new VelocityVoltage(speed));
+    
   }
 
   public void stop() {
     requestedSpeed = 0;
     leftUp.setControl(new NeutralOut());
-    rightUp.setControl(new NeutralOut());
+
   }
 
   public boolean atSpeed() {
@@ -140,10 +139,6 @@ public class Launcher extends SubsystemBase {
       return false;
     double leftError = leftUp.getClosedLoopError().getValueAsDouble();
     if (Math.abs(leftError / requestedSpeed * 100) > tolerance && leftError > 0) {
-      return false;
-    }
-    double rightError = rightUp.getClosedLoopError().getValueAsDouble();
-    if (Math.abs(rightError / requestedSpeed * 100) > tolerance && rightError > 0) {
       return false;
     }
     return true;
@@ -183,7 +178,7 @@ public class Launcher extends SubsystemBase {
     if (isLeft){
       return leftUp.getStatorCurrent().getValueAsDouble();
     } else {
-      return rightUp.getStatorCurrent().getValueAsDouble();
+      return rightUp.getStatorCurrent().getValueAsDouble(); 
     }
   }
 }
