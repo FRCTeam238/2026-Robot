@@ -104,18 +104,22 @@ public class Launcher extends SubsystemBase {
    // PRE UNH SPEED TABLE
    // key = Meters away from hub
    // vlaue = rps of flywheels
-    rpsMap.put(1.23825, 43.0); //Minimum distance with minimum speed
-    rpsMap.put(1.54305, 43.0);
-    rpsMap.put(1.84785, 44.0);
-    rpsMap.put(2.15265, 45.8);
-    rpsMap.put(2.45745, 48.5);
-    rpsMap.put(2.76225, 52.5); 
-    rpsMap.put(3.06705, 55.2);
-    rpsMap.put(3.37185, 57.9);
-    rpsMap.put(3.67665, 60.4);
-    rpsMap.put(5.9238, 84.209); //Max distance with Max speed
-    rpsMap.put(6.00, 92.00);
-    rpsMap.put(50.00, 92.00);
+    rpsMap.put(1.543, 40.0); //Minimum distance with minimum speed
+    rpsMap.put(1.848, 41.0);
+    rpsMap.put(2.153, 43.0);
+    rpsMap.put(2.457, 45.75);
+    rpsMap.put(2.762, 48.5);
+    rpsMap.put(3.067, 50.5); 
+    rpsMap.put(3.372, 52.5);
+    rpsMap.put(3.677, 53.5);
+    rpsMap.put(3.981, 55.5);
+    rpsMap.put(4.286, 57.5);
+
+    rpsMap.put(5.048, 60.0);
+    rpsMap.put(5.811, 63.0);
+    rpsMap.put(6.636, 67.0);
+    rpsMap.put(7.55, 72.0);
+    rpsMap.put(8.465, 78.0);
   }
 
   public void setCommand(String name) {

@@ -77,6 +77,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("bumpTest-7a", new bumpTest7a());
     autoChooser.addOption("bumpTest-9a", new bumpTest9a());
     autoChooser.addOption("bumpTest-11a", new bumpTest11a());
+    autoChooser.addOption("intake_test", new IntakeTest());
 
     SmartDashboard.putData(autoChooser);
 

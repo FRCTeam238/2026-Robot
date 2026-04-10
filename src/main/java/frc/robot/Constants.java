@@ -123,7 +123,7 @@ public class Constants {
         public static final double intakeQuarters = .265;
         public static final double intakeUp = .33;
 
-        public static final double intakeRollerVoltage = 9; //Used for both Intake and Outtake
+        public static final double intakeRollerVoltage = 12; //Used for both Intake and Outtake
         public static final double intakeTiltVoltage = -0.25; //Adds voltage downwards to limit the pop up when intaking
     }
 
