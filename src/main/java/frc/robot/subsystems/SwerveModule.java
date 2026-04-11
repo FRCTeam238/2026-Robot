@@ -139,8 +139,8 @@ public class SwerveModule {
     public static double turnD = 0.05;
     public static double turnFF = 0;
 
-    public static int driveStatorCurrentLimit = 80;
-    public static int driveSupplyCurrentLimit = 50;
+    public static int driveStatorCurrentLimit = 100;
+    public static int driveSupplyCurrentLimit = 55;
     public static double driveP = 5;
     public static double driveI = 0;
     public static double driveD = 0.001;
