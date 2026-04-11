@@ -70,14 +70,9 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("R_FullBump_Wide", new FullBumpWide(true));
     autoChooser.addOption("L_ShootDepotSnap", new L_ShootDepotSnap());
     autoChooser.addOption("C_ShootDepotSnap", new C_ShootDepotSnap());
-    autoChooser.addOption("R_BackAndShoot", new R_BackAndShoot());
-    autoChooser.addOption("bumpTest-3v", new bumpTest3v());
-    autoChooser.addOption("bumpTest-3.5v", new bumpTest3_5v());
-    autoChooser.addOption("bumpTest-4v", new bumpTest4v());
-    autoChooser.addOption("bumpTest-7a", new bumpTest7a());
-    autoChooser.addOption("bumpTest-9a", new bumpTest9a());
-    autoChooser.addOption("bumpTest-11a", new bumpTest11a());
-    autoChooser.addOption("intake_test", new IntakeTest());
+    autoChooser.addOption("L_TwoSwipe", new TwoSwipe(false));
+    autoChooser.addOption("L-BackAndForth", new BackAndForth(false));
+    autoChooser.addOption("L-TripleNZ", new TripleNZ(false));
 
     SmartDashboard.putData(autoChooser);
 

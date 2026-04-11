@@ -104,7 +104,7 @@ public class Launcher extends SubsystemBase {
    // PRE DCMP SPEED TABLE
    // key = Meters away from hub
    // vlaue = rps of flywheels
-    rpsMap.put(1, 40);
+    rpsMap.put(1.0, 40.0);
     rpsMap.put(1.543, 40.0); //Minimum distance with minimum speed
     rpsMap.put(1.848, 41.0);
     rpsMap.put(2.153, 43.0);
@@ -121,8 +121,8 @@ public class Launcher extends SubsystemBase {
     rpsMap.put(6.636, 67.0);
     rpsMap.put(7.55, 72.0);
     rpsMap.put(8.465, 78.0);
-    rpsMap.put(19.5, 90); //extrapolation
-    rpsMap.put(50, 90);
+    rpsMap.put(19.5, 90.0); //extrapolation
+    rpsMap.put(50.0, 90.0);
   }
 
   public void setCommand(String name) {
