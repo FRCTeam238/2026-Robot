@@ -22,9 +22,10 @@ public class BackAndForth extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new BLinePath("Deep_BackAndForth_deeper",rightSide, true),
+      new BLinePath("BackAndForth",rightSide, true),
       new SnapToHub().withTimeout(1),
-      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(2).andThen(new IntakeMid()).andThen(new IntakeFuel())))
-    );
+      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(2).andThen(new IntakeMid()).andThen(new IntakeFuel()))),
+      new BLinePath("BackAndForth_Return",rightSide,false)
+      );
   }
 }

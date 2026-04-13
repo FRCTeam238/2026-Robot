@@ -22,9 +22,10 @@ public class TripleNZ extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new BLinePath("TripleNZ_Testable",rightSide, true),
+      new BLinePath("TripleNZ",rightSide, true),
       new SnapToHub().withTimeout(1),
-      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(2).andThen(new IntakeMid()).andThen(new IntakeFuel())))
+      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(2).andThen(new IntakeMid()).andThen(new IntakeFuel()))),
+      new BLinePath("TripleNZ_Return", rightSide, false)
     );
   }
 }
