@@ -61,18 +61,19 @@ public class Robot extends TimedRobot {
     controls = Controls.getInstance();
 
     autoChooser = new SendableChooser<Command>();
-    autoChooser.setDefaultOption("StationaryAuto", new StationaryAuto());
+    autoChooser.addOption("L_TwoSwipe", new TwoSwipe(false));
+    autoChooser.addOption("R_TwoSwipe", new TwoSwipe(true));
+    autoChooser.addOption("L_BackAndForth", new BackAndForth(false));
+    autoChooser.addOption("R_BackAndForth", new BackAndForth(true));
+    autoChooser.addOption("L_TripleNZ", new TripleNZ(false));
     autoChooser.addOption("L_FullBump", new FullBump(false));
     autoChooser.addOption("R_FullBump", new FullBump(true));
     autoChooser.addOption("L_FullBump_Deep", new FullBumpDeep(false));
     autoChooser.addOption("R_FullBump_Deep", new FullBumpDeep(true));
     autoChooser.addOption("L_FullBump_Wide", new FullBumpWide(false));
     autoChooser.addOption("R_FullBump_Wide", new FullBumpWide(true));
-    autoChooser.addOption("L_ShootDepotSnap", new L_ShootDepotSnap());
     autoChooser.addOption("C_ShootDepotSnap", new C_ShootDepotSnap());
-    autoChooser.addOption("L_TwoSwipe", new TwoSwipe(false));
-    autoChooser.addOption("L-BackAndForth", new BackAndForth(false));
-    autoChooser.addOption("L-TripleNZ", new TripleNZ(false));
+
 
     SmartDashboard.putData(autoChooser);
 
