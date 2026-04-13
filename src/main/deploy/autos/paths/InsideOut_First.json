@@ -1,0 +1,134 @@
+{
+  "path_elements": [
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 3.41,
+        "y_meters": 5.72,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -0.7853981633974483,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.1644464348270987,
+      "lib_key": "deployIntake"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.7665299086272389,
+      "lib_key": "startIntake"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 5.942125672984357,
+        "y_meters": 5.72,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -0.7853981633974483,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 6.470589195838781,
+        "y_meters": 4.528870503597121,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 0.0,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.806245753029279,
+        "y_meters": 4.4847072532315835,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5707963267948966,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.473262493706091,
+        "y_meters": 5.805022968031621,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5707963267948966,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": 3.141592653589793,
+      "t_ratio": 0.507575411227522,
+      "profiled_rotation": true
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 5.98943867453812,
+        "y_meters": 5.408813961263098,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 3.141592653589793,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.23547054930787248,
+      "lib_key": "stopIntake"
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": 3.141592653589793,
+      "t_ratio": 0.7530203596035665,
+      "profiled_rotation": true
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 2.642097618898407,
+        "y_meters": 5.454758655169076,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -0.6216930411522151,
+        "profiled_rotation": true
+      }
+    }
+  ],
+  "constraints": {
+    "max_velocity_meters_per_sec": [
+      {
+        "value": 3.2,
+        "start_ordinal": 0,
+        "end_ordinal": 2
+      },
+      {
+        "value": 1.4999999999999996,
+        "start_ordinal": 3,
+        "end_ordinal": 4
+      },
+      {
+        "value": 3.2,
+        "start_ordinal": 5,
+        "end_ordinal": 6
+      }
+    ]
+  }
+}

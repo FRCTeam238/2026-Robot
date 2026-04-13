@@ -16,17 +16,17 @@ import frc.robot.commands.SnapToHub;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TripleNZ extends SequentialCommandGroup {
-  /** Creates a new BackAndForth. */
-  public TripleNZ(boolean rightSide) {
+public class HideAndSeek extends SequentialCommandGroup {
+  /** Creates a new OneLineBumpTest. */
+  public HideAndSeek(boolean rightSide) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new WaitCommand(3), //3s delay for folks gone by 4
-      new BLinePath("TripleNZ",rightSide, true),
+      new BLinePath("Hide", rightSide, true), //2.22 Bline time. ~+.4 = ~2.75
+      new IntakeFuel().withTimeout(1.25),                    //~4
+      new BLinePath("AndSeek", rightSide, false), //5.25 clear, 5.5 cross with 2m/s
       new SnapToHub().withTimeout(1),
-      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(2).andThen(new IntakeMid()).andThen(new IntakeFuel()))),
-      new BLinePath("TripleNZ_Return", rightSide, false)
-    );
+      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(1).andThen(new IntakeMid()).andThen(new IntakeFuel())))
+      );
   }
 }

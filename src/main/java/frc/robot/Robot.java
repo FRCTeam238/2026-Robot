@@ -66,6 +66,10 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("L_BackAndForth", new BackAndForth(false));
     autoChooser.addOption("R_BackAndForth", new BackAndForth(true));
     autoChooser.addOption("L_TripleNZ", new TripleNZ(false));
+    autoChooser.addOption("L_InsideOut", new InsideOut(false));
+    autoChooser.addOption("R_InsideOut", new InsideOut(false));
+    autoChooser.addOption("L_HideAndSeek", new HideAndSeek(false));
+    autoChooser.addOption("R_HideAndSeek", new HideAndSeek(false));
     autoChooser.addOption("L_FullBump", new FullBump(false));
     autoChooser.addOption("R_FullBump", new FullBump(true));
     autoChooser.addOption("L_FullBump_Deep", new FullBumpDeep(false));

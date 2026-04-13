@@ -26,6 +26,7 @@ public class TwoSwipe extends SequentialCommandGroup {
       new SnapToHub().withTimeout(1),
       new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(2).andThen(new IntakeMid()).andThen(new IntakeFuel()))),
       new BLinePath("Two_Swipe_Second", rightSide, false),
+      new SnapToHub().withTimeout(1),
       new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(1).andThen(new IntakeMid()).andThen(new IntakeFuel())))
       );
   }
