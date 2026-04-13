@@ -9,6 +9,7 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.subsystems.Drivetrain;
 
 /** Add your docs here. */
 public class util {
@@ -32,6 +33,15 @@ public class util {
             return Constants.VisionConstants.passBlue;
         }
         return Constants.VisionConstants.passRed;
+    }
+
+    public static boolean shouldPass(){
+        Optional <Alliance> currentAlliance = DriverStation.getAlliance();
+        if(currentAlliance.isPresent() && currentAlliance.get() == Alliance.Blue ) {
+            return Drivetrain.getInstance().getPose().getX() > (Constants.VisionConstants.hubBluePoint.getX() + 1);
+        } else {
+            return Drivetrain.getInstance().getPose().getX() < (Constants.VisionConstants.hubRedPoint.getX() - 1);
+        }
     }
 }
 
