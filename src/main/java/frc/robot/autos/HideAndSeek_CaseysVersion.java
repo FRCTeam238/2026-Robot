@@ -29,6 +29,9 @@ public class HideAndSeek_CaseysVersion extends SequentialCommandGroup {
       new WaitCommand(1.5),
       new BLinePath("GOTCHA_CaseysVersion", rightSide, false),
       new SnapToHub().withTimeout(1),
+      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(1).andThen(new IntakeMid()).andThen(new IntakeFuel()))),
+      new BLinePath("HAS_Depot", rightSide, false),
+      new SnapToHub().withTimeout(1),
       new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(1).andThen(new IntakeMid()).andThen(new IntakeFuel())))
     );
   }

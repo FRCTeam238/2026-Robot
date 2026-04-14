@@ -27,6 +27,9 @@ public class HideAndSeek extends SequentialCommandGroup {
       new IntakeFuel().withTimeout(1.25),                    //~4
       new BLinePath("AndSeek", rightSide, false), //5.25 clear, 5.5 cross with 2m/s
       new SnapToHub().withTimeout(1),
+      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(1).andThen(new IntakeMid()).andThen(new IntakeFuel()))),
+      new BLinePath("HAS_Depot", rightSide, false),
+      new SnapToHub().withTimeout(1),
       new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(1).andThen(new IntakeMid()).andThen(new IntakeFuel())))
       );
   }
