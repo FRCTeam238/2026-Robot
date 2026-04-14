@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.CalcLaunchSequence;
+import frc.robot.commands.CalcLaunchSequencePass;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeFuel;
@@ -23,6 +24,7 @@ import frc.robot.commands.LaunchSequenceDashboard;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.SnapToAngle;
 import frc.robot.commands.SnapToHub;
+import frc.robot.commands.Vomit;
 import frc.robot.commands.XLock;
 import frc.robot.subsystems.Drivetrain;
 
@@ -72,8 +74,10 @@ public class Controls {
         
         //rightJoystick.button(3).whileTrue(new XLock());
         
+        //  Ready to change in comp
+        rightJoystick.trigger().whileTrue(new CalcLaunchSequencePass());
         leftJoystick.trigger().whileTrue(new CalcLaunchSequence());
-        rightJoystick.trigger().whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
+        leftJoystick.button(3).whileTrue(new LaunchSequence(LauncherConstants.launchSpeedNear));
 
     }
 
@@ -85,6 +89,7 @@ public class Controls {
         
         operatorController.rightTrigger().whileTrue(new IntakeFuel());
         operatorController.leftTrigger().whileTrue(new OuttakeFuel());
+        operatorController.leftBumper().whileTrue(new Vomit());
         operatorController.x().whileTrue(new IntakeQuarters());
 
         operatorController.povUp().whileTrue(new LaunchSequenceDashboard());
