@@ -63,19 +63,31 @@ public class Robot extends TimedRobot {
     autoChooser = new SendableChooser<Command>();
     autoChooser.addOption("L_TwoSwipe", new TwoSwipe(false));
     autoChooser.addOption("R_TwoSwipe", new TwoSwipe(true));
+
     autoChooser.addOption("L_BackAndForth", new BackAndForth(false));
     autoChooser.addOption("R_BackAndForth", new BackAndForth(true));
+
     autoChooser.addOption("L_TripleNZ", new TripleNZ(false));
+    autoChooser.addOption("R_TripleNZ", new TripleNZ(true));
+
     autoChooser.addOption("L_InsideOut", new InsideOut(false));
-    autoChooser.addOption("R_InsideOut", new InsideOut(false));
-    autoChooser.addOption("L_HideAndSeek", new HideAndSeek(false));
-    autoChooser.addOption("R_HideAndSeek", new HideAndSeek(false));
+    autoChooser.addOption("R_InsideOut", new InsideOut(true));
+
+    autoChooser.addOption("L_DieYoung", new HideAndSeek(false));
+    autoChooser.addOption("R_DieYoung", new HideAndSeek(true));
+
+    autoChooser.addOption("L_CaseysVersion", new HideAndSeek_CaseysVersion(false));
+    autoChooser.addOption("R_CaseysVersion", new HideAndSeek_CaseysVersion(true));
+
     autoChooser.addOption("L_FullBump", new FullBump(false));
     autoChooser.addOption("R_FullBump", new FullBump(true));
+
     autoChooser.addOption("L_FullBump_Deep", new FullBumpDeep(false));
     autoChooser.addOption("R_FullBump_Deep", new FullBumpDeep(true));
+
     autoChooser.addOption("L_FullBump_Wide", new FullBumpWide(false));
     autoChooser.addOption("R_FullBump_Wide", new FullBumpWide(true));
+
     autoChooser.addOption("C_ShootDepotSnap", new C_ShootDepotSnap());
 
 
