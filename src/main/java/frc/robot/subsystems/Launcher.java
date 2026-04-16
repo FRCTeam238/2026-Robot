@@ -108,10 +108,10 @@ public class Launcher extends SubsystemBase {
     rpsMap.put(1.543, 40.0); //Minimum distance with minimum speed
     rpsMap.put(1.848, 40.75);
     rpsMap.put(2.153, 42.5);
-    rpsMap.put(2.457, 45.0);
-    rpsMap.put(2.762, 48.25);
-    rpsMap.put(3.067, 49.5); 
-    rpsMap.put(3.372, 51.0);
+    rpsMap.put(2.457, 44.0);
+    rpsMap.put(2.762, 46.75);
+    rpsMap.put(3.067, 48.5); 
+    rpsMap.put(3.372, 50.5);
     rpsMap.put(3.677, 53.0);
     rpsMap.put(3.981, 55.0);
     rpsMap.put(4.286, 57.0);
