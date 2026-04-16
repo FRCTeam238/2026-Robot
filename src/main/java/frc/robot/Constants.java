@@ -56,12 +56,12 @@ public class Constants {
     public class FeederConstants {
         public static int upperMotorID = 5;
         public static int lowerMotorID = 4;
-        public static double statorCurrentLimitUpper = 100.0;
+        public static double statorCurrentLimitUpper = 120.0;
         public static double statorCurrentLimitLow = 60.0;
-        public static double supplyCurrentLimitUpper = 50.0;
+        public static double supplyCurrentLimitUpper = 60.0;
         public static double supplyCurrentLimitLow = 40.0;
         public static double feederSpeedUpper = 10; //Used for both Intake and Outtake, in Voltage
-        public static double feederSpeedLow = 9;
+        public static double feederSpeedLow = 8.3;
     }
 
     public class LauncherConstants {
@@ -97,7 +97,7 @@ public class Constants {
         public static int rollerID = 17;
 
         public static double rollerStatorCurrentLimit = 50.0;
-        public static double rollerSupplyCurrentLimit = 30;
+        public static double rollerSupplyCurrentLimit = 35;
         public static double tiltStatorCurrentLimit = 60.0;
         public static double tiltSupplyCurrentLimit = 20;
 

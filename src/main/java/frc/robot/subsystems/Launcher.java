@@ -103,25 +103,25 @@ public class Launcher extends SubsystemBase {
     rpsMap = new InterpolatingDoubleTreeMap();
    // PRE DCMP SPEED TABLE
    // key = Meters away from hub
-   // vlaue = rps of flywheels
+   // value = rps of flywheels
     rpsMap.put(1.0, 40.0);
     rpsMap.put(1.543, 40.0); //Minimum distance with minimum speed
-    rpsMap.put(1.848, 41.0);
-    rpsMap.put(2.153, 43.0);
-    rpsMap.put(2.457, 45.75);
-    rpsMap.put(2.762, 48.5);
-    rpsMap.put(3.067, 50.5); 
-    rpsMap.put(3.372, 52.5);
-    rpsMap.put(3.677, 53.5);
-    rpsMap.put(3.981, 55.5);
-    rpsMap.put(4.286, 57.5);
+    rpsMap.put(1.848, 40.75);
+    rpsMap.put(2.153, 42.5);
+    rpsMap.put(2.457, 45.0);
+    rpsMap.put(2.762, 48.25);
+    rpsMap.put(3.067, 49.5); 
+    rpsMap.put(3.372, 51.0);
+    rpsMap.put(3.677, 53.0);
+    rpsMap.put(3.981, 55.0);
+    rpsMap.put(4.286, 57.0);
 
     rpsMap.put(5.048, 60.0);
     rpsMap.put(5.811, 63.0);
     rpsMap.put(6.636, 67.0);
     rpsMap.put(7.55, 72.0);
     rpsMap.put(8.465, 78.0);
-    rpsMap.put(19.5, 90.0); //extrapolation
+    rpsMap.put(19.5, 90.0);
     rpsMap.put(50.0, 90.0);
   }
 

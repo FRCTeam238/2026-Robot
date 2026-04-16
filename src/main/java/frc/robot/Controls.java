@@ -62,7 +62,7 @@ public class Controls {
     }
 
     private void bindDriverButtons() {
-        driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
+       // driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
 
