@@ -86,8 +86,8 @@ public class Constants {
         public static final double launchSpeedFar = 67; //Value in RPS         
         public static final double launchSpeedTest = 20; //Value in RPS
 
-        public static final double stopTime = 0.25; // Value in Seconds
-        public static final double fuelDetectCurrent = 20; //Value in Amps
+        public static final double stopTime = 0.5; // Value in Seconds
+        public static final double fuelDetectCurrent = 15; //Value in Amps
         public static final double minTime = 2.5; //Value in seconds
     }
 
@@ -96,8 +96,8 @@ public class Constants {
         public static int tiltID = 12;
         public static int rollerID = 17;
 
-        public static double rollerStatorCurrentLimit = 50.0;
-        public static double rollerSupplyCurrentLimit = 35;
+        public static double rollerStatorCurrentLimit = 90.0;
+        public static double rollerSupplyCurrentLimit = 45;
         public static double tiltStatorCurrentLimit = 60.0;
         public static double tiltSupplyCurrentLimit = 20;
 
@@ -123,7 +123,7 @@ public class Constants {
         public static final double intakeQuarters = .265;
         public static final double intakeUp = .33;
 
-        public static final double intakeRollerVoltage = 10; //Used for both Intake and Outtake
+        public static final double intakeRollerVoltage = 12; //Used for both Intake and Outtake
         public static final double intakeTiltVoltage = -0.25; //Adds voltage downwards to limit the pop up when intaking
     }
 

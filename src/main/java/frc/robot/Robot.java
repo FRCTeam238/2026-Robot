@@ -70,11 +70,14 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("L_TripleNZ", new TripleNZ(false));
     autoChooser.addOption("R_TripleNZ", new TripleNZ(true));
 
+    autoChooser.addOption("L_TripleNZNoDepot", new TripleNZNoDepot(false));
+    autoChooser.addOption("R_TripleNZNoDepot", new TripleNZNoDepot(true));
+
     autoChooser.addOption("L_InsideOut", new InsideOut(false));
     autoChooser.addOption("R_InsideOut", new InsideOut(true));
 
     autoChooser.addOption("L_DieYoung", new HideAndSeek(false));
-    autoChooser.addOption("R_DieYoung", new HideAndSeek(true));
+    autoChooser.addOption("R_DieYoung", new HideAndSeek(true));                 
 
     autoChooser.addOption("L_CaseysVersion", new HideAndSeek_CaseysVersion(false));
     autoChooser.addOption("R_CaseysVersion", new HideAndSeek_CaseysVersion(true));

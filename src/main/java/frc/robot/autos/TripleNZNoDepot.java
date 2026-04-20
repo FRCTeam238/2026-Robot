@@ -16,19 +16,18 @@ import frc.robot.commands.SnapToHub;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class HideAndSeek_CaseysVersion extends SequentialCommandGroup {
-  /** Creates a new HideAndSeek_CaseysVersion. */
-  public HideAndSeek_CaseysVersion(boolean rightSide) {
+public class TripleNZNoDepot extends SequentialCommandGroup {
+  /** Creates a new BackAndForth. */
+  public TripleNZNoDepot(boolean rightSide) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new BLinePath("Hide", rightSide, true),//1.88 Bline time. ~+.4 = ~2.3 secs
-      //Could probably change based on alliance members??
-      new ProxyCommand(new IntakeFuel().withTimeout(1.5)), //~3.8
-      new BLinePath("IntoSweep", rightSide, false), //~7 + ~3.8 = ~11 secs
+      new WaitCommand(2), //2s delay for folks gone by 3
+      new BLinePath("TripleNZ_NoDepot",rightSide, true),
       new SnapToHub().withTimeout(1),
-      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(1).andThen(new IntakeMid()).andThen(new IntakeFuel()))),
-      new BLinePath("TakeTwo_CaseysVersion", rightSide, false)
+      new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(2).andThen(new IntakeMid()).andThen(new IntakeFuel()))),
+      new WaitCommand(3),
+      new BLinePath("TripleNZ_Return", rightSide, false)
     );
   }
 }

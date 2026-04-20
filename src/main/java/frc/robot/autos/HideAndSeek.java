@@ -24,7 +24,7 @@ public class HideAndSeek extends SequentialCommandGroup {
     addCommands(
       new BLinePath("Hide", rightSide, true), //2.22 Bline time. ~+.4 = ~2.75
       //Could probably change based on alliance members??
-      new IntakeFuel().withTimeout(1.25),                    //~4
+      new ProxyCommand(new IntakeFuel().withTimeout(1.25)),                    //~4
       new BLinePath("AndSeek", rightSide, false), //5.25 clear, 5.5 cross with 2m/s
       new SnapToHub().withTimeout(1),
       new ProxyCommand(new CalcLaunchSequence().deadlineFor(new WaitCommand(1).andThen(new IntakeMid()).andThen(new IntakeFuel()))),

@@ -106,17 +106,17 @@ public class Launcher extends SubsystemBase {
    // value = rps of flywheels
     rpsMap.put(1.0, 40.0);
     rpsMap.put(1.543, 40.0); //Minimum distance with minimum speed
-    rpsMap.put(1.848, 40.75);
-    rpsMap.put(2.153, 42.5);
-    rpsMap.put(2.457, 44.0);
-    rpsMap.put(2.762, 46.75);
-    rpsMap.put(3.067, 48.5); 
-    rpsMap.put(3.372, 50.5);
-    rpsMap.put(3.677, 53.0);
-    rpsMap.put(3.981, 55.0);
-    rpsMap.put(4.286, 57.0);
+    rpsMap.put(1.848, 40.5);
+    rpsMap.put(2.153, 42.0);
+    rpsMap.put(2.457, 43.5);
+    rpsMap.put(2.762, 46.25);
+    rpsMap.put(3.067, 48.0); 
+    rpsMap.put(3.372, 50.0);
+    rpsMap.put(3.677, 52.5);
+    rpsMap.put(3.981, 54.5);
+    rpsMap.put(4.286, 56.5);
 
-    rpsMap.put(5.048, 60.0);
+    rpsMap.put(5.048, 59.5);
     rpsMap.put(5.811, 63.0);
     rpsMap.put(6.636, 67.0);
     rpsMap.put(7.55, 72.0);

@@ -28,6 +28,8 @@ public class BLinePath extends SequentialCommandGroup {
         drivetrain.blineBuilder.withShouldMirror(() -> rightSide);
         Command swerveCommand = drivetrain.blineBuilder.build(new Path(pathName));
         addCommands(swerveCommand);
+        addCommands(drivetrain.runOnce(() -> drivetrain.setCommand("")));
+
     }
 
 }
